@@ -1,0 +1,4518 @@
+{
+ "_meta": {
+  "name": "景点 × 能力库相关性挂载表",
+  "purpose": "让渲染与规划阶段能直接回答：这个景点归属哪个省市、属什么气候区、有哪些必吃/票务/车站数据、触发哪些风险 playbook。全部由程序按现有 references 规则复算，不手工编。",
+  "built_at": "2026-10-12",
+  "rules": [
+   "省市归属：geo_admin.json 精确 → 去通名后缀 → 分隔符切分 → 逐步砍尾，逐级降级。",
+   "气候区：seasons_climate.json 自带 match_rules 复算，顺序 plateau→tropical→northwest→southwest→大区。",
+   "能力库：city 或name 真命中才记，未命中不编。",
+   "风险标签：高原/边境/海岛/高海拔/民族地区，触发既有 playbook，不新增规则。"
+  ],
+  "honesty_note": "unresolved 与 climate 未匹配项必须人工补，不允许用推测值填充。"
+ },
+ "coverage": {
+  "total_destinations": 249,
+  "admin_resolved": 214,
+  "admin_resolved_pct": 85.9,
+  "climate_resolved": 236,
+  "climate_resolved_pct": 94.8,
+  "has_food_guide": 10,
+  "has_poi": 15,
+  "has_station_codes": 160,
+  "high_altitude": 17,
+  "border": 2,
+  "island": 7,
+  "ethnic_region": 22,
+  "ambiguous_admin": 22,
+  "resolved_by_region_unique": 1,
+  "resolved_by_synthetic": 2,
+  "synthetic_multi_site": [
+   "宋城",
+   "方特",
+   "欢乐谷",
+   "海岛度假指南",
+   "海昌海洋公园",
+   "融创文旅城"
+  ]
+ },
+ "destinations": {
+  "包头": {
+   "province": "内蒙古自治区",
+   "city": "包头市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "包头",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "包头"
+   }
+  },
+  "赤峰": {
+   "province": "内蒙古自治区",
+   "city": "赤峰市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "赤峰",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "赤峰"
+   }
+  },
+  "鄂尔多斯": {
+   "province": "内蒙古自治区",
+   "city": "鄂尔多斯市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "鄂尔多斯",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {
+    "station_codes": "鄂尔多斯"
+   }
+  },
+  "额济纳": {
+   "province": "内蒙古自治区",
+   "city": "阿拉善盟",
+   "county": "额济纳旗",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "额济纳",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "额济纳",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "额济纳"
+   }
+  },
+  "通辽": {
+   "province": "内蒙古自治区",
+   "city": "通辽市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "通辽",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "通辽"
+   }
+  },
+  "乌兰察布": {
+   "province": "内蒙古自治区",
+   "city": "乌兰察布市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "乌兰察布",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "乌兰察布"
+   }
+  },
+  "锡林郭勒": {
+   "province": "内蒙古自治区",
+   "city": "锡林郭勒盟",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "锡林郭勒",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "北京": {
+   "province": "北京市",
+   "city": "北京市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "北京",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "北京",
+    "station_codes": "北京"
+   }
+  },
+  "承德": {
+   "province": "河北省",
+   "city": "承德市",
+   "county": "承德县",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "承德",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "承德"
+   }
+  },
+  "呼和浩特": {
+   "province": "内蒙古自治区",
+   "city": "呼和浩特市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "呼和浩特",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "呼和浩特"
+   }
+  },
+  "呼伦贝尔": {
+   "province": "呼伦贝尔市",
+   "city": "呼伦贝尔市",
+   "county": "内蒙古自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "平遥": {
+   "province": "山西省",
+   "city": "晋中市",
+   "county": "平遥县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "平遥",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "平遥"
+   }
+  },
+  "皇城相府": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "晋祠": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "乔家大院": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "悬空寺": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "云冈石窟": {
+   "province": "山西省",
+   "city": "大同市",
+   "county": "云冈区",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "云冈",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "秦皇岛": {
+   "province": "河北省",
+   "city": "秦皇岛市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "秦皇岛",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {
+    "station_codes": "秦皇岛"
+   }
+  },
+  "天津": {
+   "province": "天津市",
+   "city": "天津市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "天津",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "天津"
+   }
+  },
+  "五台山": {
+   "province": "山西省",
+   "city": "忻州市",
+   "county": "五台县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "华北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {
+    "station_codes": "五台山北"
+   }
+  },
+  "鞍山": {
+   "province": "辽宁省",
+   "city": "鞍山市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "鞍山",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "鞍山"
+   }
+  },
+  "本溪": {
+   "province": "辽宁省",
+   "city": "本溪市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "本溪",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "本溪"
+   }
+  },
+  "长白山": {
+   "province": "吉林省",
+   "city": "白山市",
+   "county": "",
+   "admin_match": "province_scope",
+   "admin_ambiguous": false,
+   "matched_on": "白山",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "长白山",
+    "station_codes": "长白山"
+   }
+  },
+  "长春": {
+   "province": "吉林省",
+   "city": "长春市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "长春",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "长春"
+   }
+  },
+  "朝阳": {
+   "province": "北京市",
+   "city": "市辖区",
+   "county": "朝阳区",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "朝阳",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "朝阳湖"
+   }
+  },
+  "大连": {
+   "province": "辽宁省",
+   "city": "大连市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "大连",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "大连"
+   }
+  },
+  "丹东": {
+   "province": "辽宁省",
+   "city": "丹东市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "丹东",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "边境:中朝边境"
+   ],
+   "linked": {
+    "station_codes": "丹东"
+   }
+  },
+  "哈尔滨": {
+   "province": "黑龙江省",
+   "city": "哈尔滨市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "哈尔滨",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "哈尔滨",
+    "poi": "哈尔滨",
+    "station_codes": "哈尔滨"
+   }
+  },
+  "吉林市": {
+   "province": "吉林省",
+   "city": "吉林市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "吉林市",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "牡丹江·镜泊湖": {
+   "province": "黑龙江省",
+   "city": "牡丹江市",
+   "county": "",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "牡丹江",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "漠河": {
+   "province": "黑龙江省",
+   "city": "漠河市",
+   "county": "大兴安岭地区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "漠河"
+   }
+  },
+  "盘锦": {
+   "province": "辽宁省",
+   "city": "盘锦市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "盘锦",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "盘锦"
+   }
+  },
+  "齐齐哈尔": {
+   "province": "黑龙江省",
+   "city": "齐齐哈尔市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "齐齐哈尔",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "齐齐哈尔"
+   }
+  },
+  "沈阳": {
+   "province": "辽宁省",
+   "city": "沈阳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "沈阳",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "沈阳"
+   }
+  },
+  "五大连池": {
+   "province": "黑龙江省",
+   "city": "黑河市",
+   "county": "五大连池市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "五大连池",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "五大连池"
+   }
+  },
+  "兴城": {
+   "province": "辽宁省",
+   "city": "葫芦岛市",
+   "county": "兴城市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "兴城",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "兴城"
+   }
+  },
+  "中国雪乡": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "伊春": {
+   "province": "黑龙江省",
+   "city": "伊春市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "伊春",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "伊春"
+   }
+  },
+  "延吉": {
+   "province": "吉林省",
+   "city": "延边朝鲜族自治州延吉市",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "延吉"
+   }
+  },
+  "阿尔山": {
+   "province": "兴安盟阿尔山市",
+   "city": "兴安盟阿尔山市",
+   "county": "内蒙古自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "阿尔山"
+   }
+  },
+  "矮寨": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "常州": {
+   "province": "江苏省",
+   "city": "常州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "常州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "常州"
+   }
+  },
+  "法门寺": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "葛仙村": {
+   "province": "江西省",
+   "city": "上饶市",
+   "county": "铅山县",
+   "admin_match": "synthetic_single",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "广州": {
+   "province": "广东省",
+   "city": "广州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "广州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "广州"
+   }
+  },
+  "杭州": {
+   "province": "浙江省",
+   "city": "杭州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "杭州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "杭州",
+    "poi": "杭州",
+    "station_codes": "杭州"
+   }
+  },
+  "湖州": {
+   "province": "浙江省",
+   "city": "湖州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "湖州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "湖州"
+   }
+  },
+  "嘉兴": {
+   "province": "浙江省",
+   "city": "嘉兴市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "嘉兴",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "嘉兴"
+   }
+  },
+  "济南": {
+   "province": "山东省",
+   "city": "济南市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "济南",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "济南"
+   }
+  },
+  "景德镇": {
+   "province": "江西省",
+   "city": "景德镇市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "景德镇",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "景德镇"
+   }
+  },
+  "金华": {
+   "province": "浙江省",
+   "city": "金华市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "金华",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "金华"
+   }
+  },
+  "连云港": {
+   "province": "江苏省",
+   "city": "连云港市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "连云港",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "连云港"
+   }
+  },
+  "临沂": {
+   "province": "山东省",
+   "city": "临沂市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "临沂",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "临沂"
+   }
+  },
+  "庐山": {
+   "province": "江西省",
+   "city": "九江市",
+   "county": "庐山市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "庐山",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "庐山"
+   }
+  },
+  "南昌": {
+   "province": "江西省",
+   "city": "南昌市",
+   "county": "南昌县",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "南昌",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "南昌"
+   }
+  },
+  "南京": {
+   "province": "江苏省",
+   "city": "南京市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "南京",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "南京"
+   }
+  },
+  "宁波": {
+   "province": "浙江省",
+   "city": "宁波市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "宁波",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "宁波"
+   }
+  },
+  "青岛": {
+   "province": "山东省",
+   "city": "青岛市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "青岛",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {
+    "poi": "青岛",
+    "station_codes": "青岛"
+   }
+  },
+  "福州": {
+   "province": "福建省",
+   "city": "福州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "福州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "福州"
+   }
+  },
+  "湄洲岛": {
+   "province": "福建省",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {}
+  },
+  "泉州": {
+   "province": "福建省",
+   "city": "泉州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "泉州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "泉州"
+   }
+  },
+  "福建土楼": {
+   "province": "福建省",
+   "city": "福建省",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "福建",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "武夷山": {
+   "province": "福建省",
+   "city": "南平市",
+   "county": "武夷山市",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "武夷山"
+   }
+  },
+  "霞浦": {
+   "province": "福建省",
+   "city": "宁德市",
+   "county": "霞浦县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "霞浦",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "霞浦"
+   }
+  },
+  "曲阜": {
+   "province": "山东省",
+   "city": "济宁市",
+   "county": "曲阜市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "曲阜",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "曲阜"
+   }
+  },
+  "日照": {
+   "province": "山东省",
+   "city": "日照市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "日照",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "日照"
+   }
+  },
+  "三清山": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "上海": {
+   "province": "上海市",
+   "city": "上海市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "上海",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "上海"
+   }
+  },
+  "绍兴": {
+   "province": "浙江省",
+   "city": "绍兴市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "绍兴",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "绍兴"
+   }
+  },
+  "苏州": {
+   "province": "江苏省",
+   "city": "苏州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "苏州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "苏州"
+   }
+  },
+  "泰山": {
+   "province": "山东省",
+   "city": "泰安市",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "泰山"
+   }
+  },
+  "皖南川藏线": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "潍坊": {
+   "province": "山东省",
+   "city": "潍坊市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "潍坊",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "潍坊"
+   }
+  },
+  "威海": {
+   "province": "山东省",
+   "city": "威海市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "威海",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "威海"
+   }
+  },
+  "温州": {
+   "province": "浙江省",
+   "city": "温州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "温州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "温州"
+   }
+  },
+  "武功山": {
+   "province": "陕西省",
+   "city": "咸阳市",
+   "county": "武功县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "武功",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "无锡": {
+   "province": "江苏省",
+   "city": "无锡市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "无锡",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "无锡"
+   }
+  },
+  "婺源篁岭": {
+   "province": "江西省",
+   "city": "上饶市",
+   "county": "婺源县",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "婺源",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "厦门": {
+   "province": "福建省",
+   "city": "厦门市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "厦门",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "厦门",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "厦门"
+   }
+  },
+  "徐州": {
+   "province": "江苏省",
+   "city": "徐州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "徐州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "徐州"
+   }
+  },
+  "扬州": {
+   "province": "江苏省",
+   "city": "扬州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "扬州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "扬州"
+   }
+  },
+  "烟台": {
+   "province": "山东省",
+   "city": "烟台市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "烟台",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "烟台"
+   }
+  },
+  "枣庄": {
+   "province": "山东省",
+   "city": "枣庄市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "枣庄",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "枣庄"
+   }
+  },
+  "镇江": {
+   "province": "江苏省",
+   "city": "镇江市",
+   "county": "镇江新区",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "镇江",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "镇江"
+   }
+  },
+  "舟山": {
+   "province": "浙江省",
+   "city": "舟山市",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "淄博": {
+   "province": "山东省",
+   "city": "淄博市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "淄博",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "淄博"
+   }
+  },
+  "宏村·西递": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "黄山": {
+   "province": "安徽省",
+   "city": "黄山市",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "黄山",
+    "station_codes": "黄山"
+   }
+  },
+  "徽州古城": {
+   "province": "安徽省",
+   "city": "黄山市",
+   "county": "徽州区",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "徽州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "九华山": {
+   "province": "安徽省",
+   "city": "池州市",
+   "county": "青阳县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "九华山"
+   }
+  },
+  "天柱山": {
+   "province": "安徽省",
+   "city": "安庆市",
+   "county": "潜山市",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "天柱山"
+   }
+  },
+  "安吉": {
+   "province": "浙江省",
+   "city": "湖州市",
+   "county": "安吉县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "安吉",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "安吉"
+   }
+  },
+  "淳安·千岛湖": {
+   "province": "浙江省",
+   "city": "杭州市",
+   "county": "淳安县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "淳安",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {}
+  },
+  "平潭岛": {
+   "province": "福建省",
+   "city": "福州市",
+   "county": "平潭县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "平潭",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "平潭",
+    "rule": "tropical_list"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {}
+  },
+  "仙居": {
+   "province": "浙江省",
+   "city": "台州市",
+   "county": "仙居县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "仙居",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "仙居"
+   }
+  },
+  "长沙": {
+   "province": "湖南省",
+   "city": "长沙市",
+   "county": "长沙县",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "长沙",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "长沙",
+    "station_codes": "长沙"
+   }
+  },
+  "郴州": {
+   "province": "湖南省",
+   "city": "郴州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "郴州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "郴州"
+   }
+  },
+  "赤壁": {
+   "province": "湖北省",
+   "city": "咸宁市",
+   "county": "赤壁市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "赤壁",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "赤壁"
+   }
+  },
+  "丹江口": {
+   "province": "湖北省",
+   "city": "十堰市",
+   "county": "丹江口市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "丹江口",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "丹江口"
+   }
+  },
+  "恩施": {
+   "province": "湖北省",
+   "city": "恩施土家族苗族自治州",
+   "county": "恩施市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "恩施",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "恩施"
+   }
+  },
+  "鄂州": {
+   "province": "湖北省",
+   "city": "鄂州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "鄂州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "鄂州"
+   }
+  },
+  "凤凰古城": {
+   "province": "湖南省",
+   "city": "",
+   "county": "湘西州凤凰县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "凤凰古城"
+   }
+  },
+  "芙蓉镇": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "芙蓉镇"
+   }
+  },
+  "G348三峡公路": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "黄冈": {
+   "province": "湖北省",
+   "city": "黄冈市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "黄冈",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "黄冈"
+   }
+  },
+  "黄石": {
+   "province": "湖北省",
+   "city": "黄石市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "黄石",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "黄石"
+   }
+  },
+  "荆门": {
+   "province": "湖北省",
+   "city": "荆门市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "荆门",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "荆门"
+   }
+  },
+  "荆州": {
+   "province": "湖北省",
+   "city": "荆州市",
+   "county": "荆州区",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "荆州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "荆州"
+   }
+  },
+  "开封": {
+   "province": "河南省",
+   "city": "开封市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "开封",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "开封"
+   }
+  },
+  "老君山": {
+   "province": "河南",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "洛阳": {
+   "province": "河南省",
+   "city": "洛阳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "洛阳",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "洛阳"
+   }
+  },
+  "南岳衡山": {
+   "province": "湖南省",
+   "city": "衡阳市",
+   "county": "南岳区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "潜江": {
+   "province": "湖北省",
+   "city": "省直辖县级行政区划",
+   "county": "潜江市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "潜江",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "潜江"
+   }
+  },
+  "神农架": {
+   "province": "湖北省",
+   "city": "省直辖县级行政区划",
+   "county": "神农架林区",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "神农架",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "神农架"
+   }
+  },
+  "十堰": {
+   "province": "湖北省",
+   "city": "十堰市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "十堰",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "十堰"
+   }
+  },
+  "随州": {
+   "province": "湖北省",
+   "city": "随州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "随州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "随州"
+   }
+  },
+  "新乡万仙山": {
+   "province": "河南省",
+   "city": "新乡市",
+   "county": "新乡县",
+   "admin_match": "trim",
+   "admin_ambiguous": true,
+   "matched_on": "新乡",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "武当山": {
+   "province": "湖北省",
+   "city": "十堰市",
+   "county": "丹江口市",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "武当山"
+   }
+  },
+  "武汉": {
+   "province": "湖北省",
+   "city": "武汉市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "武汉",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "武汉",
+    "station_codes": "武汉"
+   }
+  },
+  "襄阳": {
+   "province": "湖北省",
+   "city": "襄阳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "襄阳",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "襄阳"
+   }
+  },
+  "咸宁": {
+   "province": "湖北省",
+   "city": "咸宁市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "咸宁",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "咸宁"
+   }
+  },
+  "孝感": {
+   "province": "湖北省",
+   "city": "孝感市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "孝感",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "孝感"
+   }
+  },
+  "信阳": {
+   "province": "河南省",
+   "city": "信阳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "信阳",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "信阳"
+   }
+  },
+  "宜昌": {
+   "province": "湖北省",
+   "city": "宜昌市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "宜昌",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "宜昌"
+   }
+  },
+  "永州": {
+   "province": "湖南省",
+   "city": "永州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "永州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "永州"
+   }
+  },
+  "岳阳 1 日": {
+   "province": "湖南省",
+   "city": "岳阳市",
+   "county": "岳阳县",
+   "admin_match": "trim",
+   "admin_ambiguous": true,
+   "matched_on": "岳阳",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "焦作云台山": {
+   "province": "河南省",
+   "city": "焦作市",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "焦作",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "张家界": {
+   "province": "湖南省",
+   "city": "张家界市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "张家界",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "张家界",
+    "station_codes": "张家界"
+   }
+  },
+  "郑州": {
+   "province": "河南省",
+   "city": "郑州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "郑州",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "郑州"
+   }
+  },
+  "百色": {
+   "province": "广西壮族自治区",
+   "city": "百色市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "百色",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "百色"
+   }
+  },
+  "北海": {
+   "province": "广西壮族自治区",
+   "city": "北海市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "北海",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "北海",
+    "rule": "tropical_list"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {
+    "station_codes": "北海"
+   }
+  },
+  "潮汕": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "潮汕"
+   }
+  },
+  "崇左": {
+   "province": "广西壮族自治区",
+   "city": "崇左市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "崇左",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "崇左"
+   }
+  },
+  "韶关": {
+   "province": "广东省",
+   "city": "韶关市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "韶关",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "韶关"
+   }
+  },
+  "防城港": {
+   "province": "广西壮族自治区",
+   "city": "防城港市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "防城港",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "防城港",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "防城港北"
+   }
+  },
+  "桂林阳朔": {
+   "province": "广西壮族自治区",
+   "city": "桂林市",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "桂林",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "桂林阳朔"
+   }
+  },
+  "贺州": {
+   "province": "广西壮族自治区",
+   "city": "贺州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "贺州",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "贺州"
+   }
+  },
+  "江门": {
+   "province": "广东省",
+   "city": "江门市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "江门",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "江门"
+   }
+  },
+  "柳州": {
+   "province": "广西壮族自治区",
+   "city": "柳州市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "柳州",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "柳州"
+   }
+  },
+  "南宁": {
+   "province": "广西壮族自治区",
+   "city": "南宁市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "南宁",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "南宁"
+   }
+  },
+  "清远": {
+   "province": "广东省",
+   "city": "清远市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "清远",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "清远"
+   }
+  },
+  "海口": {
+   "province": "海南省",
+   "city": "海口市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "海口",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "海口",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "海口"
+   }
+  },
+  "陵水": {
+   "province": "海南",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "陵水",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "陵水"
+   }
+  },
+  "万宁": {
+   "province": "海南省",
+   "city": "省直辖县级行政区划",
+   "county": "万宁市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "万宁",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "万宁",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "万宁"
+   }
+  },
+  "文昌": {
+   "province": "海南省",
+   "city": "省直辖县级行政区划",
+   "county": "文昌市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "文昌",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "文昌",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "文昌"
+   }
+  },
+  "三亚": {
+   "province": "海南省",
+   "city": "三亚市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "三亚",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "三亚",
+    "rule": "tropical_list"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "三亚",
+    "poi": "三亚",
+    "station_codes": "三亚"
+   }
+  },
+  "深圳": {
+   "province": "广东省",
+   "city": "深圳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "深圳",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "深圳"
+   }
+  },
+  "珠海": {
+   "province": "广东省",
+   "city": "珠海市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "珠海",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "珠海"
+   }
+  },
+  "长隆篇": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "阳朔": {
+   "province": "桂林市",
+   "city": "桂林市",
+   "county": "广西壮族自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "阳朔"
+   }
+  },
+  "成都": {
+   "province": "四川省",
+   "city": "成都市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "成都",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "成都",
+    "station_codes": "成都"
+   }
+  },
+  "重庆": {
+   "province": "重庆市",
+   "city": "重庆市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "重庆",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "poi": "重庆",
+    "station_codes": "重庆"
+   }
+  },
+  "大理": {
+   "province": "云南省",
+   "city": "大理白族自治州",
+   "county": "大理市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "大理",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "大理",
+    "rule": "southwest_list"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "poi": "大理",
+    "station_codes": "大理"
+   }
+  },
+  "黄果树": {
+   "province": "贵州省",
+   "city": "安顺市",
+   "county": "镇宁县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "拉萨": {
+   "province": "西藏自治区",
+   "city": "拉萨市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "拉萨",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "拉萨",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原",
+    "高海拔"
+   ],
+   "linked": {
+    "station_codes": "拉萨"
+   }
+  },
+  "丽江": {
+   "province": "云南省",
+   "city": "丽江市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "丽江",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "丽江",
+    "rule": "southwest_list"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {
+    "poi": "丽江",
+    "station_codes": "丽江"
+   }
+  },
+  "泸沽湖": {
+   "province": "四川省",
+   "city": "",
+   "county": "凉山州盐源县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "抚仙湖": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "梵净山": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "贵阳": {
+   "province": "贵州省",
+   "city": "贵阳市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "贵阳",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "贵阳",
+    "rule": "southwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "贵阳"
+   }
+  },
+  "肇兴侗寨": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "镇远古镇": {
+   "province": "贵州省",
+   "city": "黔东南苗族侗族自治州",
+   "county": "镇远县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "镇远",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "香格里拉": {
+   "province": "云南省",
+   "city": "",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "香格里拉",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {
+    "station_codes": "香格里拉"
+   }
+  },
+  "腾冲": {
+   "province": "云南省",
+   "city": "保山市",
+   "county": "腾冲市",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "腾冲",
+    "rule": "southwest_list"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "西昌": {
+   "province": "四川省",
+   "city": "凉山彝族自治州",
+   "county": "西昌市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "西昌",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西昌",
+    "rule": "southwest_list"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "poi": "西昌",
+    "station_codes": "西昌"
+   }
+  },
+  "西江千户苗寨": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "西双版纳": {
+   "province": "云南省",
+   "city": "西双版纳傣族自治州",
+   "county": "",
+   "admin_match": "region_unique",
+   "admin_ambiguous": false,
+   "matched_on": "西双版纳",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "西双版纳"
+   }
+  },
+  "元阳": {
+   "province": "云南省",
+   "city": "红河哈尼族彝族自治州",
+   "county": "元阳县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "元阳",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "川西大环线": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "稻城亚丁": {
+   "province": "四川省",
+   "city": "",
+   "county": "甘孜州稻城县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "稻城亚丁",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {}
+  },
+  "都江堰 · 青城山": {
+   "province": "四川省",
+   "city": "成都市",
+   "county": "都江堰市",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "都江堰",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "峨眉山 · 乐山": {
+   "province": "四川省",
+   "city": "乐山市",
+   "county": "峨眉山市",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "峨眉山",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "九寨沟": {
+   "province": "四川省",
+   "city": "",
+   "county": "阿坝藏族羌族自治州九寨沟县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "阆中古城": {
+   "province": "四川省",
+   "city": "南充市",
+   "county": "阆中市",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "阆中",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "阿里": {
+   "province": "西藏自治区",
+   "city": "阿里地区",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "阿里",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "阿里河"
+   }
+  },
+  "建水古城": {
+   "province": "云南省",
+   "city": "红河哈尼族彝族自治州",
+   "county": "建水县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "建水",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "建水",
+    "rule": "southwest_list"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "荔波": {
+   "province": "贵州省",
+   "city": "黔南布依族苗族自治州",
+   "county": "荔波县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "荔波",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "荔波"
+   }
+  },
+  "林芝": {
+   "province": "西藏自治区",
+   "city": "林芝市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "林芝",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "林芝",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {
+    "station_codes": "林芝"
+   }
+  },
+  "怒江·丙中洛": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "普者黑": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "普者黑",
+    "rule": "southwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "普者黑"
+   }
+  },
+  "纳木错": {
+   "province": "拉萨市",
+   "city": "拉萨市",
+   "county": "西藏自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "日喀则": {
+   "province": "西藏自治区",
+   "city": "日喀则市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "日喀则",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "日喀则",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {
+    "station_codes": "日喀则"
+   }
+  },
+  "羊卓雍措": {
+   "province": "山南市",
+   "city": "山南市",
+   "county": "西藏自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "阿克苏": {
+   "province": "新疆维吾尔自治区",
+   "city": "阿克苏地区",
+   "county": "阿克苏市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "阿克苏",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "阿克苏"
+   }
+  },
+  "安康 & 瀛湖": {
+   "province": "陕西省",
+   "city": "安康市",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "安康",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "博尔塔拉": {
+   "province": "",
+   "city": "",
+   "county": "新疆维吾尔自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "新疆独库公路+伊犁": {
+   "province": "新疆维吾尔自治区",
+   "city": "新疆维吾尔自治区",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "新疆",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "伊犁",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "敦煌": {
+   "province": "甘肃省",
+   "city": "酒泉市",
+   "county": "敦煌市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "敦煌",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "敦煌",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "敦煌"
+   }
+  },
+  "富蕴": {
+   "province": "新疆维吾尔自治区",
+   "city": "阿勒泰地区",
+   "county": "富蕴县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "富蕴",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "富蕴"
+   }
+  },
+  "甘南": {
+   "province": "黑龙江省",
+   "city": "齐齐哈尔市",
+   "county": "甘南县",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "甘南",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "哈密": {
+   "province": "新疆维吾尔自治区",
+   "city": "哈密市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "哈密",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "哈密",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "哈密"
+   }
+  },
+  "汉中": {
+   "province": "陕西省",
+   "city": "汉中市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "汉中",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "汉中"
+   }
+  },
+  "和田": {
+   "province": "新疆维吾尔自治区",
+   "city": "和田地区",
+   "county": "和田市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "和田",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "和田"
+   }
+  },
+  "华山": {
+   "province": "陕西省",
+   "city": "渭南市",
+   "county": "华阴市",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "华山"
+   }
+  },
+  "壶口瀑布": {
+   "province": "山西省",
+   "city": "临汾市",
+   "county": "吉县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "嘉峪关": {
+   "province": "甘肃省",
+   "city": "嘉峪关市",
+   "county": "嘉峪关市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "嘉峪关",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "嘉峪关",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "嘉峪关",
+    "station_codes": "嘉峪关"
+   }
+  },
+  "阿勒泰喀纳斯": {
+   "province": "新疆维吾尔自治区",
+   "city": "阿勒泰地区",
+   "county": "阿勒泰市",
+   "admin_match": "trim",
+   "admin_ambiguous": true,
+   "matched_on": "阿勒泰",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "喀纳斯",
+    "rule": "northwest_list"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "喀什": {
+   "province": "新疆",
+   "city": "",
+   "county": "新疆维吾尔自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "喀什"
+   }
+  },
+  "克孜勒苏": {
+   "province": "新疆维吾尔自治区",
+   "city": "克孜勒苏柯尔克孜自治州",
+   "county": "",
+   "admin_match": "province_scope",
+   "admin_ambiguous": false,
+   "matched_on": "克孜勒苏柯尔克孜自治州",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "库尔勒": {
+   "province": "新疆维吾尔自治区",
+   "city": "巴音郭楞蒙古自治州",
+   "county": "库尔勒市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "库尔勒",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "库尔勒",
+    "rule": "northwest_list"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "库尔勒"
+   }
+  },
+  "兰州": {
+   "province": "甘肃省",
+   "city": "兰州市",
+   "county": "兰州新区",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "兰州",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "兰州",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "兰州",
+    "station_codes": "兰州"
+   }
+  },
+  "临夏": {
+   "province": "甘肃省",
+   "city": "临夏回族自治州",
+   "county": "临夏市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "临夏",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "青海湖": {
+   "province": "青海省",
+   "city": "",
+   "county": "海北藏族自治州刚察县",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "青海湖",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原",
+    "高海拔",
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "茶卡盐湖": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "茶卡",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {}
+  },
+  "门源": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "门源",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原"
+   ],
+   "linked": {
+    "station_codes": "门源"
+   }
+  },
+  "祁连山": {
+   "province": "青海省",
+   "city": "海北藏族自治州",
+   "county": "祁连县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "祁连",
+   "climate": {
+    "zone": "plateau",
+    "zone_cn": "plateau",
+    "matched": "祁连",
+    "rule": "plateau_list"
+   },
+   "tags": [
+    "高原",
+    "民族地区"
+   ],
+   "linked": {}
+  },
+  "塔尔寺": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "商洛": {
+   "province": "陕西省",
+   "city": "商洛市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "商洛",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "商洛"
+   }
+  },
+  "塔城": {
+   "province": "新疆维吾尔自治区",
+   "city": "塔城地区",
+   "county": "塔城市",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "塔城",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "边境:中哈边境",
+    "民族地区"
+   ],
+   "linked": {
+    "station_codes": "塔城"
+   }
+  },
+  "天水": {
+   "province": "甘肃省",
+   "city": "天水市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "天水",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "天水"
+   }
+  },
+  "吐鲁番": {
+   "province": "吐鲁番市",
+   "city": "吐鲁番市",
+   "county": "新疆维吾尔自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "吐鲁番",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "吐鲁番",
+    "station_codes": "吐鲁番"
+   }
+  },
+  "乌鲁木齐": {
+   "province": "新疆维吾尔自治区",
+   "city": "乌鲁木齐市",
+   "county": "乌鲁木齐县",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "乌鲁木齐",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "乌鲁木齐",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "乌鲁木齐",
+    "station_codes": "乌鲁木齐"
+   }
+  },
+  "武威": {
+   "province": "甘肃省",
+   "city": "武威市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "武威",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "武威"
+   }
+  },
+  "西安": {
+   "province": "吉林省",
+   "city": "辽源市",
+   "county": "西安区",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "西安",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "food_guide": "西安",
+    "poi": "西安",
+    "station_codes": "西安"
+   }
+  },
+  "咸阳 & 乾陵": {
+   "province": "陕西省",
+   "city": "咸阳市",
+   "county": "",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "咸阳",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "伊犁": {
+   "province": "",
+   "city": "",
+   "county": "新疆维吾尔自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "伊犁",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "银川": {
+   "province": "宁夏回族自治区",
+   "city": "银川市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "银川",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "银川"
+   }
+  },
+  "榆林": {
+   "province": "陕西省",
+   "city": "榆林市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "榆林",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "榆林"
+   }
+  },
+  "张掖": {
+   "province": "甘肃省",
+   "city": "张掖市",
+   "county": "",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "张掖",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "张掖",
+    "rule": "northwest_list"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "张掖"
+   }
+  },
+  "中国台湾": {
+   "province": "中国香港",
+   "city": "中国台湾",
+   "county": "中国台湾",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "中国台湾",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "中国香港": {
+   "province": "中国香港",
+   "city": "中国香港",
+   "county": "中国香港",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "中国香港",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "中国澳门": {
+   "province": "中国香港",
+   "city": "中国澳门",
+   "county": "中国澳门",
+   "admin_match": "exact",
+   "admin_ambiguous": true,
+   "matched_on": "中国澳门",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "海岛度假指南": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_guide",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {}
+  },
+  "迪士尼篇": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "方特": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_brand",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "海昌海洋公园": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_brand",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "欢乐谷": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_brand",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "中华恐龙园": {
+   "province": "江苏省",
+   "city": "常州市",
+   "county": "武进区",
+   "admin_match": "synthetic_single",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "宋城": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_brand",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "宋城路"
+   }
+  },
+  "融创文旅城": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "synthetic_brand",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "北京环球影城": {
+   "province": "北京市",
+   "city": "北京市",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "世界之窗 & 锦绣中华": {
+   "province": "",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "",
+    "zone_cn": "",
+    "matched": "",
+    "rule": "未匹配(默认按南方估算)"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "茨中": {
+   "province": "云南",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {}
+  },
+  "贺兰山": {
+   "province": "宁夏回族自治区",
+   "city": "银川市",
+   "county": "贺兰县",
+   "admin_match": "suffix",
+   "admin_ambiguous": false,
+   "matched_on": "贺兰",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {}
+  },
+  "可可西里": {
+   "province": "青海省",
+   "city": "",
+   "county": "",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {}
+  },
+  "林甸": {
+   "province": "黑龙江省",
+   "city": "大庆市",
+   "county": "林甸县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "林甸",
+   "climate": {
+    "zone": "north",
+    "zone_cn": "north",
+    "matched": "东北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "龙脊": {
+   "province": "广西",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "华南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "莫干山": {
+   "province": "浙江",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "木里": {
+   "province": "四川",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [
+    "高海拔"
+   ],
+   "linked": {
+    "station_codes": "木里图"
+   }
+  },
+  "宁海": {
+   "province": "浙江省",
+   "city": "宁波市",
+   "county": "宁海县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "宁海",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "宁海"
+   }
+  },
+  "沙坡头": {
+   "province": "宁夏回族自治区",
+   "city": "中卫市",
+   "county": "沙坡头区",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "沙坡头",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "沙坡头"
+   }
+  },
+  "石阡": {
+   "province": "贵州省",
+   "city": "铜仁市",
+   "county": "石阡县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "石阡",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "松阳": {
+   "province": "浙江省",
+   "city": "丽水市",
+   "county": "松阳县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "松阳",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "松阳"
+   }
+  },
+  "遂昌": {
+   "province": "浙江省",
+   "city": "丽水市",
+   "county": "遂昌县",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "遂昌",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华东",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {
+    "station_codes": "遂昌"
+   }
+  },
+  "涠洲岛": {
+   "province": "北海市",
+   "city": "北海市",
+   "county": "广西壮族自治区",
+   "admin_match": "scenic_alias",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "tropical",
+    "zone_cn": "tropical",
+    "matched": "涠洲岛",
+    "rule": "tropical_list"
+   },
+   "tags": [
+    "海岛"
+   ],
+   "linked": {}
+  },
+  "雾里": {
+   "province": "云南",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "西夏王陵": {
+   "province": "宁夏回族自治区",
+   "city": "银川市",
+   "county": "西夏区",
+   "admin_match": "trim",
+   "admin_ambiguous": false,
+   "matched_on": "西夏",
+   "climate": {
+    "zone": "northwest",
+    "zone_cn": "northwest",
+    "matched": "西北",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "增冲": {
+   "province": "贵州",
+   "city": "",
+   "county": "",
+   "admin_match": "none",
+   "admin_ambiguous": false,
+   "matched_on": "",
+   "climate": {
+    "zone": "southwest",
+    "zone_cn": "southwest",
+    "matched": "西南",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  },
+  "石首": {
+   "province": "湖北省",
+   "city": "荆州市",
+   "county": "石首市",
+   "admin_match": "exact",
+   "admin_ambiguous": false,
+   "matched_on": "石首",
+   "climate": {
+    "zone": "south",
+    "zone_cn": "south",
+    "matched": "华中",
+    "rule": "climate_of[大区]"
+   },
+   "tags": [],
+   "linked": {}
+  }
+ },
+ "unresolved_admin": [
+  "G348三峡公路",
+  "三清山",
+  "世界之窗 & 锦绣中华",
+  "中国雪乡",
+  "乔家大院",
+  "塔尔寺",
+  "增冲",
+  "宏村·西递",
+  "川西大环线",
+  "怒江·丙中洛",
+  "悬空寺",
+  "抚仙湖",
+  "晋祠",
+  "普者黑",
+  "木里",
+  "梵净山",
+  "法门寺",
+  "湄洲岛",
+  "潮汕",
+  "皇城相府",
+  "皖南川藏线",
+  "矮寨",
+  "老君山",
+  "肇兴侗寨",
+  "芙蓉镇",
+  "茨中",
+  "茶卡盐湖",
+  "莫干山",
+  "西江千户苗寨",
+  "迪士尼篇",
+  "长隆篇",
+  "门源",
+  "陵水",
+  "雾里",
+  "龙脊"
+ ],
+ "unresolved_climate": [
+  "世界之窗 & 锦绣中华",
+  "中华恐龙园",
+  "中国台湾",
+  "中国澳门",
+  "中国香港",
+  "北京环球影城",
+  "宋城",
+  "方特",
+  "欢乐谷",
+  "海岛度假指南",
+  "海昌海洋公园",
+  "融创文旅城",
+  "迪士尼篇"
+ ]
+}

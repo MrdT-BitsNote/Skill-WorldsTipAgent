@@ -1,0 +1,11 @@
+{
+  "updated": "2026-10-11",
+  "factors": {
+    "高铁": { "gco2_per_km": 14,  "ref_speed_kmh": 250, "cost_per_km": 0.45, "icon": "🚄" },
+    "飞机": { "gco2_per_km": 150, "ref_speed_kmh": 800, "cost_per_km": 0.60, "icon": "✈️" },
+    "自驾": { "gco2_per_km": 170, "ref_speed_kmh": 90,  "cost_per_km": 0.80, "icon": "🚗" },
+    "大巴": { "gco2_per_km": 27,  "ref_speed_kmh": 80,  "cost_per_km": 0.35, "icon": "🚌" },
+    "普铁": { "gco2_per_km": 22,  "ref_speed_kmh": 120, "cost_per_km": 0.18, "icon": "🚆" }
+  },
+  "note": "碳排放为单人乘员的公开平均估算（kg CO₂e / 人·km），成本为人公里参考价；实际随票价、车型、满载率浮动，仅供参考，标「估算ⓘ」。"
+}

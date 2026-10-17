@@ -1,0 +1,191 @@
+{
+  "version": "1.0",
+  "_updated": "2026-10-12",
+  "_sources": {
+    "primary": "中国领事服务网 cs.mfa.gov.cn 全球安全提醒",
+    "hotline": "外交部全球领事保护与服务应急热线 12308",
+    "redline": "安全等级只采信外交部官方提醒，不凭印象评级；未收录目的地一律输出请查外交部安全提醒"
+  },
+  "_note": "领事与制度安全基线。紧急电话（全国通用）属 stable 可直出；治安水平、诈骗手法、季节风险属 volatile 需核验。以中国领事服务网全球安全提醒为权威源。",
+  "_redline": "安全等级与风险提示必须基于外交部官方提醒，不凭印象评级。未收录目的地一律输出'请查外交部安全提醒'，不给主观安全分数。",
+  "universal_emergency": {
+    "_stability": "stable",
+    "consular_protection_cn": "12308",
+    "consular_protection_overseas": "+86-10-12308",
+    "_note": "12308 为全国统一号码，境外拨 +86-10-12308，可转接目的地使领馆。存手机并抄一份纸质。",
+    "police_cn_context": "境外报警拨当地号码（见下表）",
+    "112_eu": "欧洲通用紧急号码",
+    "911_us_ca": "美国/加拿大报警与急救",
+    "hotline_advice": "存好当地紧急电话 + 中国领事保护 12308，出发前抄一份纸质放包里。"
+  },
+  "country_safety": {
+    "_note": "按目的地记录。severity 为相对提示（基于官方提醒的定性归纳），非绝对评级；出行前必须复核外交部最新提醒。",
+    "日本": {
+      "severity": "低",
+      "scams": [
+        "街头问路骗局",
+        "出租车绕路（多为宰客，用正规车）"
+      ],
+      "natural": [
+        "台风季（6–10月）航班与交通易受影响",
+        "地震（多发但预警体系完善）",
+        "冬季山区积雪"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    },
+    "泰国": {
+      "severity": "中",
+      "scams": [
+        "宝石店/租车押金骗局（尤其曼谷游客区）",
+        "出租车与 Tuk-tuk 议宰"
+      ],
+      "natural": [
+        "雨季（5–10月）内涝",
+        "南部与边境地区安全形势需单独关注"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页",
+      "note": "南部四府（深南部）及边境地区不建议普通游客前往，务必查看最新提醒。"
+    },
+    "新加坡": {
+      "severity": "低",
+      "scams": [
+        "少"
+      ],
+      "natural": [
+        "雨季雷阵雨"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    },
+    "马来西亚": {
+      "severity": "低",
+      "scams": [
+        "少量"
+      ],
+      "natural": [
+        "雨季（11–3月）东海岸可能有水灾",
+        "榴莲季人流与交通"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页",
+      "note": "勿进入沙巴东部与南部特定区域，注意避免敏感地点。"
+    },
+    "韩国": {
+      "severity": "低",
+      "scams": [
+        "少"
+      ],
+      "natural": [
+        "冬寒",
+        "台风季偶发"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    },
+    "美国": {
+      "severity": "中",
+      "scams": [
+        "街头抢劫（部分城市特定街区夜间）",
+        "假冒海关/签证诈骗电话"
+      ],
+      "natural": [
+        "飓风季（大西洋与墨西哥湾6–11月）",
+        "冬季北部暴雪",
+        "部分城市治安与枪支差异大"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页",
+      "note": "务必按城市细化安全建议，避免笼统评级。"
+    },
+    "英国": {
+      "severity": "低",
+      "scams": [
+        "少量"
+      ],
+      "natural": [
+        "多雨"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    },
+    "欧元区": {
+      "severity": "低至中（按国家差异）",
+      "scams": [
+        "扒窃（热门景点与地铁）"
+      ],
+      "natural": [
+        "南欧高温",
+        "阿尔卑斯冬季雪崩（登山时）"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn + 拟前往国使领馆"
+    },
+    "澳大利亚": {
+      "severity": "低",
+      "scams": [
+        "少量"
+      ],
+      "natural": [
+        "夏季高温与丛林火灾季（南半球，12–2月）",
+        "紫外线强",
+        "远离海洋与礁石意外（游泳安全）"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    },
+    "新西兰": {
+      "severity": "低",
+      "scams": [
+        "少"
+      ],
+      "natural": [
+        "地震（多发）",
+        "南岛天气变化快"
+      ],
+      "_stability": "volatile",
+      "verify": "cs.mfa.gov.cn 目的地安全页"
+    }
+  },
+  "high_risk_regions": {
+    "_note": "本表为写作时的提醒快照，必须在每次规划时以 cs.mfa.gov.cn 当日提醒复核，不作为常驻依据。",
+    "avoid": [
+      {
+        "region": "塔吉克斯坦与阿富汗边境地区",
+        "level": "暂勿前往",
+        "_source": "2026-09-14 外交部提醒",
+        "_stability": "volatile"
+      },
+      {
+        "region": "斯威士兰（Eswatini）",
+        "level": "暂勿前往",
+        "_source": "2026-08-25 外交部提醒",
+        "_stability": "volatile"
+      },
+      {
+        "region": "帕劳",
+        "level": "谨慎前往",
+        "_source": "2026-08-19 外交部提醒",
+        "_stability": "volatile"
+      },
+      {
+        "region": "委内瑞拉",
+        "level": "加强安全防范",
+        "_source": "2026-07-27 外交部提醒",
+        "_stability": "volatile"
+      }
+    ]
+  },
+  "emergency_template": {
+    "_note": "应急信息卡模板：出境每本小册子必含。填入目的地实际号码后渲染。",
+    "fields": [
+      "中国领事保护 12308（境外 +86-10-12308）",
+      "当地报警电话",
+      "当地急救/消防",
+      "中国驻当地使领馆电话与地址",
+      "旅行保险 24 小时救援热线"
+    ],
+    "principle": "只填真实可核的号码；目的地号码不确定时写『以当地官方/使领馆公布为准』，绝不编造。"
+  }
+}

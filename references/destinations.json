@@ -1,0 +1,2680 @@
+{
+  "updated": "2026-10-13",
+  "total": 250,
+  "regions": {
+    "华北": {
+      "full": "华北 · 京津冀晋蒙",
+      "count": 20
+    },
+    "东北": {
+      "full": "东北 · 辽吉黑",
+      "count": 20
+    },
+    "华东": {
+      "full": "华东 · 沪苏浙皖闽赣鲁",
+      "count": 61
+    },
+    "华中": {
+      "full": "华中 · 豫鄂湘",
+      "count": 35
+    },
+    "华南": {
+      "full": "华南 · 粤桂琼",
+      "count": 23
+    },
+    "西南": {
+      "full": "西南 · 川渝黔滇藏",
+      "count": 38
+    },
+    "西北": {
+      "full": "西北 · 陕甘宁青新",
+      "count": 40
+    },
+    "港澳台海外": {
+      "full": "港澳台 · 海外",
+      "count": 4
+    },
+    "主题乐园": {
+      "full": "主题乐园",
+      "count": 9
+    }
+  },
+  "destinations": [
+    {
+      "name": "包头",
+      "region": "华北",
+      "slug": "baotou",
+      "summary": "五当召藏传佛教圣地、亚洲最大城中草原赛汗塔拉、希拉穆仁草原，北线草原与黄河落日不可错过",
+      "days": null,
+      "pinyin": "B",
+      "lat": 40.6516,
+      "lon": 109.84389,
+      "admin1": "内蒙古",
+      "elevation": 1064.0
+    },
+    {
+      "name": "赤峰",
+      "region": "华北",
+      "slug": "chifeng",
+      "summary": "乌兰布统坝上草原、克什克腾阿斯哈图石林花岗岩柱群、玉龙沙湖白沙丘，草原与地质奇观兼备",
+      "days": null,
+      "pinyin": "C",
+      "lat": 42.26833,
+      "lon": 118.96361,
+      "admin1": "内蒙古",
+      "elevation": 570.0
+    },
+    {
+      "name": "鄂尔多斯",
+      "region": "华北",
+      "slug": "eerduosi",
+      "summary": "成吉思汗陵八白室祭祀圣地、库布齐沙漠响沙湾、现代草原新城康巴什，草原文化深度体验",
+      "days": null,
+      "pinyin": "E",
+      "lat": 39.6086,
+      "lon": 109.78157,
+      "admin1": "内蒙古",
+      "elevation": 2149.0
+    },
+    {
+      "name": "额济纳",
+      "region": "华北",
+      "slug": "ejina",
+      "summary": "秋季金色胡杨林、居延海戈壁碧波、黑城西夏古城遗址，沙漠碧海与枯胡杨千姿百态",
+      "days": null,
+      "pinyin": "E"
+    },
+    {
+      "name": "通辽",
+      "region": "华北",
+      "slug": "tongliao",
+      "summary": "科尔沁草原草海、大青沟原始森林沟壑、珠日河赛马蒙古风情，沙地湿地与峡谷景致独特",
+      "days": null,
+      "pinyin": "T"
+    },
+    {
+      "name": "乌兰察布",
+      "region": "华北",
+      "slug": "wulanchabu",
+      "summary": "辉腾锡勒高山草甸、乌兰哈达火山群完整火山锥、黄花沟草原湿地，火山与草原交织的地貌奇观",
+      "days": null,
+      "pinyin": "W",
+      "lat": 40.993,
+      "lon": 113.133,
+      "admin1": "内蒙古",
+      "elevation": 1375.0
+    },
+    {
+      "name": "锡林郭勒",
+      "region": "华北",
+      "slug": "xilinguole",
+      "summary": "元上都世界文化遗产、东乌珠穆沁游牧文化、锡林草原锡林河，草原腹地的历史与牧民风情",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "北京",
+      "region": "华北",
+      "slug": "beijing",
+      "summary": "皇城中轴、万里长城、皇家园林、坛庙老城、人文艺术、环球乐园六大主题逐卡；升旗仪式、故宫、八达…",
+      "days": null,
+      "pinyin": "B",
+      "lat": 39.9075,
+      "lon": 116.39723,
+      "admin1": "北京市",
+      "elevation": 49.0
+    },
+    {
+      "name": "承德",
+      "region": "华北",
+      "slug": "chengde",
+      "summary": "清代皇家园林、汉藏建筑交融、丹霞地质奇观",
+      "days": null,
+      "pinyin": "C",
+      "lat": 40.9519,
+      "lon": 117.95883,
+      "admin1": "河北省",
+      "elevation": 318.0
+    },
+    {
+      "name": "呼和浩特",
+      "region": "华北",
+      "slug": "hohhot",
+      "summary": "塞外名刹、辽阔草原",
+      "days": null,
+      "pinyin": "H",
+      "lat": 40.81056,
+      "lon": 111.65222,
+      "admin1": "内蒙古",
+      "elevation": 1051.0
+    },
+    {
+      "name": "呼伦贝尔",
+      "region": "华北",
+      "slug": "hulunbuir",
+      "summary": "中国最美草原、边境风情",
+      "days": null,
+      "pinyin": "H",
+      "lat": 49.21141,
+      "lon": 119.75582,
+      "admin1": "内蒙古",
+      "elevation": 611.0
+    },
+    {
+      "name": "平遥",
+      "region": "华北",
+      "slug": "pingyao",
+      "summary": "中国最完整明清古城、晋商金融中心",
+      "days": null,
+      "pinyin": "P",
+      "lat": 37.2025,
+      "lon": 112.17806,
+      "admin1": "山西",
+      "elevation": 763.0
+    },
+    {
+      "name": "皇城相府",
+      "region": "华北",
+      "slug": "huangcheng",
+      "summary": "山西晋城清代相府城堡，河山楼最震撼",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "晋祠",
+      "region": "华北",
+      "slug": "jinci",
+      "summary": "三晋之冠古建园林，圣母殿是宋代建筑代表作",
+      "days": null,
+      "pinyin": "J"
+    },
+    {
+      "name": "乔家大院",
+      "region": "华北",
+      "slug": "qiaodadayuan",
+      "summary": "山西祁县晋商大院，大红灯笼高高挂取景地",
+      "days": null,
+      "pinyin": "Q"
+    },
+    {
+      "name": "悬空寺",
+      "region": "华北",
+      "slug": "xuankongsi",
+      "summary": "建在悬崖峭壁上的千年古寺，登临需预约限量",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "云冈石窟",
+      "region": "华北",
+      "slug": "yungang",
+      "summary": "北魏石窟世界遗产，露天大佛是标志",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "秦皇岛",
+      "region": "华北",
+      "slug": "qinhuangdao",
+      "summary": "天下第一关、长城入海奇观、避暑胜地",
+      "days": null,
+      "pinyin": "Q",
+      "lat": 39.94104,
+      "lon": 119.58936,
+      "admin1": "河北省",
+      "elevation": 2.0
+    },
+    {
+      "name": "天津",
+      "region": "华北",
+      "slug": "tianjin",
+      "summary": "3天短途（五大道/古文化街/天津之眼海河）+ 7天长程（滨海航母、蓟州盘山）；煎饼果子锅巴菜…",
+      "days": null,
+      "pinyin": "T",
+      "lat": 39.14222,
+      "lon": 117.17667,
+      "admin1": "天津市",
+      "elevation": 11.0
+    },
+    {
+      "name": "五台山",
+      "region": "华北",
+      "slug": "wutaishan",
+      "summary": "文殊菩萨道场、中国四大佛教名山之首",
+      "days": null,
+      "pinyin": "W",
+      "lat": 39.08262,
+      "lon": 113.56261,
+      "admin1": "山西",
+      "elevation": 3061.0
+    },
+    {
+      "name": "鞍山",
+      "region": "东北",
+      "slug": "anshan",
+      "summary": "千山风景名胜区、玉佛山、汤岗子温泉、岫玉文化；东北名山与玉文化的宝藏城市",
+      "days": null,
+      "pinyin": "A",
+      "lat": 41.12361,
+      "lon": 122.99,
+      "admin1": "辽宁",
+      "elevation": 55.0
+    },
+    {
+      "name": "本溪",
+      "region": "东北",
+      "slug": "benxi",
+      "summary": "本溪水洞、关门山红叶、五女山山城、大石湖；辽东山水与秋日枫红的宝藏目的地",
+      "days": null,
+      "pinyin": "B",
+      "lat": 41.28861,
+      "lon": 123.765,
+      "admin1": "辽宁",
+      "elevation": 212.0
+    },
+    {
+      "name": "长白山",
+      "region": "东北",
+      "slug": "changbaishan",
+      "summary": "长白山天池、长白瀑布、绿渊潭、地下森林、锦江大峡谷、聚龙温泉；东北名山暑期避暑、冬季冰雪两相…",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 42.18367,
+      "lon": 128.17131,
+      "admin1": "吉林",
+      "elevation": 1128.0
+    },
+    {
+      "name": "长春",
+      "region": "东北",
+      "slug": "changchun",
+      "summary": "伪满皇宫博物院、净月潭、长影世纪城、南湖公园、这有山；北国春城的伪满史迹与湖光山色",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 47.73186,
+      "lon": 125.65863,
+      "admin1": "黑龙江",
+      "elevation": 265.0
+    },
+    {
+      "name": "朝阳",
+      "region": "东北",
+      "slug": "chaoyang",
+      "summary": "牛河梁红山文化遗址、古生物化石博物馆、北塔、三燕古都；中华文明曙光与远古生灵的发现之城",
+      "days": null,
+      "pinyin": "C",
+      "lat": 48.88698,
+      "lon": 130.39413,
+      "admin1": "黑龙江",
+      "elevation": 91.0
+    },
+    {
+      "name": "大连",
+      "region": "东北",
+      "slug": "dalian",
+      "summary": "星海广场、老虎滩海洋公园、金石滩国家度假区、滨海路、东港；山海相依的北方滨海都会，海风与欧式…",
+      "days": null,
+      "pinyin": "D",
+      "lat": 38.91222,
+      "lon": 121.60222,
+      "admin1": "辽宁",
+      "elevation": 33.0
+    },
+    {
+      "name": "丹东",
+      "region": "东北",
+      "slug": "dandong",
+      "summary": "鸭绿江断桥、虎山长城、凤凰山、抗美援朝纪念馆；中朝边境的英雄之城，山水与历史交融",
+      "days": null,
+      "pinyin": "D",
+      "lat": 40.12917,
+      "lon": 124.39472,
+      "admin1": "辽宁",
+      "elevation": 10.0
+    },
+    {
+      "name": "哈尔滨",
+      "region": "东北",
+      "slug": "harbin",
+      "summary": "中央大街、圣索菲亚大教堂、冰雪大世界、松花江、太阳岛、伏尔加庄园；冰城之都冬夏皆宜的欧式风情",
+      "days": null,
+      "pinyin": "H",
+      "lat": 45.75,
+      "lon": 126.65,
+      "admin1": "黑龙江",
+      "elevation": 140.0
+    },
+    {
+      "name": "吉林市",
+      "region": "东北",
+      "slug": "jilin",
+      "summary": "雾凇岛晨雾、松花湖冬捕、北大湖滑雪、朱雀山、雪地温泉；东北雾凇之都的冰雪奇观",
+      "days": null,
+      "pinyin": "J",
+      "lat": 43.84652,
+      "lon": 126.5608,
+      "admin1": "吉林",
+      "elevation": 188.0
+    },
+    {
+      "name": "牡丹江·镜泊湖",
+      "region": "东北",
+      "slug": "jingpohu",
+      "summary": "吊水楼瀑布、地下森林火山口与渤海国遗址，湖瀑雪韵之城；火山堰塞湖奇观",
+      "days": null,
+      "pinyin": "M"
+    },
+    {
+      "name": "漠河",
+      "region": "东北",
+      "slug": "mohe",
+      "summary": "北极村、北极哨所、圣诞村、最北邮局、黑龙江界江、北极光；中国最北端的极寒与极光之旅",
+      "days": null,
+      "pinyin": "M",
+      "lat": 52.97103,
+      "lon": 122.52626,
+      "admin1": "黑龙江",
+      "elevation": 437.0
+    },
+    {
+      "name": "盘锦",
+      "region": "东北",
+      "slug": "panjin",
+      "summary": "红海滩国家风景廊道、芦苇荡、稻田画、丹顶鹤、双台子河口湿地；火红碱蓬草的生态奇观",
+      "days": null,
+      "pinyin": "P"
+    },
+    {
+      "name": "齐齐哈尔",
+      "region": "东北",
+      "slug": "qiqihar",
+      "summary": "扎龙自然保护区观丹顶鹤放飞、明月岛、龙沙公园、嫩江；丹顶鹤故乡的湿地生态避暑游",
+      "days": null,
+      "pinyin": "Q",
+      "lat": 47.33922,
+      "lon": 123.96154,
+      "admin1": "黑龙江",
+      "elevation": 146.0
+    },
+    {
+      "name": "沈阳",
+      "region": "东北",
+      "slug": "shenyang",
+      "summary": "沈阳故宫、张氏帅府、清昭陵（北陵公园）、九一八历史博物馆、中街方城；红墙金瓦的盛京古都，东北…",
+      "days": null,
+      "pinyin": "S",
+      "lat": 41.79222,
+      "lon": 123.43278,
+      "admin1": "辽宁",
+      "elevation": 53.0
+    },
+    {
+      "name": "五大连池",
+      "region": "东北",
+      "slug": "wudalianchi",
+      "summary": "世界地质公园，老黑山火山口、堰塞湖、石海与冷矿泉疗养；火山地质奇观",
+      "days": null,
+      "pinyin": "W",
+      "lat": 48.51431,
+      "lon": 126.19874,
+      "admin1": "黑龙江",
+      "elevation": 260.0
+    },
+    {
+      "name": "兴城",
+      "region": "东北",
+      "slug": "xingcheng",
+      "summary": "宁远古城（明代卫城）、海滨浴场、温泉疗养、菊花岛、文庙鼓楼；古城古韵与海滨悠闲并存的辽西小城",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "中国雪乡",
+      "region": "东北",
+      "slug": "xuexiang",
+      "summary": "双峰林场雪蘑菇村、雪韵大街、镜泊湖吊水楼瀑布、亚布力滑雪；黑龙江冬季童话冰雪线",
+      "days": null,
+      "pinyin": "Z"
+    },
+    {
+      "name": "伊春",
+      "region": "东北",
+      "slug": "yichun",
+      "summary": "红松林海五营森林、汤旺河林海奇石与梅花鹿园森林氧吧之旅；林都森林度假",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 47.72143,
+      "lon": 128.87529,
+      "admin1": "黑龙江",
+      "elevation": 225.0
+    },
+    {
+      "name": "延吉",
+      "region": "东北",
+      "slug": "yanji",
+      "summary": "朝鲜族民俗园、水上市场、延边大学网红墙、帽儿山、图们口岸；边境风情与美食天堂",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "阿尔山",
+      "region": "华东",
+      "slug": "aershan",
+      "summary": "火山口湖与森林温泉疗养胜地，天池、白狼峰、不冻河、杜鹃湖石塘林驼峰岭皆可游，悠游草原安心而行",
+      "days": null,
+      "pinyin": "A"
+    },
+    {
+      "name": "矮寨",
+      "region": "华东",
+      "slug": "aizhai",
+      "summary": "矮寨大桥、德夯大峡谷、苗寨、精准扶贫首倡地，含矮寨大桥、德夯大峡谷与苗寨 · 十八洞",
+      "days": null,
+      "pinyin": "A"
+    },
+    {
+      "name": "常州",
+      "region": "华东",
+      "slug": "changzhou",
+      "summary": "中华恐龙园、环球动漫嬉戏谷、天目湖、南山竹海、茅山；自然山水与主题乐活的融合",
+      "days": null,
+      "pinyin": "C",
+      "lat": 31.77359,
+      "lon": 119.95401,
+      "admin1": "江苏",
+      "elevation": 9.0
+    },
+    {
+      "name": "法门寺",
+      "region": "华东",
+      "slug": "famen",
+      "summary": "法门寺佛骨舍利与真身宝塔、地宫文化，登太白山看高山花海、大爷海与秦岭主峰",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "葛仙村",
+      "region": "华东",
+      "slug": "gexiancun",
+      "summary": "江西上饶铅山县葛仙山下的徽派度假村落。短程1-2天、长程2-3天逐日行程，葛仙山缆车登顶、村…",
+      "days": null,
+      "pinyin": "G",
+      "lat": 30.29753,
+      "lon": 117.11365,
+      "admin1": "江西",
+      "elevation": 45.0
+    },
+    {
+      "name": "广州",
+      "region": "华东",
+      "slug": "gz",
+      "summary": "陈家祠、沙面、永庆坊、广州塔珠江夜游、广式早茶与美食，含沙面岛",
+      "days": "4天",
+      "pinyin": "G"
+    },
+    {
+      "name": "杭州",
+      "region": "华东",
+      "slug": "hangzhou",
+      "summary": "西湖十景、灵隐飞来峰、龙井问茶、河坊街御街、G20峰会灯光秀、钱塘江畔。人间天堂的湖山与烟火",
+      "days": null,
+      "pinyin": "H",
+      "lat": 30.29365,
+      "lon": 120.16142,
+      "admin1": "浙江",
+      "elevation": 12.0
+    },
+    {
+      "name": "湖州",
+      "region": "华东",
+      "slug": "huzhou",
+      "summary": "南浔古镇中西合璧、莫干山避暑民宿、太湖溇港、安吉大竹海、湖笔丝绸。江南丝府与竹海山林",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "嘉兴",
+      "region": "华东",
+      "slug": "jiaxing",
+      "summary": "南湖红船革命圣地、乌镇水乡古镇、西塘汉服夜游、月河老街、粽子之乡。江南水乡的诗意与红色记忆",
+      "days": null,
+      "pinyin": "J",
+      "lat": 30.7522,
+      "lon": 120.75,
+      "admin1": "浙江",
+      "elevation": 8.0
+    },
+    {
+      "name": "济南",
+      "region": "华东",
+      "slug": "jinan",
+      "summary": "趵突泉三股腾空、大明湖超然楼、千佛山俯瞰全城、黑虎泉市民打水、曲水亭街泉水老巷；鲁菜发源地把…",
+      "days": "4天",
+      "pinyin": "J",
+      "lat": 36.66833,
+      "lon": 116.99722,
+      "admin1": "山东",
+      "elevation": 32.0
+    },
+    {
+      "name": "景德镇",
+      "region": "华东",
+      "slug": "jingdezhen",
+      "summary": "御窑博物馆、古窑民俗博览区、陶溪川、三宝瓷谷、中国陶瓷博物馆，做陶体验、瓷都美食",
+      "days": null,
+      "pinyin": "J"
+    },
+    {
+      "name": "金华",
+      "region": "华东",
+      "slug": "jinhua",
+      "summary": "双龙洞地下河、诸葛八卦村、横店影视城、火腿之乡、婺州古城。浙中名城的山水与影视盛宴",
+      "days": null,
+      "pinyin": "J",
+      "lat": 29.10678,
+      "lon": 119.64421,
+      "admin1": "浙江",
+      "elevation": 55.0
+    },
+    {
+      "name": "连云港",
+      "region": "华东",
+      "slug": "lianyungang",
+      "summary": "花果山、连岛海滨、海上云台山、东海水晶、山海相依的海滨之城",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "临沂",
+      "region": "华东",
+      "slug": "linyi",
+      "summary": "沂蒙山云海、萤火虫水洞与地下大峡谷、王羲之故居书圣故里；沂蒙煎饼炒鸡",
+      "days": null,
+      "pinyin": "L",
+      "lat": 35.06306,
+      "lon": 118.34278,
+      "admin1": "山东",
+      "elevation": 69.0
+    },
+    {
+      "name": "庐山",
+      "region": "华东",
+      "slug": "lushan",
+      "summary": "含鄱口云海日出、三叠泉瀑布、五老峰、牯岭、花径、锦绣谷，庐山云雾茶，含三叠泉、牯岭 · 山中…",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "南昌",
+      "region": "华东",
+      "slug": "nanchang",
+      "summary": "短程2-3天、长程5天逐日行程，景点、购物、美食、交通避坑、特产伴手礼全覆盖，每天白天玩什么…",
+      "days": null,
+      "pinyin": "N",
+      "lat": 28.68396,
+      "lon": 115.85306,
+      "admin1": "江西",
+      "elevation": 20.0
+    },
+    {
+      "name": "南京",
+      "region": "华东",
+      "slug": "nanjing",
+      "summary": "中山陵、明孝陵、夫子庙、秦淮河、玄武湖、总统府、六朝古都的文化与烟火",
+      "days": null,
+      "pinyin": "N",
+      "lat": 32.06167,
+      "lon": 118.77778,
+      "admin1": "江苏",
+      "elevation": 22.0
+    },
+    {
+      "name": "宁波",
+      "region": "华东",
+      "slug": "ningbo",
+      "summary": "天一阁藏书楼、老外滩洋楼、东钱湖山水、象山港海鲜、城隍庙小吃。东南港城的书香与烟火",
+      "days": null,
+      "pinyin": "N",
+      "lat": 29.87819,
+      "lon": 121.54945,
+      "admin1": "浙江",
+      "elevation": 15.0
+    },
+    {
+      "name": "青岛",
+      "region": "华东",
+      "slug": "qingdao",
+      "summary": "德式老城与百年啤酒、超长海岸线与海上名山；寻一座城、一片海、一瓶啤",
+      "days": null,
+      "pinyin": "Q",
+      "lat": 36.06488,
+      "lon": 120.38042,
+      "admin1": "山东",
+      "elevation": 16.0
+    },
+    {
+      "name": "福州",
+      "region": "华东",
+      "slug": "fuzhou",
+      "summary": "有福之州·榕城，古城街巷与茉莉花茶慢游",
+      "days": null,
+      "pinyin": "F",
+      "lat": 26.07711,
+      "lon": 119.29153,
+      "admin1": "福建省",
+      "elevation": 19.0
+    },
+    {
+      "name": "湄洲岛",
+      "region": "华东",
+      "slug": "meizhoudao",
+      "summary": "福建妈祖文化圣屿，轮渡往返，岛上环岛骑行很惬意",
+      "days": null,
+      "pinyin": "M",
+      "lat": 25.06827,
+      "lon": 119.12354,
+      "admin1": "福建省",
+      "elevation": 5.0
+    },
+    {
+      "name": "泉州",
+      "region": "华东",
+      "slug": "quanzhou",
+      "summary": "世界遗产之城刺桐港，宋元海上丝路起点的多元文化古城",
+      "days": null,
+      "pinyin": "Q",
+      "lat": 24.91389,
+      "lon": 118.58583,
+      "admin1": "福建省",
+      "elevation": 14.0
+    },
+    {
+      "name": "福建土楼",
+      "region": "华东",
+      "slug": "tulou",
+      "summary": "永定南靖土楼世界文化遗产，客家围屋与田园风光",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "武夷山",
+      "region": "华东",
+      "slug": "wuyishan",
+      "summary": "世界文化与自然双遗产，九曲溪竹筏与岩茶最经典",
+      "days": null,
+      "pinyin": "W",
+      "lat": 28.00473,
+      "lon": 117.81138,
+      "admin1": "福建省",
+      "elevation": 252.0
+    },
+    {
+      "name": "霞浦",
+      "region": "华东",
+      "slug": "xiapu",
+      "summary": "滩涂摄影天堂，光线与潮汐季节决定出片率",
+      "days": null,
+      "pinyin": "X",
+      "lat": 29.88902,
+      "lon": 121.8803,
+      "admin1": "浙江",
+      "elevation": 7.0
+    },
+    {
+      "name": "曲阜",
+      "region": "华东",
+      "slug": "qufu",
+      "summary": "孔庙大成殿、孔府孔林、尼山圣境孔子像；东方圣城礼制建筑",
+      "days": null,
+      "pinyin": "Q",
+      "lat": 35.59667,
+      "lon": 116.99111,
+      "admin1": "山东",
+      "elevation": 69.0
+    },
+    {
+      "name": "日照",
+      "region": "华东",
+      "slug": "rizhao",
+      "summary": "万平口沙滩、灯塔广场日出、阳光海岸赶海拾贝、九仙山五莲山；日照海鲜与海鲜水饺",
+      "days": null,
+      "pinyin": "R",
+      "lat": 35.41414,
+      "lon": 119.52908,
+      "admin1": "山东",
+      "elevation": 25.0
+    },
+    {
+      "name": "三清山",
+      "region": "华东",
+      "slug": "sanqingshan",
+      "summary": "巨蟒出山、女神峰、云海日出、西海岸栈道、三清宫道教文化，含西海岸 · 云海、三清宫 · 道源…",
+      "days": null,
+      "pinyin": "S"
+    },
+    {
+      "name": "上海",
+      "region": "华东",
+      "slug": "shanghai",
+      "summary": "外滩万国建筑、陆家嘴天际线、豫园老城厢、武康路梧桐漫步、迪士尼乐园；魔都在地玩法与城市 Tr…",
+      "days": null,
+      "pinyin": "S",
+      "lat": 29.32955,
+      "lon": 121.05804,
+      "admin1": "浙江",
+      "elevation": 321.0
+    },
+    {
+      "name": "绍兴",
+      "region": "华东",
+      "slug": "shaoxing",
+      "summary": "鲁迅故里三味书屋、兰亭书法圣地、沈园林亭、安昌古镇、黄酒之乡。越国古都的书香酒韵",
+      "days": null,
+      "pinyin": "S",
+      "lat": 30.00237,
+      "lon": 120.57864,
+      "admin1": "浙江",
+      "elevation": 21.0
+    },
+    {
+      "name": "苏州",
+      "region": "华东",
+      "slug": "suzhou",
+      "summary": "拙政园、留园、虎丘、平江路、山塘街、周庄水乡；园林之城与江南水乡的婉约",
+      "days": null,
+      "pinyin": "S",
+      "lat": 31.30408,
+      "lon": 120.59538,
+      "admin1": "江苏",
+      "elevation": 10.0
+    },
+    {
+      "name": "泰山",
+      "region": "华东",
+      "slug": "taishan",
+      "summary": "红门古道、天外村索道、岱顶日出、山麓岱庙封禅；五岳之首1545米",
+      "days": null,
+      "pinyin": "T",
+      "lat": 33.9709,
+      "lon": 118.561,
+      "admin1": "山东省",
+      "elevation": 14.0
+    },
+    {
+      "name": "皖南川藏线",
+      "region": "华东",
+      "slug": "wannan",
+      "summary": "储家滩、青龙湾、落羽杉、桃岭六道弯、水墨汀溪、月亮湾，含自驾/包车/跟团对比、秋色最佳时机、…",
+      "days": "2天",
+      "pinyin": "W"
+    },
+    {
+      "name": "潍坊",
+      "region": "华东",
+      "slug": "weifang",
+      "summary": "世界风筝都杨家埠风筝、青州古城、十笏园袖珍园林、坊茨小镇；风筝博物馆与非遗手艺",
+      "days": null,
+      "pinyin": "W",
+      "lat": 36.71,
+      "lon": 119.10194,
+      "admin1": "山东",
+      "elevation": 30.0
+    },
+    {
+      "name": "威海",
+      "region": "华东",
+      "slug": "weihai",
+      "summary": "刘公岛甲午遗存、成山头天尽头、环海路海风、那香海沙滩与海草房；海鲜小烧烤",
+      "days": null,
+      "pinyin": "W",
+      "lat": 37.50914,
+      "lon": 122.11356,
+      "admin1": "山东",
+      "elevation": 14.0
+    },
+    {
+      "name": "温州",
+      "region": "华东",
+      "slug": "wenzhou",
+      "summary": "雁荡山飞瀑奇峰、楠溪江竹筏漂流、江心屿双塔、五马街老城、洞头岛。浙南山海雄奇与市井活力",
+      "days": null,
+      "pinyin": "W",
+      "lat": 27.99942,
+      "lon": 120.66682,
+      "admin1": "浙江",
+      "elevation": 10.0
+    },
+    {
+      "name": "武功山",
+      "region": "华东",
+      "slug": "wugongshan",
+      "summary": "高山草甸、金顶日出、星空露营、吊马桩徒步路线，含徒步路线，门票约70元",
+      "days": null,
+      "pinyin": "W"
+    },
+    {
+      "name": "无锡",
+      "region": "华东",
+      "slug": "wuxi",
+      "summary": "太湖鼋头渚、灵山大佛、拈花湾小镇、惠山古镇、三国水浒城；太湖明珠的山水禅意",
+      "days": null,
+      "pinyin": "W",
+      "lat": 31.56887,
+      "lon": 120.28857,
+      "admin1": "江苏",
+      "elevation": 10.0
+    },
+    {
+      "name": "婺源篁岭",
+      "region": "华东",
+      "slug": "wuyuan",
+      "summary": "篁岭晒秋晒工坊、江岭梯田油菜花、庆源/李坑徽派古村，含自驾/包车/跟团对比、避坑、预算",
+      "days": "2天",
+      "pinyin": "W"
+    },
+    {
+      "name": "厦门",
+      "region": "华东",
+      "slug": "xiamen",
+      "summary": "鼓浪屿、厦大、环岛路骑行、沙坡尾、海鲜小吃，含日光岩、芙蓉隧道与南普陀寺",
+      "days": "2天",
+      "pinyin": "S",
+      "lat": 24.47979,
+      "lon": 118.08187,
+      "admin1": "福建省",
+      "elevation": 12.0
+    },
+    {
+      "name": "徐州",
+      "region": "华东",
+      "slug": "xuzhou",
+      "summary": "云龙湖、汉文化景区、楚王陵、回龙窝、彭祖文化；两汉文明与山水休闲",
+      "days": null,
+      "pinyin": "X",
+      "lat": 34.18045,
+      "lon": 117.15707,
+      "admin1": "江苏",
+      "elevation": 37.0
+    },
+    {
+      "name": "扬州",
+      "region": "华东",
+      "slug": "yangzhou",
+      "summary": "瘦西湖、个园、何园、大明寺、东关街、淮扬菜；烟花三月下扬州的温婉雅致",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 32.39722,
+      "lon": 119.43583,
+      "admin1": "江苏",
+      "elevation": 14.0
+    },
+    {
+      "name": "烟台",
+      "region": "华东",
+      "slug": "yantai",
+      "summary": "蓬莱阁仙境、长岛海岛渔家、养马岛环岛、烟台山欧式洋街；蓬莱传说与胶东海鲜",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 37.47649,
+      "lon": 121.44081,
+      "admin1": "山东",
+      "elevation": 22.0
+    },
+    {
+      "name": "枣庄",
+      "region": "华东",
+      "slug": "zaozhuang",
+      "summary": "台儿庄古城桨声灯影、京杭大运河夜景、大战纪念馆、微山湖红荷湿地；江北水乡与鲁南小吃",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 34.86472,
+      "lon": 117.55417,
+      "admin1": "山东",
+      "elevation": 79.0
+    },
+    {
+      "name": "镇江",
+      "region": "华东",
+      "slug": "zhenjiang",
+      "summary": "金山寺、焦山、北固山、西津渡古街、锅盖面；江河交汇的诗画小城",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 32.21086,
+      "lon": 119.45508,
+      "admin1": "江苏",
+      "elevation": 26.0
+    },
+    {
+      "name": "舟山",
+      "region": "华东",
+      "slug": "zhoushan",
+      "summary": "普陀山观音道场、朱家尖沙滩、嵊泗列岛、沈家门渔港、桃花岛。东海佛国与海岛度假",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 28.803,
+      "lon": 120.17422,
+      "admin1": "浙江",
+      "elevation": 187.0
+    },
+    {
+      "name": "淄博",
+      "region": "华东",
+      "slug": "zibo",
+      "summary": "八大局烧烤、小饼卷葱、海岱楼夜景、临淄齐文化博物馆古车马馆；人间烟火与千年齐国故都",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 36.79056,
+      "lon": 118.06333,
+      "admin1": "山东",
+      "elevation": 51.0
+    },
+    {
+      "name": "宏村·西递",
+      "region": "华东",
+      "slug": "hongcun",
+      "summary": "牛形水系、南湖画桥、月沼、承志堂，西递胡文光牌坊、300明清宅更安静；各104元（线上约94…",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "黄山",
+      "region": "华东",
+      "slug": "huangshan",
+      "summary": "迎客松、光明顶、西海大峡谷、天都峰；平旺季190元冬游150元、三日多次入园、索道云谷80/…",
+      "days": null,
+      "pinyin": "H",
+      "lat": 29.71139,
+      "lon": 118.3125,
+      "admin1": "安徽",
+      "elevation": 134.0
+    },
+    {
+      "name": "徽州古城",
+      "region": "华东",
+      "slug": "huizhou",
+      "summary": "中国四大古城、许国石坊、徽州府衙、渔梁坝、斗山街；街巷免费、核心联票80-95元3日、歙县北…",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "九华山",
+      "region": "华东",
+      "slug": "jiuhua",
+      "summary": "地藏菩萨道场、化城寺/祇园寺/肉身宝殿礼佛、天台1306米看山；旺季160淡季140、景交5…",
+      "days": null,
+      "pinyin": "J",
+      "lat": 32.05225,
+      "lon": 121.0452,
+      "admin1": "安徽省",
+      "elevation": 4.0
+    },
+    {
+      "name": "天柱山",
+      "region": "华东",
+      "slug": "tianzhu",
+      "summary": "安徽三大名山、全球地质公园、天柱峰/炼丹湖/神秘谷/飞来峰；旺季130元、潜山高铁直达、官方…",
+      "days": null,
+      "pinyin": "T",
+      "lat": 27.96159,
+      "lon": 117.60839,
+      "admin1": "安徽",
+      "elevation": 347.0
+    },
+    {
+      "name": "安吉",
+      "region": "华东",
+      "slug": "anji",
+      "summary": "安吉竹海、白茶茶园、云上草原、Hello Kitty乐园，浙北山野亲子度假。",
+      "days": null,
+      "pinyin": "A",
+      "lat": 28.24739,
+      "lon": 120.98502,
+      "admin1": "浙江",
+      "elevation": 26.0
+    },
+    {
+      "name": "淳安·千岛湖",
+      "region": "华东",
+      "slug": "chunan",
+      "summary": "环湖骑行、梅峰观岛、龙山岛、湖鲜鱼宴，浙江湖光山色度假。",
+      "days": null,
+      "pinyin": "C"
+    },
+    {
+      "name": "平潭岛",
+      "region": "华东",
+      "slug": "pingtan",
+      "summary": "蓝眼泪追泪、石厝村落、环岛风车、坛南湾看海，福建看海。",
+      "days": null,
+      "pinyin": "P"
+    },
+    {
+      "name": "仙居",
+      "region": "华东",
+      "slug": "xianju",
+      "summary": "神仙居云海栈道、玻璃桥、皤滩古镇、三黄鸡，浙江山水。",
+      "days": null,
+      "pinyin": "X",
+      "lat": 27.58944,
+      "lon": 119.75333,
+      "admin1": "浙江",
+      "elevation": 283.0
+    },
+    {
+      "name": "长沙",
+      "region": "华中",
+      "slug": "changsha",
+      "summary": "橘子洲、岳麓山、黄鹤楼都市美食，好友周末行卡片手册，含长沙五一广场、长沙太平老街牌坊与橘子洲…",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 28.2282,
+      "lon": 112.9388,
+      "elevation": 44.0,
+      "aliases": [
+        "长沙好友周末行 A5 卡片"
+      ]
+    },
+    {
+      "name": "郴州",
+      "region": "华中",
+      "slug": "chenzhou",
+      "summary": "雾漫小东江、高椅岭丹霞、莽山云海、仰天湖草原，含高椅岭、莽山五指峰与仰天湖 · 白廊",
+      "days": null,
+      "pinyin": "C",
+      "lat": 25.8,
+      "lon": 113.03333,
+      "admin1": "湖南",
+      "elevation": 180.0
+    },
+    {
+      "name": "赤壁",
+      "region": "华中",
+      "slug": "chibi",
+      "summary": "三国赤壁古战场、陆水湖游船、羊楼洞明清古街与青砖茶；赤壁鱼糕，湖北三国文化重镇",
+      "days": null,
+      "pinyin": "C",
+      "lat": 29.87832,
+      "lon": 113.62506,
+      "admin1": "湖北",
+      "elevation": 33.0
+    },
+    {
+      "name": "丹江口",
+      "region": "华中",
+      "slug": "danjiangkou",
+      "summary": "环库公路、千岛画廊、丹江口大坝、百喜岛、武当山、静乐宫，含自驾/包车/跟团对比、行程、预算",
+      "days": "2天",
+      "pinyin": "D"
+    },
+    {
+      "name": "恩施",
+      "region": "华中",
+      "slug": "ensi",
+      "summary": "恩施大峡谷、屏山峡谷（仙本那）、土家女儿城、清江画廊、土司城，含自驾/包车/跟团对比、行程、…",
+      "days": "4天",
+      "pinyin": "E",
+      "lat": 30.3,
+      "lon": 109.48333,
+      "admin1": "湖北",
+      "elevation": 451.0
+    },
+    {
+      "name": "鄂州",
+      "region": "华中",
+      "slug": "ezhou",
+      "summary": "西山风景区、梁子湖亲水、观音阁、武昌鱼故里，武汉都市圈周末湖山慢游，含鄂州风光、鄂州牌坊与鄂…",
+      "days": null,
+      "pinyin": "E",
+      "lat": 30.39607,
+      "lon": 114.88655,
+      "admin1": "湖北",
+      "elevation": 29.0
+    },
+    {
+      "name": "凤凰古城",
+      "region": "华中",
+      "slug": "fenghuang",
+      "summary": "沱江夜景、晨雾跳岩、沈从文故居、苗寨体验，含沱江夜色、苗寨体验与凤凰必吃",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "芙蓉镇",
+      "region": "华中",
+      "slug": "furong",
+      "summary": "挂在瀑布上的古镇、电影《芙蓉镇》取景地、土家吊脚楼、瀑布夜景，含瀑布夜景、古镇街市与电影《芙…",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "G348三峡公路",
+      "region": "华中",
+      "slug": "g348",
+      "summary": "湖北宜昌沿西陵峡江岸的39.6公里免费风景廊道，紧贴葛洲坝与三峡大坝之间，串联三峡大坝、西陵…",
+      "days": null,
+      "pinyin": "#"
+    },
+    {
+      "name": "黄冈",
+      "region": "华中",
+      "slug": "huanggang",
+      "summary": "东坡赤壁、大别山天堂寨、杜鹃花海、英山温泉、罗田板栗，含东坡赤壁与黄冈必吃",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "黄石",
+      "region": "华中",
+      "slug": "huangshi",
+      "summary": "东方山佛教名山、磁湖环湖休闲、西塞山古战场、黄石国家矿山公园工业遗迹；黄石港饼，湖北工矿山湖…",
+      "days": null,
+      "pinyin": "H",
+      "lat": 30.24706,
+      "lon": 115.04814,
+      "admin1": "湖北",
+      "elevation": 22.0
+    },
+    {
+      "name": "荆门",
+      "region": "华中",
+      "slug": "jingmen",
+      "summary": "世界文化遗产明显陵、莫愁湖听雨、黄仙洞溶洞探险、大口国家森林公园洗肺；蒸肉粉蒸藕，湖北中部慢…",
+      "days": null,
+      "pinyin": "J",
+      "lat": 31.03361,
+      "lon": 112.20472,
+      "admin1": "湖北",
+      "elevation": 94.0
+    },
+    {
+      "name": "荆州",
+      "region": "华中",
+      "slug": "jingzhou",
+      "summary": "古城墙宾阳楼、楚王车马阵、荆州博物馆楚文化、三国关公故地，含古城墙夜色、楚王车马阵与荆州必吃…",
+      "days": null,
+      "pinyin": "J",
+      "lat": 30.35028,
+      "lon": 112.19028,
+      "admin1": "湖北",
+      "elevation": 39.0
+    },
+    {
+      "name": "开封",
+      "region": "华中",
+      "slug": "kaifeng",
+      "summary": "河南开封，八朝古都、宋都汴京。短程1-2天、长程2-3天逐日行程，清明上河园、龙亭、开封府、…",
+      "days": null,
+      "pinyin": "K",
+      "lat": 34.7986,
+      "lon": 114.30742,
+      "admin1": "河南",
+      "elevation": 76.0
+    },
+    {
+      "name": "老君山",
+      "region": "华中",
+      "slug": "laojunshan",
+      "summary": "河南洛阳栾川，道教名山与网红冬雪胜地。短程1日经典、长程2天1夜逐时行程，金顶道观群、十里画…",
+      "days": null,
+      "pinyin": "L",
+      "lat": 33.71906,
+      "lon": 111.64063,
+      "admin1": "河南",
+      "elevation": 1938.0
+    },
+    {
+      "name": "洛阳",
+      "region": "华中",
+      "slug": "luoyang",
+      "summary": "河南洛阳，十三朝古都。短程1-2天、长程2-3天逐日行程，龙门石窟、白马寺、应天门、洛阳博物…",
+      "days": null,
+      "pinyin": "L",
+      "lat": 34.67345,
+      "lon": 112.43684,
+      "admin1": "河南",
+      "elevation": 128.0
+    },
+    {
+      "name": "南岳衡山",
+      "region": "华中",
+      "slug": "nanyue",
+      "summary": "祝融峰日出云海、南岳大庙祈福、雾凇、夏日避暑，含日出云海与南岳必吃",
+      "days": null,
+      "pinyin": "N"
+    },
+    {
+      "name": "潜江",
+      "region": "华中",
+      "slug": "qianjiang",
+      "summary": "小龙虾之城吃潜江油焖大虾、曹禺故里访文化名人、返湾湖与兴隆水利枢纽生态休闲",
+      "days": null,
+      "pinyin": "Q"
+    },
+    {
+      "name": "神农架",
+      "region": "华中",
+      "slug": "shennongjia",
+      "summary": "原始森林、大九湖湿地、神农顶、官门山、天生桥，含自驾/包车/跟团对比、避坑、预算",
+      "days": "2天",
+      "pinyin": "S"
+    },
+    {
+      "name": "十堰",
+      "region": "华中",
+      "slug": "shiyan",
+      "summary": "武当山门户、郧阳汉江山水、青龙山恐龙蛋化石群、东风汽车城工业旅游；十堰三合汤，湖北山水车城之…",
+      "days": null,
+      "pinyin": "S",
+      "lat": 32.6475,
+      "lon": 110.77806,
+      "admin1": "湖北",
+      "elevation": 247.0
+    },
+    {
+      "name": "随州",
+      "region": "华中",
+      "slug": "suizhou",
+      "summary": "曾侯乙编钟、随州博物馆、炎帝故里、千年银杏谷、大洪山，含曾侯乙编钟、千年银杏谷与大洪山",
+      "days": null,
+      "pinyin": "S",
+      "lat": 31.71111,
+      "lon": 113.36306,
+      "admin1": "湖北",
+      "elevation": 67.0
+    },
+    {
+      "name": "新乡万仙山",
+      "region": "华中",
+      "slug": "wanxianshan",
+      "summary": "新乡辉县南太行，世界闻名的挂壁公路绝壁长廊、悬崖上的石头古村、南坪丹分沟。门票+观光车约10…",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "武当山",
+      "region": "华中",
+      "slug": "wudang",
+      "summary": "金顶太和宫金殿、紫霄宫、南岩宫、太子坡、太极武术，道教文化，含金顶 · 太和宫、紫霄宫与南岩…",
+      "days": null,
+      "pinyin": "W",
+      "lat": 32.51409,
+      "lon": 111.07718,
+      "admin1": "湖北",
+      "elevation": 182.0
+    },
+    {
+      "name": "武汉",
+      "region": "华中",
+      "slug": "wuhan",
+      "summary": "黄鹤楼、长江大桥、江汉路、东湖骑行、热干面，含黄鹤楼与长江大桥、武汉长江与楚河汉街",
+      "days": null,
+      "pinyin": "W",
+      "lat": 30.5928,
+      "lon": 114.3055,
+      "elevation": 23.0,
+      "aliases": [
+        "武汉好友周末行 A5 卡片"
+      ]
+    },
+    {
+      "name": "襄阳",
+      "region": "华中",
+      "slug": "xiangyang",
+      "summary": "襄阳古城临汉门、古隆中三顾茅庐、汉江夜色、三国文化，含临汉门 · 汉江、古隆中与襄阳必吃",
+      "days": null,
+      "pinyin": "X",
+      "lat": 32.0422,
+      "lon": 112.14479,
+      "admin1": "湖北",
+      "elevation": 71.0
+    },
+    {
+      "name": "咸宁",
+      "region": "华中",
+      "slug": "xianning",
+      "summary": "九宫山云中湖、温泉养生、楠竹海、地热养生、赤壁青砖茶，含九宫山、温泉养生与楠竹海",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "孝感",
+      "region": "华中",
+      "slug": "xiaogan",
+      "summary": "双峰山国家森林公园、观音湖亲水、董永故里访孝文化、汤池温泉泡汤；孝感麻糖米酒，湖北武汉后花园",
+      "days": null,
+      "pinyin": "X",
+      "lat": 30.92689,
+      "lon": 113.92221,
+      "admin1": "湖北",
+      "elevation": 35.0
+    },
+    {
+      "name": "信阳",
+      "region": "华中",
+      "slug": "xinyang",
+      "summary": "豫南明珠南湾湖（茶岛鸟岛猴岛）、中国四大避暑胜地鸡公山（万国建筑）、信阳毛尖茶乡文新茶村。门…",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "宜昌",
+      "region": "华中",
+      "slug": "yichang",
+      "summary": "宜昌市区+周边轻松游、自驾自由行、乘船畅游两坝一峡/三峡游轮，各自的优势、预留时间、费用、安…",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 30.71444,
+      "lon": 111.28472,
+      "admin1": "湖北",
+      "elevation": 63.0
+    },
+    {
+      "name": "永州",
+      "region": "华中",
+      "slug": "yongzhou",
+      "summary": "零陵古城、柳子街、舜帝陵、永州血鸭东安鸡，含零陵古城与永州必吃",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 26.42389,
+      "lon": 111.61306,
+      "admin1": "湖南",
+      "elevation": 101.0
+    },
+    {
+      "name": "岳阳 1 日",
+      "region": "华中",
+      "slug": "yueyang",
+      "summary": "岳阳楼、洞庭湖、岳阳中华大熊猫苑、汴河街、飘尾日落、岳阳烧烤，含岳阳飘尾与岳阳汴河街",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "焦作云台山",
+      "region": "华中",
+      "slug": "yuntaishan",
+      "summary": "世界地质公园，红石峡红岩碧水、云台天瀑314米、茱萸峰王维诗意、太行峡谷绝景。门票约180元…",
+      "days": null,
+      "pinyin": "J"
+    },
+    {
+      "name": "张家界",
+      "region": "华中",
+      "slug": "zhangjiajie",
+      "summary": "武陵源国家森林公园（袁家界/天子山/金鞭溪）、天门山（玻璃栈道/天门洞）、大峡谷玻璃桥，含自…",
+      "days": "2-3天",
+      "pinyin": "Z",
+      "lat": 29.12944,
+      "lon": 110.47833,
+      "admin1": "湖南",
+      "elevation": 174.0
+    },
+    {
+      "name": "郑州",
+      "region": "华中",
+      "slug": "zhengzhou",
+      "summary": "河南郑州，中原枢纽。短程1-2天、长程2-3天逐日行程，嵩山少林寺、河南博物院、二七纪念塔、…",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 34.75778,
+      "lon": 113.64861,
+      "admin1": "河南",
+      "elevation": 104.0
+    },
+    {
+      "name": "百色",
+      "region": "华南",
+      "slug": "baise",
+      "summary": "世界级乐业大石围天坑群、靖西鹅泉与通灵大峡谷等喀斯特地质奇观，含自驾路线、最佳季节与住宿避坑",
+      "days": null,
+      "pinyin": "B"
+    },
+    {
+      "name": "北海",
+      "region": "华南",
+      "slug": "beihai",
+      "summary": "天下第一滩银滩、涠洲岛火山海岛、百年骑楼老街、侨港越式风情街、金海湾红树林；2-5天海边慢游",
+      "days": null,
+      "pinyin": "B",
+      "lat": 21.48349,
+      "lon": 109.11549,
+      "admin1": "广西",
+      "elevation": 9999.0
+    },
+    {
+      "name": "潮汕",
+      "region": "华南",
+      "slug": "chaoshan",
+      "summary": "潮汕（潮州+汕头）怎么玩？潮州古城广济桥牌坊街看骑楼、汕头南澳岛灯塔海岛打卡，工夫茶与牛肉火…",
+      "days": "4天",
+      "pinyin": "C"
+    },
+    {
+      "name": "崇左",
+      "region": "华南",
+      "slug": "chongzuo",
+      "summary": "亚洲第一、世界第四的跨国瀑布，明仕田园喀斯特山水，中越边关玩法",
+      "days": null,
+      "pinyin": "C",
+      "lat": 22.38161,
+      "lon": 107.3683,
+      "admin1": "广西",
+      "elevation": 128.0
+    },
+    {
+      "name": "韶关",
+      "region": "华南",
+      "slug": "danxiashan",
+      "summary": "长老峰/阳元石/锦江游船看色如渥丹的奇峰，南华寺禅意，张九龄故里。含交通、适合人群、美食与避",
+      "days": "3天",
+      "pinyin": "S",
+      "lat": 24.8,
+      "lon": 113.58333,
+      "admin1": "广东",
+      "elevation": 69.0
+    },
+    {
+      "name": "防城港",
+      "region": "华南",
+      "slug": "fcg",
+      "summary": "白浪滩、怪石滩、万尾金滩、东兴国门、越南芒街，短中长行程 + 钦州北海周边 + 自驾跟团对比",
+      "days": null,
+      "pinyin": "F",
+      "lat": 21.76945,
+      "lon": 108.35661,
+      "admin1": "广西",
+      "elevation": 13.0
+    },
+    {
+      "name": "桂林阳朔",
+      "region": "华南",
+      "slug": "guilin",
+      "summary": "漓江竹筏、遇龙河漂流、十里画廊、阳朔西街、龙脊梯田；3-4天山水慢游",
+      "days": null,
+      "pinyin": "G"
+    },
+    {
+      "name": "贺州",
+      "region": "华南",
+      "slug": "hezhou",
+      "summary": "中国最美十大古镇之一的青石板巷、客家围屋与百年古桥古榕",
+      "days": null,
+      "pinyin": "H",
+      "lat": 24.40357,
+      "lon": 111.56675,
+      "admin1": "广西",
+      "elevation": 106.0
+    },
+    {
+      "name": "江门",
+      "region": "华南",
+      "slug": "kaiping",
+      "summary": "自力村/立园/马降龙看中西合璧碉楼，那琴半岛地质海洋公园看海，赤坎古镇侨乡风情。含交通、美食…",
+      "days": "3天",
+      "pinyin": "J",
+      "lat": 22.58333,
+      "lon": 113.08333,
+      "admin1": "广东",
+      "elevation": 11.0
+    },
+    {
+      "name": "柳州",
+      "region": "华南",
+      "slug": "liuzhou",
+      "summary": "百里柳江夜景、蟠龙山、窑埠古镇夜游，螺蛳粉故乡，延伸三江程阳风雨桥侗寨风情",
+      "days": null,
+      "pinyin": "L",
+      "lat": 24.32405,
+      "lon": 109.40698,
+      "admin1": "广西",
+      "elevation": 102.0
+    },
+    {
+      "name": "南宁",
+      "region": "华南",
+      "slug": "nanning",
+      "summary": "青秀山、邕江夜游、中山路建政路夜市，绿城首府兼桂南边境中转门户",
+      "days": null,
+      "pinyin": "N",
+      "lat": 22.81667,
+      "lon": 108.31667,
+      "admin1": "广西",
+      "elevation": 91.0
+    },
+    {
+      "name": "清远",
+      "region": "华南",
+      "slug": "qingyuan",
+      "summary": "古龙峡/黄腾峡漂流、清远长隆森林王国看非洲象、连州地下河溶洞、英德茶园。含自驾线路、美食与避…",
+      "days": "3天",
+      "pinyin": "Q",
+      "lat": 23.7,
+      "lon": 113.03333,
+      "admin1": "广东",
+      "elevation": 11.0
+    },
+    {
+      "name": "海口",
+      "region": "华南",
+      "slug": "haikou",
+      "summary": "骑楼老街、火山口地质公园、世纪大桥云洞与椰城滨海慢生活；南洋风情与热带海岛之城",
+      "days": null,
+      "pinyin": "H",
+      "lat": 20.03421,
+      "lon": 110.34651,
+      "admin1": "海南",
+      "elevation": 9.0
+    },
+    {
+      "name": "陵水",
+      "region": "华南",
+      "slug": "lingshui",
+      "summary": "分界洲岛潜水、南湾猴岛索道、清水湾与疍家渔排黎族海岛风情；热带海岛嬉水度假",
+      "days": null,
+      "pinyin": "L",
+      "lat": 18.45469,
+      "lon": 109.98535,
+      "admin1": "海南",
+      "elevation": 17.0
+    },
+    {
+      "name": "万宁",
+      "region": "华南",
+      "slug": "wanning",
+      "summary": "石梅湾、日月湾冲浪、神州半岛灯塔与兴隆咖啡热带度假体验；冲浪与海岛度假胜地",
+      "days": null,
+      "pinyin": "W"
+    },
+    {
+      "name": "文昌",
+      "region": "华南",
+      "slug": "wenchang",
+      "summary": "铜鼓岭月亮湾、文昌航天发射场、东郊椰林与南洋骑楼人文底蕴；椰乡航天之旅",
+      "days": null,
+      "pinyin": "W",
+      "lat": 22.98215,
+      "lon": 116.29682,
+      "admin1": "广东",
+      "elevation": 12.0
+    },
+    {
+      "name": "三亚",
+      "region": "华南",
+      "slug": "sanya",
+      "summary": "四模式（2/3天短途+5/7天度假），亚龙湾、天涯海角、南山观音、蜈支洲岛、海滩休闲玩法",
+      "days": "3天",
+      "pinyin": "S",
+      "lat": 18.25435,
+      "lon": 109.50947,
+      "admin1": "海南",
+      "elevation": 1.0
+    },
+    {
+      "name": "深圳",
+      "region": "华南",
+      "slug": "shenzhen",
+      "summary": "短程2-3天、长程4-5天逐日行程（白天玩什么晚上干什么），深圳湾、世界之窗、欢乐海岸、大鹏…",
+      "days": null,
+      "pinyin": "S",
+      "lat": 22.54554,
+      "lon": 114.0683,
+      "admin1": "广东",
+      "elevation": 4.0
+    },
+    {
+      "name": "珠海",
+      "region": "华南",
+      "slug": "zhuhai",
+      "summary": "情侣路、珠海渔女、港珠澳大桥、东澳岛外伶仃岛、粤式美食",
+      "days": "4天",
+      "pinyin": "Z",
+      "lat": 22.27694,
+      "lon": 113.56778,
+      "admin1": "广东",
+      "elevation": 35.0
+    },
+    {
+      "name": "长隆篇",
+      "region": "华南",
+      "slug": "zhuhai_chimelong",
+      "summary": "广州野生动物世界欢乐世界，珠海海洋王国鲸鲨馆烟花夜秀+飞船乐园，清远森林王国（2026新开）…",
+      "days": null,
+      "pinyin": "Z"
+    },
+    {
+      "name": "阳朔",
+      "region": "华南",
+      "slug": "yangshuo",
+      "summary": "漓江竹筏、遇龙河漂流、十里画廊、西街、啤酒鱼，桂林山水。",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 24.26143,
+      "lon": 111.21724,
+      "admin1": "广西",
+      "elevation": 185.0
+    },
+    {
+      "name": "成都",
+      "region": "西南",
+      "slug": "chengdu",
+      "summary": "短程2-3天、长程4-5天逐日行程（白天玩什么晚上干什么），熊猫基地、宽窄巷子、锦里武侯祠、…",
+      "days": null,
+      "pinyin": "C",
+      "lat": 30.66667,
+      "lon": 104.06667,
+      "admin1": "四川",
+      "elevation": 499.0
+    },
+    {
+      "name": "重庆",
+      "region": "西南",
+      "slug": "chongqing",
+      "summary": "8D魔幻山城，两江夜景观赏、洪崖洞吊脚楼、长江索道、李子坝轻轨穿楼，武隆天生三桥喀斯特、大足…",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 29.56026,
+      "lon": 106.55771,
+      "admin1": "重庆市",
+      "elevation": 289.0
+    },
+    {
+      "name": "大理",
+      "region": "西南",
+      "slug": "dali",
+      "summary": "环洱海骑行、喜洲古镇、双廊、龙龛日出、苍山索道，2/5/10天三档休闲行程，含出行对比、住宿…",
+      "days": "2天",
+      "pinyin": "D",
+      "lat": 25.58474,
+      "lon": 100.21229,
+      "admin1": "云南",
+      "elevation": 1977.0
+    },
+    {
+      "name": "黄果树",
+      "region": "西南",
+      "slug": "huangguoshu",
+      "summary": "亚洲第一大瀑布、喀斯特奇观",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "拉萨",
+      "region": "西南",
+      "slug": "lhasa",
+      "summary": "世界屋脊圣地、藏传佛教中心",
+      "days": null,
+      "pinyin": "L",
+      "lat": 29.65,
+      "lon": 91.1,
+      "admin1": "西藏",
+      "elevation": 3651.0
+    },
+    {
+      "name": "丽江",
+      "region": "西南",
+      "slug": "lijiang",
+      "summary": "玉龙雪山冰川公园、蓝月谷、大研古城、束河、白沙、拉市海、虎跳峡、泸沽湖。门票：玉龙雪山100…",
+      "days": null,
+      "pinyin": "L",
+      "lat": 26.86879,
+      "lon": 100.22072,
+      "admin1": "云南",
+      "elevation": 2397.0
+    },
+    {
+      "name": "泸沽湖",
+      "region": "西南",
+      "slug": "luguhu",
+      "summary": "里格、大落水、环湖70km、草海走婚桥、格姆女神山、猪槽船、摩梭篝火。门票约70元，建议2-…",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "抚仙湖",
+      "region": "西南",
+      "slug": "fuxianhu",
+      "summary": "中国最大深水型淡水湖，湖岸孤山岛、禄充帆船、水下古城与环湖轻骑行",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "梵净山",
+      "region": "西南",
+      "slug": "fanjingshan",
+      "summary": "世界自然遗产武陵山主峰，云海佛光奇观，需乘索道+徒步",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "贵阳",
+      "region": "西南",
+      "slug": "guiyang",
+      "summary": "避暑之都林城，夏季最凉快，黔味小吃很能打",
+      "days": null,
+      "pinyin": "G",
+      "lat": 26.58333,
+      "lon": 106.71667,
+      "admin1": "贵州",
+      "elevation": 1087.0
+    },
+    {
+      "name": "肇兴侗寨",
+      "region": "西南",
+      "slug": "zhaoxing",
+      "summary": "黔东南侗族文化核心，鼓楼群与侗族大歌是灵魂",
+      "days": null,
+      "pinyin": "Z"
+    },
+    {
+      "name": "镇远古镇",
+      "region": "西南",
+      "slug": "zhenyuan",
+      "summary": "黔东南千年水城，舞阳河夜景与古巷最迷人",
+      "days": null,
+      "pinyin": "Z"
+    },
+    {
+      "name": "香格里拉",
+      "region": "西南",
+      "slug": "shangrila",
+      "summary": "普达措、松赞林寺、独克宗古城、纳帕海、虎跳峡。门票：普达措138（含环保车）、松赞林通票90…",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "腾冲",
+      "region": "西南",
+      "slug": "tengchong",
+      "summary": "和顺古镇、热海、火山地质公园、北海湿地、银杏村、国殇墓园。门票：和顺55、热海50、火山35…",
+      "days": null,
+      "pinyin": "T"
+    },
+    {
+      "name": "西昌",
+      "region": "西南",
+      "slug": "xichang",
+      "summary": "彝族火把节狂欢、邛海泸山、泸沽湖女儿国、卫星发射中心，2/3/5天三档行程，含本地特色、火把…",
+      "days": "2天",
+      "pinyin": "X",
+      "lat": 27.89642,
+      "lon": 102.26341,
+      "admin1": "四川",
+      "elevation": 1558.0
+    },
+    {
+      "name": "西江千户苗寨",
+      "region": "西南",
+      "slug": "xijiang",
+      "summary": "中国最大苗族聚居村寨、万家灯火夜景",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "西双版纳",
+      "region": "西南",
+      "slug": "xishuangbanna",
+      "summary": "告庄西双景、野象谷、中科院植物园、曼听、傣族园、望天树、勐泐大佛寺。门票：野象谷58-60、…",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "元阳",
+      "region": "西南",
+      "slug": "yuanyang",
+      "summary": "多依树日出、老虎嘴日落、坝达云海、箐口民俗村、阿者科蘑菇房。门票通票70元，建议2-3天逐日…",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "川西大环线",
+      "region": "西南",
+      "slug": "chuanxi",
+      "summary": "四姑娘山双桥沟、色达五明佛学院、稻城亚丁、新都桥塔公草原、丹巴甲居藏寨；小环线/大环线路线、…",
+      "days": null,
+      "pinyin": "C"
+    },
+    {
+      "name": "稻城亚丁",
+      "region": "西南",
+      "slug": "daocheng",
+      "summary": "仙乃日央迈勇夏诺多吉三神山、冲古寺、珍珠海、牛奶海、五色海；短线/长线徒步、2026免票与限…",
+      "days": null,
+      "pinyin": "D"
+    },
+    {
+      "name": "都江堰 · 青城山",
+      "region": "西南",
+      "slug": "dujiangyan",
+      "summary": "都江堰鱼嘴飞沙堰宝瓶口、安澜索桥、二王庙；青城山前山天师洞上清宫、道教发源地；门票80/80…",
+      "days": null,
+      "pinyin": "D"
+    },
+    {
+      "name": "峨眉山 · 乐山",
+      "region": "西南",
+      "slug": "emeishan",
+      "summary": "峨眉金顶云海日出十方普贤、报国寺、清音阁；乐山大佛凌云山；旺季160淡季110、金顶索道、峨…",
+      "days": null,
+      "pinyin": "E"
+    },
+    {
+      "name": "九寨沟",
+      "region": "西南",
+      "slug": "jiuzhaigou",
+      "summary": "五花海、诺日朗瀑布、长海、五彩池、树正群海；1日2日双方案、旺季280淡季160、高铁直达避…",
+      "days": null,
+      "pinyin": "J"
+    },
+    {
+      "name": "阆中古城",
+      "region": "西南",
+      "slug": "langzhong",
+      "summary": "中国四大古城、张飞庙、清代四川贡院、川北道署、中天楼；街巷免费、110元一票通3天有效、高铁…",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "阿里",
+      "region": "西南",
+      "slug": "ali",
+      "summary": "世界屋脊的屋脊。冈仁波齐转山、玛旁雍错圣湖、札达土林、古格王朝、班公湖。",
+      "days": null,
+      "pinyin": "A"
+    },
+    {
+      "name": "建水古城",
+      "region": "西南",
+      "slug": "jianshui",
+      "summary": "米轨小火车、朱家花园、双龙桥、汽锅鸡，云南滇南慢游。",
+      "days": null,
+      "pinyin": "J"
+    },
+    {
+      "name": "荔波",
+      "region": "西南",
+      "slug": "libo",
+      "summary": "小七孔古桥、卧龙潭、大七孔、茂兰森林，贵州绿宝石。",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "林芝",
+      "region": "西南",
+      "slug": "linzhi",
+      "summary": "西藏海拔最低的江南，桃花季巴松措、雅鲁藏布大峡谷、南迦巴瓦、鲁朗石锅鸡。",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "怒江·丙中洛",
+      "region": "西南",
+      "slug": "nujiang",
+      "summary": "怒江大峡谷99道拐、丙中洛人神共居与独龙江秘境自驾之旅；峡谷秘境",
+      "days": null,
+      "pinyin": "N"
+    },
+    {
+      "name": "普者黑",
+      "region": "西南",
+      "slug": "puqizhe",
+      "summary": "喀斯特孤峰湖泊，青龙山全景、仙人洞彝村、柳叶小舟与田园花海",
+      "days": null,
+      "pinyin": "P"
+    },
+    {
+      "name": "纳木错",
+      "region": "西南",
+      "slug": "namtso",
+      "summary": "西藏三大圣湖之一，念青唐古拉雪山环抱，扎西半岛、星空、日出。",
+      "days": null,
+      "pinyin": "N"
+    },
+    {
+      "name": "日喀则",
+      "region": "西南",
+      "slug": "rikaze",
+      "summary": "后藏重镇、珠峰大本营所在地。扎什伦布寺、珠峰大本营、绒布寺、江孜宗山。",
+      "days": null,
+      "pinyin": "R"
+    },
+    {
+      "name": "羊卓雍措",
+      "region": "西南",
+      "slug": "yangzhuoyongcuo",
+      "summary": "西藏三大圣湖之一，岗巴拉山口俯瞰全景、日托寺、鲁日拉360度观景台。",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "阿克苏",
+      "region": "西北",
+      "slug": "aksu",
+      "summary": "托木尔峰雪山、温宿大峡谷、天山神木园、冰糖心苹果、柯坪绿洲。南疆天山的雄奇与果香",
+      "days": null,
+      "pinyin": "A",
+      "lat": 41.18418,
+      "lon": 80.27921,
+      "admin1": "新疆",
+      "elevation": 1119.0
+    },
+    {
+      "name": "安康 & 瀛湖",
+      "region": "西北",
+      "slug": "ankang",
+      "summary": "瀛湖景区",
+      "days": null,
+      "pinyin": "A"
+    },
+    {
+      "name": "博尔塔拉",
+      "region": "西北",
+      "slug": "bortala",
+      "summary": "赛里木湖天山明珠、果子沟大桥、阿拉山口口岸、温泉疗养、天山草原。新疆北缘的湖山与口岸",
+      "days": null,
+      "pinyin": "B"
+    },
+    {
+      "name": "新疆独库公路+伊犁",
+      "region": "西北",
+      "slug": "duku",
+      "summary": "纵贯天山的中国最美公路、一日有四季、那拉提草原、巴音布鲁克九曲十八弯、大龙池、乔尔玛烈士陵园…",
+      "days": "3天",
+      "pinyin": "X"
+    },
+    {
+      "name": "敦煌",
+      "region": "西北",
+      "slug": "dunhuang",
+      "summary": "莫高窟千年壁画、鸣沙山月牙泉、雅丹魔鬼城、玉门关；丝路圣地的沙漠奇观",
+      "days": null,
+      "pinyin": "D",
+      "lat": 40.16667,
+      "lon": 94.68333,
+      "admin1": "甘肃",
+      "elevation": 1131.0
+    },
+    {
+      "name": "富蕴",
+      "region": "西北",
+      "slug": "fuyun",
+      "summary": "可可托海国家地质公园、神钟山、额尔齐斯大峡谷、三号功勋矿脉、伊雷木湖。北疆峡谷与地质奇景",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "甘南",
+      "region": "西北",
+      "slug": "gannan",
+      "summary": "拉卜楞寺（世界藏学府转经长廊）、扎尕那石城秘境与洛克之路、桑科草原、郎木寺、尕海湖，含自驾/…",
+      "days": "3天",
+      "pinyin": "G"
+    },
+    {
+      "name": "哈密",
+      "region": "西北",
+      "slug": "hami",
+      "summary": "哈密有名的哈密瓜、大海道魔鬼城雅丹、回王陵古建、巴里坤草原雪山；新疆东大门瓜果甜香",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "汉中",
+      "region": "西北",
+      "slug": "hanzhong",
+      "summary": "汉中油菜花海、汉人老家文化、石门栈道与汉江、勉县武侯祠、兴汉胜境；秦巴山间的汉水人家",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "和田",
+      "region": "西北",
+      "slug": "hetian",
+      "summary": "玉龙喀什河淘玉、和田玉巴扎、千里葡萄长廊、艾德莱斯绸、核桃王大树。南疆丝路的玉都与绿洲",
+      "days": null,
+      "pinyin": "H",
+      "lat": 37.10927,
+      "lon": 79.93433,
+      "admin1": "新疆",
+      "elevation": 1366.0
+    },
+    {
+      "name": "华山",
+      "region": "西北",
+      "slug": "huashan",
+      "summary": "西岳华山的长空栈道、苍龙岭、鹞子翻身、金锁关、西峰北峰登山；奇险天下第一山，云海日出壮美",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "壶口瀑布",
+      "region": "西北",
+      "slug": "hukou",
+      "summary": "黄河第一瀑的咆哮雄姿、瀑布彩虹、冬春冰瀑、观瀑崖与壶口小镇；顺访革命圣地延安",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "嘉峪关",
+      "region": "西北",
+      "slug": "jiayuguan",
+      "summary": "天下第一雄关关城、悬壁长城、第一墩、长城博物馆；长城西端尽头的雄浑",
+      "days": null,
+      "pinyin": "J",
+      "lat": 39.81121,
+      "lon": 98.28618,
+      "admin1": "甘肃",
+      "elevation": 1635.0
+    },
+    {
+      "name": "阿勒泰喀纳斯",
+      "region": "西北",
+      "slug": "kanas",
+      "summary": "喀纳斯湖神秘碧湖、禾木村图瓦村落、观鱼台、五彩滩雅丹；北疆油画般的秘境",
+      "days": null,
+      "pinyin": "A"
+    },
+    {
+      "name": "喀什",
+      "region": "西北",
+      "slug": "kashgar",
+      "summary": "喀什古城维吾尔风情、香妃园、帕米尔高原、慕士塔格峰、喀拉库勒湖；纯粹的西域古城与高原圣湖",
+      "days": null,
+      "pinyin": "K",
+      "lat": 39.46718,
+      "lon": 75.98675,
+      "admin1": "新疆",
+      "elevation": 1284.0
+    },
+    {
+      "name": "克孜勒苏",
+      "region": "西北",
+      "slug": "kizilsu",
+      "summary": "帕米尔高原门户、慕士塔格峰雪山、卡拉库里湖、公格尔峰、高原村落。南疆高原的雄奇与苍茫",
+      "days": null,
+      "pinyin": "K",
+      "lat": 39.876,
+      "lon": 76.446,
+      "admin1": "新疆",
+      "elevation": 1545.0
+    },
+    {
+      "name": "库尔勒",
+      "region": "西北",
+      "slug": "korla",
+      "summary": "巴音布鲁克九曲十八弯、高昌故城、博斯腾湖芦荡、铁门关雄关、天鹅湖；南疆绿洲与草原湖泊",
+      "days": null,
+      "pinyin": "K",
+      "lat": 41.76055,
+      "lon": 86.15231,
+      "admin1": "新疆",
+      "elevation": 945.0
+    },
+    {
+      "name": "兰州",
+      "region": "西北",
+      "slug": "lanzhou",
+      "summary": "黄河穿城、中山桥夜色、白塔山、五泉山、黄河母亲像、正宗牛肉面；金城的市井与河山",
+      "days": null,
+      "pinyin": "L",
+      "lat": 36.05701,
+      "lon": 103.83987,
+      "admin1": "甘肃",
+      "elevation": 1521.0
+    },
+    {
+      "name": "临夏",
+      "region": "西北",
+      "slug": "linxia",
+      "summary": "八坊十三巷回族风情、炳灵寺石窟、刘家峡水库、莲花山；河州的美景与民俗",
+      "days": null,
+      "pinyin": "L"
+    },
+    {
+      "name": "青海湖",
+      "region": "西北",
+      "slug": "qinghaihu",
+      "summary": "中国最大内陆咸水湖、环湖骑行、二郎剑景区、黑马河日出、盛夏油菜花与湖天一色、茶卡盐湖天空之镜…",
+      "days": "2天",
+      "pinyin": "Q",
+      "lat": 36.83833,
+      "lon": 100.82083,
+      "admin1": "青海",
+      "elevation": 3312.0
+    },
+    {
+      "name": "茶卡盐湖",
+      "region": "西北",
+      "slug": "chaka",
+      "summary": "中国最大盐湖影像圣地，盐湖倒影、盐雕、观光小火车——高原最纯净的镜面之路，含门票、路线、拍摄…",
+      "days": null,
+      "pinyin": "C"
+    },
+    {
+      "name": "门源",
+      "region": "西北",
+      "slug": "menyuan",
+      "summary": "最佳赏花期、观花点位、拍照机位、门源-祁连线路玩法、门票与避坑，一页讲清",
+      "days": null,
+      "pinyin": "M"
+    },
+    {
+      "name": "祁连山",
+      "region": "西北",
+      "slug": "qilianshan",
+      "summary": "卓尔山丹霞、祁连大草原、雪山湖泊、门源-祁连线路线玩法，交通、季节、车程与避坑一页讲清",
+      "days": null,
+      "pinyin": "Q"
+    },
+    {
+      "name": "塔尔寺",
+      "region": "西北",
+      "slug": "taersi",
+      "summary": "藏传佛教格鲁派六大寺之一，大金瓦殿、酥油花、壁画堆绣——雪域之外的信仰圣地，交通、参观顺序、…",
+      "days": null,
+      "pinyin": "T"
+    },
+    {
+      "name": "商洛",
+      "region": "西北",
+      "slug": "shangluo",
+      "summary": "秦岭腹地的金丝大峡谷、柞水溶洞、牛背梁国家公园、终南山与秦岭绿意；避暑康养的天然氧吧",
+      "days": null,
+      "pinyin": "S"
+    },
+    {
+      "name": "塔城",
+      "region": "西北",
+      "slug": "tacheng",
+      "summary": "手风琴博物馆、巴克图口岸、小白杨哨所、天山北麓草原、多民族风情。边境小城的文艺与宁静",
+      "days": null,
+      "pinyin": "T",
+      "lat": 46.74535,
+      "lon": 82.95847,
+      "admin1": "新疆",
+      "elevation": 546.0
+    },
+    {
+      "name": "天水",
+      "region": "西北",
+      "slug": "tianshui",
+      "summary": "麦积山石窟东方雕塑馆、伏羲庙人文先祖、仙人崖、南郭寺；西北的温柔宝地",
+      "days": null,
+      "pinyin": "T",
+      "lat": 34.57952,
+      "lon": 105.74238,
+      "admin1": "甘肃",
+      "elevation": 1153.0
+    },
+    {
+      "name": "吐鲁番",
+      "region": "西北",
+      "slug": "turpan",
+      "summary": "火焰山西游记传奇、葡萄沟绿洲果香、坎儿井智慧、交河故城、库木塔格沙漠；新疆火洲与果香",
+      "days": null,
+      "pinyin": "T",
+      "lat": 42.94769,
+      "lon": 89.17886,
+      "admin1": "新疆",
+      "elevation": 41.0
+    },
+    {
+      "name": "乌鲁木齐",
+      "region": "西北",
+      "slug": "urumqi",
+      "summary": "天山天池雪山湖泊、国际大巴扎清真风情、南山牧场草原、红山公园；中亚风情与天山壮景",
+      "days": null,
+      "pinyin": "W",
+      "lat": 43.80096,
+      "lon": 87.60046,
+      "admin1": "新疆",
+      "elevation": 862.0
+    },
+    {
+      "name": "武威",
+      "region": "西北",
+      "slug": "wuwei",
+      "summary": "雷台汉墓马踏飞燕、天梯山石窟、白塔寺、文庙；丝路重镇的历史回声",
+      "days": null,
+      "pinyin": "W",
+      "lat": 37.92672,
+      "lon": 102.63202,
+      "admin1": "甘肃",
+      "elevation": 1542.0
+    },
+    {
+      "name": "西安",
+      "region": "西北",
+      "slug": "xian",
+      "summary": "秦始皇兵马俑、明城墙、钟鼓楼、大雁塔、大唐不夜城、回民街；十三朝古都的长安，历史与美食双重盛…",
+      "days": null,
+      "pinyin": "X",
+      "lat": 34.25833,
+      "lon": 108.92861,
+      "admin1": "陕西",
+      "elevation": 416.0
+    },
+    {
+      "name": "咸阳 & 乾陵",
+      "region": "西北",
+      "slug": "xianyang",
+      "summary": "乾陵无字碑与神道、乾陵地宫、茂陵霍去病墓、大秦帝都咸阳湖，顺逛袁家村关中民俗",
+      "days": null,
+      "pinyin": "X"
+    },
+    {
+      "name": "伊犁",
+      "region": "西北",
+      "slug": "yili",
+      "summary": "那拉提空中草原、赛里木湖高山明珠、果子沟大桥、霍城薰衣草、伊昭公路；新疆最美夏天",
+      "days": null,
+      "pinyin": "Y"
+    },
+    {
+      "name": "银川",
+      "region": "西北",
+      "slug": "yinchuan",
+      "summary": "东方金字塔、黄河大漠风光、塞上江南",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 38.46806,
+      "lon": 106.27306,
+      "admin1": "宁夏",
+      "elevation": 1117.0
+    },
+    {
+      "name": "榆林",
+      "region": "西北",
+      "slug": "yulin",
+      "summary": "镇北台长城、红石峡摩崖、靖边波浪谷丹霞、榆林古城墙与窑洞、陕北塞上风光",
+      "days": null,
+      "pinyin": "Y",
+      "lat": 38.29181,
+      "lon": 109.73753,
+      "admin1": "陕西",
+      "elevation": 1056.0
+    },
+    {
+      "name": "张掖",
+      "region": "西北",
+      "slug": "zhangye",
+      "summary": "七彩丹霞地质奇观、大佛寺西夏古刹、马蹄寺、焉支山；如画的河西走廊明珠",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 38.93417,
+      "lon": 100.45167,
+      "admin1": "甘肃",
+      "elevation": 1481.0
+    },
+    {
+      "name": "中国台湾",
+      "region": "港澳台海外",
+      "slug": "taiwan",
+      "summary": "北（台北/九份/野柳）中（日月潭/阿里山）南（台南/高雄/垦丁）东（苏花/太鲁阁）+澎湖绿岛…",
+      "days": "五日",
+      "pinyin": "T",
+      "aliases": [
+        "台湾"
+      ]
+    },
+    {
+      "name": "中国香港",
+      "region": "港澳台海外",
+      "slug": "hongkong",
+      "summary": "第一次去香港（区域+交通）、九龙油尖旺港片文艺、港岛山海相逢、半小时逃离城市的麦理浩径/长洲…",
+      "days": null,
+      "pinyin": "X",
+      "aliases": [
+        "香港"
+      ]
+    },
+    {
+      "name": "中国澳门",
+      "region": "港澳台海外",
+      "slug": "macao",
+      "summary": "四个口岸对比、大三巴、议事亭、氹仔度假区，含大三巴牌坊与澳门威尼斯人",
+      "days": "一日",
+      "pinyin": "Z",
+      "aliases": [
+        "珠海 → 澳门"
+      ]
+    },
+    {
+      "name": "海岛度假指南",
+      "region": "港澳台海外",
+      "slug": "island-holiday",
+      "summary": "马尔代夫·巴厘岛·长滩岛·斐济·夏威夷五大岛全面对比：签证、交通、度假玩法、预算、安全应急，蜜月亲子潜水皆宜。",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "迪士尼篇",
+      "region": "主题乐园",
+      "slug": "disney",
+      "summary": "上海迪士尼疯狂动物城创极速光轮奇幻童话城堡，香港迪士尼魔雪奇缘世界灰熊山极速矿车,门票交通玩…",
+      "days": null,
+      "pinyin": "D"
+    },
+    {
+      "name": "方特",
+      "region": "主题乐园",
+      "slug": "fangte",
+      "summary": "华强方特全国 40 余园分布与特色——东方神画（中国文化）、欢乐世界（科幻互动）、梦幻王国、…",
+      "days": null,
+      "pinyin": "F"
+    },
+    {
+      "name": "海昌海洋公园",
+      "region": "主题乐园",
+      "slug": "haichang",
+      "summary": "上海主场详解，虎鲸馆、极地馆、奥特曼主题区、航海王宝藏区，海洋大秀，门票交通玩法",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "欢乐谷",
+      "region": "主题乐园",
+      "slug": "happyvalley",
+      "summary": "华侨城主打的本土连锁主题乐园，深圳旗舰详解，过山车、玛雅水公园、迷你世界冒险山，门票交通玩法",
+      "days": null,
+      "pinyin": "H"
+    },
+    {
+      "name": "中华恐龙园",
+      "region": "主题乐园",
+      "slug": "konglongyuan",
+      "summary": "常州东方侏罗纪，中华恐龙馆、魔幻雨林、鲁布拉、库克苏克、梦幻庄园七大主题区，门票交通玩法",
+      "days": null,
+      "pinyin": "Z"
+    },
+    {
+      "name": "宋城",
+      "region": "主题乐园",
+      "slug": "songcheng",
+      "summary": "宋城演艺「千古情」系列分布城市与特色——杭州/上海/西安/佛山/三亚/丽江/九寨/桂林/张家…",
+      "days": null,
+      "pinyin": "S"
+    },
+    {
+      "name": "融创文旅城",
+      "region": "主题乐园",
+      "slug": "sunac",
+      "summary": "南昌/合肥/哈尔滨/青岛/广州/无锡/昆明/重庆/成都/济南/桂林/西双版纳 12 城布局，…",
+      "days": null,
+      "pinyin": "R"
+    },
+    {
+      "name": "北京环球影城",
+      "region": "主题乐园",
+      "slug": "universal_beijing",
+      "summary": "哈利波特魔法世界、变形金刚基地、侏罗纪世界、小黄人乐园、功夫熊猫盖世之地，门票交通玩法路线",
+      "days": null,
+      "pinyin": "B"
+    },
+    {
+      "name": "世界之窗 & 锦绣中华",
+      "region": "主题乐园",
+      "slug": "worldwindow",
+      "summary": "世界之窗看全球 130+ 微缩地标、锦绣中华看中国名胜与 56 民族村寨，二园分布与特色、联…",
+      "days": null,
+      "pinyin": "S"
+    },
+    {
+      "name": "茨中",
+      "region": "西南",
+      "slug": "cizhong",
+      "summary": "澜沧江畔藏传天主教村落，百年葡萄园与法国传教士遗迹，滇藏茶马古道节点",
+      "days": null,
+      "pinyin": "C",
+      "lat": 28.23,
+      "lon": 98.87,
+      "admin1": "云南",
+      "elevation": 2000.0,
+      "aliases": [
+        "茨中村"
+      ]
+    },
+    {
+      "name": "贺兰山",
+      "region": "西北",
+      "slug": "helanshan",
+      "summary": "农耕与游牧分界线，山脊岩画与西夏王陵背景山系，东侧葡萄酒带与越野线",
+      "days": null,
+      "pinyin": "H",
+      "lat": 38.5,
+      "lon": 105.98,
+      "admin1": "宁夏",
+      "elevation": 2000.0,
+      "aliases": [
+        "银川 · 贺兰山"
+      ]
+    },
+    {
+      "name": "可可西里",
+      "region": "西北",
+      "slug": "kekexili",
+      "summary": "青藏高原腹地无人区，藏羚羊迁徙核心区，高海拔生态与生命禁区",
+      "days": null,
+      "pinyin": "K",
+      "lat": 35.49,
+      "lon": 90.61,
+      "admin1": "青海",
+      "elevation": 4800.0,
+      "aliases": [
+        "青海可可西里"
+      ]
+    },
+    {
+      "name": "林甸",
+      "region": "东北",
+      "slug": "lindian",
+      "summary": "大庆温泉之乡，地热富集，冬季冰雪温泉与湿地观鸟",
+      "days": null,
+      "pinyin": "L",
+      "lat": 47.17,
+      "lon": 124.86,
+      "admin1": "黑龙江",
+      "elevation": 150.0,
+      "aliases": [
+        "林甸温泉"
+      ]
+    },
+    {
+      "name": "龙脊",
+      "region": "华南",
+      "slug": "longji",
+      "summary": "龙胜梯田群，壮瑶梯田农耕奇观，云海日出与摘星阁观景",
+      "days": null,
+      "pinyin": "L",
+      "lat": 25.78,
+      "lon": 110.1,
+      "admin1": "广西",
+      "elevation": 600.0,
+      "aliases": [
+        "桂林 · 龙脊梯田"
+      ]
+    },
+    {
+      "name": "莫干山",
+      "region": "华东",
+      "slug": "moganshan",
+      "summary": "德清避暑名山，民国别墅群与竹海，民宿与徒步线成熟",
+      "days": null,
+      "pinyin": "M",
+      "lat": 30.6,
+      "lon": 119.89,
+      "admin1": "浙江",
+      "elevation": 750.0,
+      "aliases": [
+        "浙江莫干山"
+      ]
+    },
+    {
+      "name": "木里",
+      "region": "西南",
+      "slug": "muli",
+      "summary": "凉山深处藏乡，泸沽湖水源地、玛娜茶金观景与贡嘎日落，徒步朝圣线",
+      "days": null,
+      "pinyin": "M",
+      "lat": 27.95,
+      "lon": 101.27,
+      "admin1": "四川",
+      "elevation": 2500.0
+    },
+    {
+      "name": "宁海",
+      "region": "华东",
+      "slug": "ninghai",
+      "summary": "宁波山海之城，浙东大峡谷与温泉，徐霞客游记开篇地",
+      "days": null,
+      "pinyin": "N",
+      "lat": 29.3,
+      "lon": 121.43,
+      "admin1": "浙江",
+      "elevation": 10.0,
+      "aliases": [
+        "宁海森林温泉"
+      ]
+    },
+    {
+      "name": "沙坡头",
+      "region": "西北",
+      "slug": "shapotou",
+      "summary": "中卫黄河与腾格里沙漠交汇，沙坡鸣钟、黄河漂流与沙漠绿洲",
+      "days": null,
+      "pinyin": "S",
+      "lat": 37.52,
+      "lon": 104.92,
+      "admin1": "宁夏",
+      "elevation": 1300.0,
+      "aliases": [
+        "中卫 · 沙坡头"
+      ]
+    },
+    {
+      "name": "石阡",
+      "region": "西南",
+      "slug": "shiqian",
+      "summary": "铜仁温泉古城，夜郎古泉与仡佬文化，佛顶山自然保护区",
+      "days": null,
+      "pinyin": "S",
+      "lat": 27.52,
+      "lon": 108.24,
+      "admin1": "贵州",
+      "elevation": 500.0,
+      "aliases": [
+        "石阡温泉"
+      ]
+    },
+    {
+      "name": "松阳",
+      "region": "华东",
+      "slug": "songyang",
+      "summary": "丽水茶乡与传统村落群，杨家堂、陈家铺悬崖村落，松阴溪田园",
+      "days": null,
+      "pinyin": "S",
+      "lat": 28.45,
+      "lon": 119.42,
+      "admin1": "浙江",
+      "elevation": 200.0
+    },
+    {
+      "name": "遂昌",
+      "region": "华东",
+      "slug": "suichang",
+      "summary": "丽水山林秘境，南尖岩云海、金矿遗址与神龙谷，汤显祖文化",
+      "days": null,
+      "pinyin": "S",
+      "lat": 28.6,
+      "lon": 119.27,
+      "admin1": "浙江",
+      "elevation": 250.0
+    },
+    {
+      "name": "木梨硔",
+      "region": "华东",
+      "slug": "mulihong",
+      "summary": "安徽休宁县溪口镇苦竹尖山腰、海拔近千米的徽州最高古村落，山脊三面悬空呈骆驼形，云海日出与悬崖观景平台，徽派阶梯民居，黄山市百佳摄影点、中国传统村落，免费；自驾到詹梨村/花桥村停车后徒步约半小时进村",
+      "days": null,
+      "pinyin": "M",
+      "lat": null,
+      "lon": null,
+      "admin1": "安徽",
+      "elevation": null,
+      "aliases": [
+        "木梨硔村",
+        "詹梨村"
+      ]
+    },
+    {
+      "name": "涠洲岛",
+      "region": "华南",
+      "slug": "weizhoudao",
+      "summary": "北海火山岛，滴水丹屏与鳄鱼山，珊瑚海域与日落沙滩",
+      "days": null,
+      "pinyin": "W",
+      "lat": 21.05,
+      "lon": 109.12,
+      "admin1": "广西",
+      "elevation": 30.0,
+      "aliases": [
+        "北海 · 涠洲岛"
+      ]
+    },
+    {
+      "name": "雾里",
+      "region": "西南",
+      "slug": "wuli",
+      "summary": "怒江丙中洛茶马古道村落，怒族石板房与田园，秋那桶沿线",
+      "days": null,
+      "pinyin": "W",
+      "lat": 28.37,
+      "lon": 98.68,
+      "admin1": "云南",
+      "elevation": 1500.0,
+      "aliases": [
+        "雾里村"
+      ]
+    },
+    {
+      "name": "西夏王陵",
+      "region": "西北",
+      "slug": "xixiawangling",
+      "summary": "银川贺兰山东麓西夏帝王陵园，东方金字塔与博物馆",
+      "days": null,
+      "pinyin": "X",
+      "lat": 38.48,
+      "lon": 105.99,
+      "admin1": "宁夏",
+      "elevation": 1100.0,
+      "aliases": [
+        "银川 · 西夏王陵"
+      ]
+    },
+    {
+      "name": "增冲",
+      "region": "西南",
+      "slug": "zengchong",
+      "summary": "从江侗寨鼓楼之乡，增冲鼓楼与稻鱼鸭共生系统，肇兴周边",
+      "days": null,
+      "pinyin": "Z",
+      "lat": 25.92,
+      "lon": 108.7,
+      "admin1": "贵州",
+      "elevation": 400.0,
+      "aliases": [
+        "增冲侗寨"
+      ]
+    },
+    {
+      "name": "石首",
+      "region": "华中",
+      "slug": "shishou",
+      "summary": "荆州下辖县级市，长江畔、临近洞庭湖，石首麋鹿国家级自然保护区与天鹅洲湿地，江鲜与田园，常作湖北短途自驾出发地",
+      "days": null,
+      "pinyin": "S",
+      "lat": 29.7222,
+      "lon": 112.4069,
+      "admin1": "湖北",
+      "elevation": 36.0
+    }
+  ]
+}

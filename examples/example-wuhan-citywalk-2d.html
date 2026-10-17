@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>武汉 2 日 · 闺蜜 Citywalk</title>
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --sub:#6E6E73; --line:rgba(0,0,0,.08);
+  --accent:#0071E3; --ok:#34C759; --warn:#FF3B30; --caution:#FF9500; --tip:#34C759;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue","Segoe UI",sans-serif;
+  font-size:13.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 60px}
+/* ── 顶部毛玻璃导航 ── */
+.toc-bar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line);
+}
+.toc-inner{max-width:860px;margin:0 auto;padding:9px 18px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-inner a{
+  flex:none;padding:5px 12px;border-radius:980px;font-size:12px;font-weight:500;
+  color:var(--sub);text-decoration:none;background:rgba(118,118,128,.08);transition:all .2s;
+}
+.toc-inner a:hover,.toc-inner a.on{background:var(--accent);color:#fff}
+/* ── Hero ── */
+.hero{padding:44px 6px 26px}
+.hero-kicker{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-size:32px;font-weight:700;letter-spacing:-.02em;margin:6px 0 8px}
+.hero p{color:var(--sub);font-size:14px;max-width:560px}
+.brandline{margin-top:14px;font-size:11.5px;color:#AEAEB2}
+/* ── 配图 ── */
+.cover{width:100%;height:184px;border-radius:18px;object-fit:cover;margin-bottom:16px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03),0 8px 22px rgba(0,0,0,.07);background:linear-gradient(135deg,#FFE3EC,#E6F0FF 55%,#E9FBF0)}
+.cover.blank{display:flex;align-items:center;justify-content:center;color:#9aa0a6;font-size:13px}
+.sec-img{width:100%;height:148px;border-radius:14px;object-fit:cover;margin:0 0 10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03),0 6px 16px rgba(0,0,0,.06)}
+.sec-img.blank{display:flex;align-items:center;justify-content:center;color:#9aa0a6;font-size:12.5px;
+  background:linear-gradient(135deg,#EEF3FF,#F2ECFF)}
+/* ── 板块 ── */
+section{margin:22px 0;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin:0 4px 12px;
+  border-left:4px solid var(--sa,var(--accent));padding-left:11px}
+.sec-no{font-size:11px;font-weight:700;color:#fff;background:var(--sa,var(--accent));
+  border-radius:7px;padding:2px 7px;letter-spacing:.06em;white-space:nowrap}
+.sec-head h2{font-size:21px;font-weight:700;letter-spacing:-.01em}
+.sec-head .sub{font-size:12.5px;color:var(--sub)}
+.card{
+  background:var(--card);border-radius:18px;padding:15px 17px;margin-bottom:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03),0 4px 14px rgba(0,0,0,.05);
+}
+.card h3{font-size:14.5px;font-weight:650;margin-bottom:8px}
+/* ── 统计卡组 ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border-radius:16px;padding:13px 15px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 4px 14px rgba(0,0,0,.05)}
+.stat .k{font-size:11px;color:var(--sub);font-weight:600}
+.stat .v{font-size:19px;font-weight:700;margin-top:2px;letter-spacing:-.01em}
+.stat .v small{font-size:11.5px;font-weight:500;color:var(--sub)}
+/* ── 标签 ── */
+.tag{display:inline-block;padding:2px 9px;border-radius:980px;font-size:11px;font-weight:600;margin:0 4px 4px 0;background:rgba(0,113,227,.10);color:var(--accent)}
+.tag.g{background:rgba(52,199,89,.12);color:#248A3D}
+.tag.o{background:rgba(255,149,0,.13);color:#C93400}
+.tag.r{background:rgba(255,59,48,.11);color:#D70015}
+.tag.p{background:rgba(175,82,222,.12);color:#8944AB}
+/* ── 警示/贴士 ── */
+.note{border-radius:12px;padding:10px 13px;margin:8px 0;font-size:13px}
+.note.warn{background:rgba(255,59,48,.06);color:#C00007;border-left:3px solid var(--warn)}
+.note.tip{background:rgba(52,199,89,.07);color:#1E7B32;border-left:3px solid var(--tip)}
+.note.caution{background:rgba(255,149,0,.08);color:#A05A00;border-left:3px solid var(--caution)}
+.note b{font-weight:650}
+/* ── 时间线 ── */
+.day{margin-bottom:12px}
+.day-head{display:flex;align-items:center;gap:10px;margin:14px 0 10px}
+.day-no{width:34px;height:34px;border-radius:50%;background:var(--sa,var(--accent));color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.day-head h3{font-size:15.5px;font-weight:650}
+.day-head .meta{font-size:12px;color:var(--sub)}
+.slot{display:flex;gap:12px;padding:9px 2px;border-top:1px solid var(--line)}
+.slot:first-of-type{border-top:none}
+.slot .t{flex:none;width:66px;font-size:12px;font-weight:650;color:var(--sa,var(--accent));padding-top:1px}
+.slot .c{flex:1}
+.slot .c .desc{font-size:12.5px;color:var(--sub);margin-top:1px}
+.day-note{margin-top:9px;font-size:12.5px;color:var(--sub);background:rgba(118,118,128,.06);border-radius:10px;padding:8px 12px}
+/* ── 列表 ── */
+ul.list{list-style:none}
+ul.list li{padding:6px 0 6px 20px;position:relative;border-top:1px solid var(--line);font-size:13px}
+ul.list li:first-child{border-top:none}
+ul.list li::before{content:"";position:absolute;left:4px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--sa,var(--accent));opacity:.75}
+ul.list.warn li::before{background:var(--warn)}
+ul.list.tip li::before{background:var(--tip)}
+/* ── 表格 ── */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11.5px;color:var(--sub);font-weight:600;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rec{color:var(--accent);font-weight:650}
+/* ── 网格 ── */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+/* ── PDF 按钮 ── */
+.pdf-btn{
+  position:fixed;right:22px;bottom:22px;z-index:60;border:none;cursor:pointer;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+  padding:11px 18px;border-radius:980px;
+  box-shadow:0 6px 20px rgba(0,113,227,.35);transition:transform .15s,box-shadow .15s;
+  font-family:inherit;
+}
+.pdf-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,113,227,.42)}
+.pdf-btn:active{transform:scale(.96)}
+footer{margin-top:34px;padding:20px 0 8px;text-align:center;font-size:11.5px;color:#AEAEB2;border-top:1px solid var(--line)}
+/* ── 打印优化 ── */
+@media print{
+  @page{margin:12mm}
+  body{font-size:11px;background:#fff}
+  .toc-bar,.pdf-btn{display:none!important}
+  .card,.stat{box-shadow:none;border:1px solid #E5E5E5;break-inside:avoid}
+  section{break-inside:avoid-page;margin:12px 0}
+  .hero{padding:16px 0 12px}
+  .hero h1{font-size:24px}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="toc-bar"><nav class="toc-inner"><a href="#overview">行程概览</a><a href="#season">季节与气候方案</a><a href="#route">逐日动线</a><a href="#feasibility">可执行性体检</a><a href="#transit">交通方案比选</a><a href="#research">实地调研</a><a href="#poi">景点攻略与门票</a><a href="#stay">住宿安排</a><a href="#budget">预算安排</a><a href="#packing">行前准备清单</a><a href="#safety">安全提醒</a></nav></div>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-kicker">AI 旅行指南小册子</div>
+    <h1>武汉 2 日 · 闺蜜 Citywalk</h1>
+    <p>本小册子由 AI 行程引擎编排：节奏配平、季节方案、交通比选、行前清单与安全提醒一次性备齐。
+    票价与开放时间以官方渠道实时为准。</p>
+    <div class="brandline">AI 旅行指南小册子 · 由 Agent 生成</div>
+  </div>
+  <div class="cover blank">📍 武汉 · 出行前可在此放一张目的地实拍</div>
+  <section id="overview" style="--sa:#0071E3"><div class="sec-head"><span class="sec-no">01</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-compass"></use></svg><span>行程概览</span></h2><span class="sub">先看结论</span></div>
+
+<div class="stats">
+  <div class="stat"><div class="k">目的地</div><div class="v">武汉</div></div>
+  <div class="stat"><div class="k">天数</div><div class="v">2<small> 天</small></div></div>
+  <div class="stat"><div class="k">人员</div><div class="v">2<small> 人</small><br><small>与闺蜜两人同行</small></div></div>
+  <div class="stat"><div class="k">节奏</div><div class="v" style="font-size:15px">闺蜜 Citywalk</div></div>
+  <div class="stat"><div class="k">强度</div><div class="v">★★☆☆☆</div></div>
+  <div class="stat"><div class="k">人均预算(估)</div><div class="v">¥680</div></div>
+  <div class="stat"><div class="k">全团合计(估)</div><div class="v">¥350</div></div>
+</div>
+<div class="card"><h3>本次节奏关键词</h3><span class="tag ">闺蜜</span><span class="tag ">Citywalk</span><span class="tag ">过早</span><span class="tag ">省博预约</span><div style="margin-top:8px;font-size:12.5px;color:var(--sub)">节奏画像「闺蜜 Citywalk」决定每日点位密度与时段长度，逐日动线据此编排。</div></div>
+<section id="season" style="--sa:#FF9500"><div class="sec-head"><span class="sec-no">02</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-leaf"></use></svg><span>季节与气候方案</span></h2><span class="sub">秋季出行</span></div>
+
+<div class="card">
+  <h3>武汉 · 南方（华东/华中）</h3>
+  <div style="margin:2px 0 8px"><span class="tag g">气温 12-26°C，干爽</span><span class="tag g">秋季</span></div>
+  <table>
+    <tr><th style="width:64px">穿衣</th><td>早晚加薄外套，白天长袖即可</td></tr>
+    <tr><th>当季看点</th><td>红叶（11月中下旬南京栖霞山/苏州天平山/长沙岳麓山）、桂花（9-10月杭州/桂林）、稻田金黄（10月皖南）</td></tr>
+    <tr><th>气候风险</th><td><div class="note caution">秋老虎（9月）仍热；台风外围影响华东沿海（至10月上旬）</div></td></tr>
+  </table>
+</div>
+<div class="note tip">季节结论绑定出行日期：同一目的地不同月份结论可能完全相反。以上为气候区经验参考，出行前 3 天务必复核实时天气预报。</div>
+<section id="route" style="--sa:#AF52DE"><div class="sec-head"><span class="sec-no">03</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg><span>逐日动线</span></h2><span class="sub">每天怎么走</span></div>
+
+<svg class="rmap" viewBox="0 0 640 150" width="100%" style="max-height:170px"><path d="M44.0,101.0 L596.0,49.0" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-dasharray="5 5"/><g transform="translate(44.0,101.0)"><circle r="13" fill="#fff" stroke="#0071E3" stroke-width="2.4"/><text text-anchor="middle" dy="4" class="rm-n">1</text><text text-anchor="middle" y="28" class="rm-c">武汉</text></g><g transform="translate(596.0,49.0)"><circle r="13" fill="#fff" stroke="#0071E3" stroke-width="2.4"/><text text-anchor="middle" dy="4" class="rm-n">2</text><text text-anchor="middle" y="28" class="rm-c">武汉</text></g></svg>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trend"></use></svg> 体力曲线与弹性</h3><svg class="stamina" viewBox="0 0 300 92" width="100%" preserveAspectRatio="none"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9500" stop-opacity=".28"/><stop offset="1" stop-color="#FF9500" stop-opacity="0"/></linearGradient></defs><path d="M18,74 L18.0,32.0 282.0,18.0 L282,74 Z" fill="url(#sg)"/><polyline points="18.0,32.0 282.0,18.0" fill="none" stroke="#FF9500" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="18.0" cy="32.0" r="3.5" fill="#FF9500"/><text x="18.0" y="88" text-anchor="middle" class="sp-x">D1</text><circle cx="282.0" cy="18.0" r="3.5" fill="#FF9500"/><text x="282.0" y="88" text-anchor="middle" class="sp-x">D2</text></svg><div style="font-size:12px;color:var(--sub);margin-top:4px">橙色折线为每日强度（点位时长/数量）趋势；每张卡片上的 ★ 为「弹性评分」——固定时间锚点越少越灵活，越容易临时调整。</div></div>
+<div class="card day">
+  <div class="day-head"><div class="day-no">1</div>
+    <div><h3>第 1 天 · 汉口老租界（步行约 6 公里）</h3>
+    <div class="meta">武汉 · 约 3 个点位 · 约 6 小时
+    <span class="elast">弹性 <b>★☆☆☆☆</b></span></div></div></div>
+  <div class="slot"><div class="t">08:00</div><div class="c"><b>在江汉路吃早餐</b><div class="desc">吃热干面和糊汤粉，老字号店门口排队通常在 8 点半前就结束</div></div></div><div class="slot"><div class="t">09:30</div><div class="c"><b>黎黄陂路与吉庆街</b><div class="desc">成片的红砖洋楼，沿街咖啡店多在 10 点后开门</div></div></div><div class="slot"><div class="t">13:30</div><div class="c"><b>汉口江滩与江汉关博物馆</b><div class="desc">博物馆需凭身份证免费预约，看完沿江散步</div></div></div>
+  
+</div>
+<div class="card day">
+  <div class="day-head"><div class="day-no">2</div>
+    <div><h3>第 2 天 · 武昌（步行约 7 公里）</h3>
+    <div class="meta">武汉 · 约 4 个点位 · 约 8 小时
+    <span class="elast">弹性 <b>★☆☆☆☆</b></span></div></div></div>
+  <div class="slot"><div class="t">08:00</div><div class="c"><b>黄鹤楼</b><div class="desc">开园即入可避开旅行团，登顶层看长江与长江大桥</div></div></div><div class="slot"><div class="t">10:30</div><div class="c"><b>昙华林</b><div class="desc">文创小店街，1 小时足够逛完</div></div></div><div class="slot"><div class="t">13:00</div><div class="c"><b>湖北省博物馆</b><div class="desc">重点是越王勾践剑与曾侯乙编钟，必须提前预约</div></div></div><div class="slot"><div class="t">16:30</div><div class="c"><b>东湖凌波门与绿道</b><div class="desc">租共享单车骑行，日落前光线最好</div></div></div>
+  
+</div>
+<section id="feasibility" style="--sa:#30B0C7"><div class="sec-head"><span class="sec-no">04</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"></use></svg><span>可执行性体检</span></h2><span class="sub">经验阈值自检 · 非实时</span></div>
+
+<div class="card"><h3>体检结论<span class="feat-badge ok">可执行性良好</span></h3><div class="note tip">各项指标均在经验安全阈值内，行程节奏与体力分配合理，可执行性良好。</div></div>
+<div class="note caution">体检基于经验阈值（单日点位、驾车/在外时长、海拔适应、长线疲劳），不含实时交通、票务与天气。出行前 1–3 天请以官方实时信息复核关键项。</div>
+<section id="transit" style="--sa:#30B0C7"><div class="sec-head"><span class="sec-no">05</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-train"></use></svg><span>交通方案比选</span><span class="est-badge" title="里程/票价/开放时间为经验估算，以官方实时渠道为准">估算 ⓘ</span></h2><span class="sub">各地 → 武汉</span></div>
+
+<div class="grid2"><div class="card"><h3>高铁抵达 <span class="tag g">¥300-600</span></h3><div style="font-size:13px">北京 4 小时 / 上海 4.5 小时　¥300-600　优先选汉口站，离老租界最近</div></div><div class="card"><h3>天河机场到市区 <span class="tag g">¥7</span></h3><div style="font-size:13px">地铁 50 分钟　¥7　打车约 ¥90-120，晚班机建议地铁</div></div><div class="card"><h3>市内地铁公交 <span class="tag g">¥2-7</span></h3><div style="font-size:13px">—　¥2-7　支付宝或云闪付扫码即可</div></div><div class="card"><h3>共享单车 <span class="tag g">¥1.5 / 1</span></h3><div style="font-size:13px">—　¥1.5 / 15 分钟　东湖绿道与租界区最实用</div></div></div>
+<div class="note warn">交通耗时与费用为经验估算，12306/航司/景区官方实时为准。</div>
+<section id="research" style="--sa:#FF2D55"><div class="sec-head"><span class="sec-no">06</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg><span>实地调研</span></h2><span class="sub">联网核实过的细节</span></div>
+
+<div class="card"><h3>🍜 美食</h3><ul class="list"><li><b>热干面</b> — 芝麻酱是灵魂，蔡林记与常青麦香园都稳定（参考 ¥8-12）</li><li><b>三鲜豆皮</b> — 糯米加鲜肉笋丁，早餐店现做的最好吃（参考 ¥10-15）</li><li><b>排骨藕汤</b> — 用铫子煨四小时以上，秋冬最好（参考 ¥38-58）</li><li><b>油焖大虾</b> — 靓靓或巴厘龙虾，点单前先看重量和斤两（参考 ¥120-180 / 人）</li></ul></div>
+<div class="card"><h3>⚠️ 避坑</h3><div class="note tip"><b>落地提示</b> — 湖北省博物馆周一闭馆，需要提前 1 到 7 天预约，免费名额很抢手。</div><div class="note tip"><b>落地提示</b> — 过早的最佳时段是早上 7 点到 9 点，10 点后老字号基本收摊。</div><div class="note tip"><b>落地提示</b> — 住宿选地铁 2 号线或 4 号线沿线，比打车省一半时间。</div><div class="note tip"><b>落地提示</b> — 黄鹤楼 ¥70 值得进一次；预算压到最低可用长江大桥步道替代。</div></div>
+<section id="poi" style="--sa:#5856D6"><div class="sec-head"><span class="sec-no">07</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ticket"></use></svg><span>景点攻略与门票</span></h2><span class="sub">怎么买、要不要约</span></div>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"></use></svg> 东湖绿道</h3>
+<span class="tag ">绿道</span>
+<table>
+<tr><th style="width:56px">门票</th><td>免费</td></tr>
+<tr><th>预约</th><td>环湖骑行首选，凌波门看日落最佳</td></tr>
+</table>
+<div style="font-size:12px;color:var(--sub);margin-top:6px">来源: 官方渠道 · 以当日公示为准</div></div>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"></use></svg> 归元寺</h3>
+<span class="tag ">寺庙</span>
+<table>
+<tr><th style="width:56px">门票</th><td>¥10</td></tr>
+<tr><th>预约</th><td>罗汉堂数罗汉是老武汉习俗，需现场购票</td></tr>
+</table>
+<div style="font-size:12px;color:var(--sub);margin-top:6px">来源: 官方渠道 · 以当日公示为准</div></div>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"></use></svg> 古德寺</h3>
+<span class="tag ">教堂式寺院</span>
+<table>
+<tr><th style="width:56px">门票</th><td>免费（需预约）</td></tr>
+<tr><th>预约</th><td>中西合璧建筑，小众不挤</td></tr>
+</table>
+<div style="font-size:12px;color:var(--sub);margin-top:6px">来源: 官方渠道 · 以当日公示为准</div></div>
+<section id="stay" style="--sa:#FF9F0A"><div class="sec-head"><span class="sec-no">08</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bed"></use></svg><span>住宿安排</span></h2><span class="sub">按房间数而非人数</span></div>
+
+<div class="card"><h3>1 间 · 双床房/大床房</h3>
+<div style="font-size:13px;margin:4px 0 6px">按人员关系与天数智能分房，房价随季节与商圈浮动。</div>
+<ul class="list"><li>近程圈当天来回不计入住宿。</li><li>旺季建议提前 2 周预订，尤其景区内住宿。</li></ul>
+</div>
+<section id="budget" style="--sa:#30D158"><div class="sec-head"><span class="sec-no">09</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-coin"></use></svg><span>预算安排</span><span class="est-badge" title="里程/票价/开放时间为经验估算，以官方实时渠道为准">估算 ⓘ</span></h2><span class="sub">估算口径透明</span></div>
+
+<div class="card"><div class="donut-wrap"><svg class="donut" viewBox="0 0 150 150" width="150" height="150"><circle cx="75.0" cy="75.0" r="66.0" fill="none" stroke="rgba(0,0,0,.05)" stroke-width="18"/><circle cx="75.0" cy="75.0" r="66.0" fill="none" stroke="#FF9F0A" stroke-width="18" stroke-dasharray="144.4 270.3" stroke-dashoffset="-0.0" transform="rotate(-90 75.0 75.0)" stroke-linecap="butt"><title>住宿</title></circle><circle cx="75.0" cy="75.0" r="66.0" fill="none" stroke="#34C759" stroke-width="18" stroke-dasharray="217.5 197.1" stroke-dashoffset="-146.4" transform="rotate(-90 75.0 75.0)" stroke-linecap="butt"><title>餐饮</title></circle><circle cx="75.0" cy="75.0" r="66.0" fill="none" stroke="#0071E3" stroke-width="18" stroke-dasharray="46.8 367.9" stroke-dashoffset="-365.9" transform="rotate(-90 75.0 75.0)" stroke-linecap="butt"><title>交通</title></circle><text x="75.0" y="73.0" text-anchor="middle" class="d-total">¥340</text><text x="75.0" y="91.0" text-anchor="middle" class="d-cap">总预算</text></svg><div class="legend"><div class="row"><span class="sw" style="background:#FF9F0A"></span>住宿<span class="lv">¥120</span></div><div class="row"><span class="sw" style="background:#34C759"></span>餐饮<span class="lv">¥180</span></div><div class="row"><span class="sw" style="background:#FF2D55"></span>门票<span class="lv">¥0</span></div><div class="row"><span class="sw" style="background:#0071E3"></span>交通<span class="lv">¥40</span></div></div></div></div>
+<div class="card"><table>
+<tr><th>分项</th><th>最低</th><th>常规</th><th>占比</th></tr>
+<tr><td>住宿</td><td>¥120</td><td>¥220</td><td>35%</td></tr><tr><td>餐饮</td><td>¥180</td><td>¥320</td><td>53%</td></tr><tr><td>门票</td><td>¥0</td><td>¥70</td><td>0%</td></tr><tr><td>交通</td><td>¥40</td><td>¥70</td><td>12%</td></tr>
+<tr><td><b>合计</b></td><td class="rec">¥350</td><td class="rec">¥680</td><td>100%</td></tr>
+</table>
+<div style="font-size:12px;color:var(--sub);margin-top:8px">以上为人均估算（两人合住分摊），价格为参考区间，出行前请再次核实。 </div></div>
+<div class="note tip"><b>AA 分摊</b>：2 人平摊，每人约 ¥680（全团合计 ¥350）。 大项如住宿/租车按房间或车辆数计，已在「最低/常规」两档中区分全团与人均。</div>
+<section id="packing" style="--sa:#64D2FF"><div class="sec-head"><span class="sec-no">10</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-backpack"></use></svg><span>行前准备清单</span></h2><span class="sub">避免遗漏造成不便</span></div>
+
+<div class="grid2">
+<div class="card"><h3>通用必备</h3><ul class=""><li>身份证（购票/住宿实名刚需，忘带寸步难行）</li><li>手机 + 充电器 + 充电宝（车票/支付/导航全靠它）</li><li>现金少量（偏远地区/older 摊贩仍需现金）</li><li>常用药品：创可贴、肠胃药、退烧止痛药、个人处方药（多带 1-2 天余量）</li><li>纸巾湿巾、口罩、便携洗漱</li><li>雨具（折叠伞/轻便雨衣，看季节二选一或都带）</li><li>贴身小包：证件票据现金集中收纳，防丢防偷</li></ul></div>
+<div class="card"><h3>公共交通专项</h3><ul class=""><li>车票预订截图/12306 App 提前候补（节假日提前 3-7 天）</li><li>颈枕眼罩耳塞（>2h 车程提升体验）</li><li>零食饮水（高铁可带，火车上补给贵）</li><li>晕车药（客车/船 30 分钟前服）</li><li>行李称手：20 寸登机箱（飞机高铁），大件托运/寄存提前规划</li></ul></div>
+<div class="card"><h3>秋季加项</h3><ul class=""><li>薄羽绒/抓绒（降温极快，尤其北方）</li><li>保湿唇膏（干燥）</li><li>红叶季拍照穿亮色出片</li></ul></div>
+</div>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"></use></svg> 行前时间线（倒排法，防遗漏）</h3><ul class="list"><li>T-7 天：车票/机票开抢（12306 提前 15 天，但热门线提前 7 天盯候补）；住宿预订（旺季景区房紧俏）；目的地天气趋势查询</li><li>T-3 天：装备清单逐项打勾（用本清单模板）；车辆保养/摩托车检查；保险购买（含高风险运动条款）；轨迹下载（徒步）</li><li>T-1 天：充电（手机/相机/充电宝/车灯）；现金零钱；药品分装；证件票据集中放贴身包；天气终查（恶劣预警触发 Plan B）</li><li>当天出发前：水与食物装包；雨具按预报决定；行程发给家人；家中水电燃气门窗检查（出门 5 分钟解决大隐患）</li></ul></div>
+<section id="safety" style="--sa:#FF3B30"><div class="sec-head"><span class="sec-no">11</span><h2><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"></use></svg><span>安全提醒</span></h2><span class="sub">只列和本次行程相关的提醒</span></div>
+
+<div class="card"><h3>通用安全（每次出行必带）</h3><ul class="list"><li>证件：身份证随身（购票/住宿实名刚需），学生证/老年证/军官证带好可省门票</li><li>信息留底：行程单发给家人一份，含住宿地址、返程时间；独自出行每日一次定位报平安</li><li>紧急电话：110 报警 / 120 急救 / 122 交通事故；目的地若是景区，存好景区救援电话</li><li>保险：户外活动（徒步/骑行/滑雪/漂流）买含高风险运动的意外险，一天期约 5-15 元</li><li>健康：慢性病患者带足药量+1 天余量；过敏体质备抗敏药；创可贴/肠胃药/退烧药小药包</li><li>财物：大额现金分开放，手机挂绳防挤掉；人多的商圈/车站看好手机钱包</li></ul></div>
+<div class="grid2">
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mountain"></use></svg> 城市</h3><ul class="list"><li>过马路走斑马线看信号灯，电动车是城市最常见危险源（尤其夜间）</li><li>夜间独行走亮路主干道，网约车核对车牌再上车并把行程分享给家人</li><li>商圈/地铁站防盗抢；陌生人搭讪「古董/茶叶/老乡」套路直接走开</li></ul></div>
+</div>
+<div class="card"><h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"></use></svg> 应急预案模板（每份报告必含）</h3><ul class="list"><li>行程变更：天气恶劣/封路停航时的替代方案（B 线路/改期/退改签渠道）</li><li>就近医疗：目的地最近二级以上医院名称与距离（生成时查）</li><li>求助渠道：景区救援电话、当地 110/120、保险公司报案电话</li><li>信号盲区预案：徒步/山区提前告知家人行程，约定超时未联系即报警</li></ul></div>
+  <footer>AI 旅行指南小册子 — 由 Agent 生成 · 天气为预报值 · 门票/班次以官方为准 · 户外活动请量力而行</footer>
+</div>
+<button class="pdf-btn" onclick="savePDF()">📄 保存为 PDF</button>
+<script>
+function savePDF(){window.print();}
+window.addEventListener('scroll',function(){
+  var secs=document.querySelectorAll('section[id]');
+  var links=document.querySelectorAll('.toc-inner a');
+  var y=window.scrollY+90,cur=secs[0];
+  secs.forEach(function(s){if(s.offsetTop<=y)cur=s;});
+  links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur.id);});
+});
+</script>
+</body>
+</html>

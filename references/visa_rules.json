@@ -1,0 +1,220 @@
+{
+  "version": "1.0",
+  "_updated": "2026-10-12",
+  "_note": "出境准入基线缓存（Top 国家/地区）。这不是权威答案库，而是『基线 + 核验清单』——签证政策属易变信息(stability=volatile)，每次规划必须联网核验并打日期戳；查不到就输出'以××官网为准'，绝不猜测。港澳台属中国境内，不在此表。",
+  "_sources": {
+    "primary": "中国领事服务网 cs.mfa.gov.cn",
+    "agreement_table": "中外互免签证协定一览表（更新至 2026-05-29）",
+    "exempt_table": "持普通护照中国公民前往有关国家和地区入境便利待遇一览表",
+    "warning": "外交部全球安全提醒 cs.mfa.gov.cn"
+  },
+  "_redline": "免签/签证结论只采信官方三类来源；第三方签证代办站点的说法一律不作为事实依据，仅作线索。用户出行前必须自行在官网复核。",
+
+  "passport_general": {
+    "_note": "通用护照规则。各国具体月数要求不同，部分差异极大，必须逐国查。",
+    "validity_months_typical": 6,
+    "_stability": "volatile",
+    "blank_pages_typical": 2,
+    "_blank_pages_stability": "stable",
+    "warning": "部分国家（如日本）官方仅要求护照覆盖行程期，但承运航空公司普遍执行『剩余有效期 6 个月』，值机时即可拒绝登机。以承运方与目的地边检当日要求为准。",
+    "consular_hotline_cn": "12308",
+    "consular_hotline_overseas": "+86-10-12308",
+    "_consular_stability": "stable"
+  },
+
+  "visa_free_for_cn_ordinary": {
+    "_note": "对中国普通护照免签/互免的国家与地区。免签入境通常仍受停留期限制（常见每180日累计不超过90日或单次不超过30日），且可能需在线登记。逐项核验后再用。",
+    "_stability": "volatile",
+    "_updated": "2026-05-29",
+
+    "mutual_agreement": {
+      "_note": "中外互免签证协定（含普通护照互免）。停留期一般不超过 30 日。",
+      "_stability": "volatile",
+      "list": [
+        "阿尔巴尼亚", "阿联酋", "安提瓜和巴布达", "巴巴多斯", "巴哈马",
+        "白俄罗斯", "波斯尼亚和黑塞哥维那（波黑）", "多米尼克", "厄瓜多尔",
+        "斐济", "格林纳达", "格鲁吉亚", "哈萨克斯坦", "卡塔尔",
+        "马尔代夫", "毛里求斯", "摩尔多瓦", "塞尔维亚", "塞舌尔",
+        "圣马力诺", "苏里南", "所罗门群岛", "泰国", "汤加",
+        "新加坡", "亚美尼亚", "文莱", "马来西亚", "阿塞拜疆"
+      ],
+      "caveat": "马来西亚互免政策曾注明『至2026年底』，属有明确期限的临时政策，使用前必须复核当前是否仍然有效。",
+      "verify_hint": "中国领事服务网 → 中国公民出国 → 签证/APEC商务旅行卡 → 中外互免签证协定一览表"
+    },
+
+    "unilateral_exempt": {
+      "_note": "单方面允许中国公民免签入境的国家/地区。政策多为试行、有期限，且常要求在线登记。",
+      "_stability": "volatile",
+      "asia": ["印度尼西亚", "韩国济州岛", "伊朗", "乌兹别克斯坦", "巴基斯坦"],
+      "africa": ["摩洛哥", "突尼斯"],
+      "americas": ["古巴", "海地", "牙买加", "多米尼加", "圣基茨和尼维斯", "安提瓜和巴布达"],
+      "oceania": ["新西兰（附带条件：持有效澳大利亚签证的中国公民，试行政策）", "萨摩亚", "法属波利尼西亚"],
+      "time_limited": [
+        {"region": "新西兰", "policy": "持有效澳大利亚旅游/工作/学生/家庭签证的中国公民可免签停留不超过3个月", "note": "试行12个月，自2025年11月起；不适用于经澳洲中转旅客。以新西兰移民局公告为准。", "stability": "volatile"},
+        {"region": "柬埔寨", "policy": "2026-06-15 至 2026-10-15 试点免签，单次入境停留不超过14天", "note": "需填写电子入境卡。属限期试点，过期即失效。", "stability": "volatile"},
+        {"region": "俄罗斯", "policy": "对中国公民免签政策延长至 2027-12-31", "note": "以俄法律信息网站总统令文件为准。", "stability": "volatile"}
+      ],
+      "verify_hint": "中国领事服务网 → 入境便利待遇一览表"
+    }
+  },
+
+  "countries": {
+    "_note": "重点国家的准入基线。仅收录已核实来源的信息；其余国家内核自动输出 unknown → '以使领馆官网为准'。",
+
+    "日本": {
+      "iso": "JP",
+      "visa_required": "required",
+      "visa_type": "JAPAN eVISA（大陆居住的中国公民可办，单次入境，停留15或30日）或指定旅行社代办贴纸签",
+      "visa_fee_cny": 715,
+      "_visa_fee_stability": "volatile",
+      "processing_days": 5,
+      "_processing_stability": "volatile",
+      "passport_validity_months": 0,
+      "_passport_note": "日本官方仅要求护照覆盖行程期，但航空公司普遍执行6个月规则，值机可能被拒。以承运方当日要求为准。",
+      "_passport_stability": "volatile",
+      "onward_ticket": "建议备好返程/联程机票",
+      "_onward_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "_insurance_note": "日本无强制旅行保险要求，但仍强烈建议购买含医疗与紧急救援的保险。",
+      "special": [
+        "观光签通常需经使领馆指定旅行社申请，由旅行社做身元担保，机票与住宿多由旅行社代订。",
+        "电子签为单次入境，中途离境日本后再入境需重新申请。",
+        "过境免签仅适用于持第三国签证与联程机票、且限定在指定区域活动。",
+        "驾照：中国驾照在日本不可直接使用，需确认翻译件或指定证件要求，以驻日使领馆与日本警察厅说明为准。",
+        "Visit Japan Web 可在线填报入境与海关申报，获二维码走快速通道，免费。"
+      ],
+      "verify": "日本驻华大使馆 mofa.go.jp；中国领事服务网 cs.mfa.gov.cn"
+    },
+
+    "泰国": {
+      "iso": "TH",
+      "visa_required": "none",
+      "visa_note": "中泰互免签证，普通护照免签入境，通常每次停留不超过30日。仍需备返程机票与住宿证明。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境可能被要求出示行程单、酒店预订与一定金额现金或存款证明，建议备齐。",
+        "寺庙着装要求：遮肩遮膝、脱鞋进入；不可触摸他人头部。",
+        "皇室相关话题属敏感，勿随意议论。"
+      ],
+      "verify": "中国驻泰大使馆 fmprc.gov.cn；中国领事服务网"
+    },
+
+    "新加坡": {
+      "iso": "SG",
+      "visa_required": "none",
+      "visa_note": "中新互免签证，普通护照免签入境，每次停留不超过30日。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境须填SG Arrival Card（免费，官网提交）。",
+        "严格禁烟、禁食口香糖，随身药品需申报，部分药品属管制。"
+      ],
+      "verify": "中国驻新加坡大使馆；新加坡移民与关卡局 ICA"
+    },
+
+    "马来西亚": {
+      "iso": "MY",
+      "visa_required": "none",
+      "visa_note": "中马互免签证，普通护照免签停留不超过30日。⚠ 政策有明确期限（曾注明至2026年底），使用前必须复核当前状态。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "special": [
+        "MDAC（马来西亚数字入境卡）须在线提前填报。",
+        "入境内政与社会部建议避开敏感地点与集会。"
+      ],
+      "verify": "中国驻马大使馆；马来西亚移民局"
+    },
+
+    "韩国": {
+      "iso": "KR",
+      "visa_required": "conditional",
+      "visa_note": "团体旅游有特定安排；个人旅游需韩国签证或符合济州岛免签等条件。⚠ 政策多次调整，务必逐次核验，不做推断。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "special": [
+        "济州岛免签政策与团队游政策变动频繁，属高易变项，必须临行前核验。",
+        "K-ETA（韩国电子旅行许可）为易变项，部分免签群体也需申请。"
+      ],
+      "verify": "中国驻韩大使馆；韩国法务部"
+    },
+
+    "申根区": {
+      "_note": "申根26国共用一套签证规则（法国、德国、意大利、西班牙、葡萄牙、荷兰、瑞士、瑞典、丹麦、挪威、芬兰、希腊、奥地利、比利时、捷克、波兰、匈牙利、斯洛伐克、斯洛文尼亚、爱沙尼亚、拉脱维亚、立陶宛、卢森堡、马耳他、塞浦路斯、冰岛）。",
+      "visa_required": "required",
+      "_visa_stability": "volatile",
+      "schengen_visa_required": true,
+      "_visa_note": "申根签证需在计划停留时间最长的申根国家申请。材料含行程单、保险证明、部分国家要求资金证明。",
+      "insurance_min_amount_eur": 30000,
+      "_insurance_stability": "volatile",
+      "_insurance_note": "申根签证要求医疗保额不低于3万欧元，覆盖全部申根区。",
+      "passport_validity_months": 3,
+      "_passport_note": "护照须在离开申根区后仍有至少3个月有效期，且至少两页空白。",
+      "_passport_stability": "volatile",
+      "special": [
+        "首次入境须为签证申请国，边检可能核查首晚住宿与返程安排。",
+        "申根区内跨境一般不再额外查验，但仍建议随身携带护照与签证页复印件。"
+      ],
+      "verify": "中国领事服务网；拟停留时间最长国的使领馆官网"
+    },
+
+    "美国": {
+      "iso": "US",
+      "visa_required": "required",
+      "_visa_stability": "volatile",
+      "visa_note": "B1/B2 旅游签证，需面谈（B1/B2 十年有效期，按次付费）。中国大陆护照申请需注意使领馆当前受理安排。",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "EVUS 须每两年更新一次。",
+        "入境可能核查返程机票、工作或留学等约束条件，务必如实说明。"
+      ],
+      "verify": "中国驻美使领馆；美国国务院 travel.state.gov"
+    },
+
+    "英国": {
+      "iso": "GB",
+      "visa_required": "required",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "insurance_required": true,
+      "_insurance_note": "旅游签证常要求购买含医疗的旅行保险。",
+      "special": ["入境须在线申请 ETA（电子旅行授权，仅限免签国籍；持中国护照需签证）。"]
+    },
+
+    "法国": {
+      "iso": "FR",
+      "visa_required": "required",
+      "_visa_stability": "volatile",
+      "_note": "属申根区，签证按申根规则办理（停留最长国家受理）。",
+      "passport_validity_months": 3,
+      "_passport_stability": "volatile"
+    },
+
+    "德国": {
+      "iso": "DE",
+      "visa_required": "required",
+      "_visa_stability": "volatile",
+      "_note": "属申根区。",
+      "passport_validity_months": 3,
+      "_passport_stability": "volatile"
+    }
+  },
+
+  "_fallback_policy": {
+    "_note": "表里没有的国家，一律走这条：level=unknown，输出'签证/免签政策请以中国领事服务网与目的国驻华使领馆官网当日信息为准'，并在门禁卡上显示灰灯（待查），禁止给出任何免签或签证结论。",
+    "output_phrase": "该目的地未收录基线，请以中国领事服务网 cs.mfa.gov.cn 与目的国驻华使领馆官网为准（此处不作猜测）"
+  }
+}

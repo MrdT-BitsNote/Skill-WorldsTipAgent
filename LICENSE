@@ -1,0 +1,40 @@
+MIT License
+
+Copyright (c) 2026 MrdT
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+数据来源与免责声明
+-----------------------------------
+
+本技能的数据来自以下公开渠道，仅用于行程规划参考：
+
+1. 目的地基础信息：内置国内目的地库（坐标 / 气候区，离线随包提供）
+2. 天气数据：Open-Meteo（https://open-meteo.com），CC BY 4.0
+3. 车站与车次：12306 公开接口
+4. 联网调研内容：来自公开网络的真实用户反馈与官方信息
+
+免责说明：
+- 本技能**不提供**机票、火车票的实时票价与余票（相关接口需登录态，已实测不可用）
+- 天气数据为预报值，可能与实际情况有偏差，出行前请再次核实
+- 门票价格、开放时间、是否需要预约均可能变动，请以官方渠道为准
+- 徒步、骑行、摩旅、自驾存在安全风险，本技能提供的是建议与预案，
+  实际出行请自行评估身体状况与天气条件，量力而行

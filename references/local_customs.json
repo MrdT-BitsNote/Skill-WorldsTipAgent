@@ -1,0 +1,247 @@
+{
+  "version": "1.0",
+  "_updated": "2026-10-12",
+  "_sources": {
+    "driving_and_plug": "行驶方向与插头电压按 IEC/各国交通法规通行标准（stable）",
+    "customs_and_tips": "小费与宗教习俗以各国旅游局及使领馆公告为准",
+    "dietary_and_drugs": "药品管制清单以入境国海关/药监公告为准；属易变项，携药前必须核验",
+    "local_transport_and_apps": "当地票制与必装 App 以运营方及官方应用商店为准（volatile）"
+  },
+  "_note": "合规与文化基线。行驶方向、插头电压、小费、宗教禁忌、饮食禁忌、药品管制属高度稳定信息，内置基线可直接输出，是本表最有价值的部分（竞品普遍缺失，且不会过期）。管制药品清单、当地交通票制、必装App 为易变项，需核验。",
+  "_principle": "文化禁忌不是『礼貌提醒』，是保命项——违规可能引发罚款、拒入境甚至更严重后果。本表宁可多列真实硬规矩，不写泛泛的『尊重当地文化』。",
+  "driving_and_plug": {
+    "日本": {
+      "driving_side": "靠左行驶",
+      "plug": "A型扁脚",
+      "voltage": "100V",
+      "_stability": "stable",
+      "note": "中国驾照不可直接使用，租车需确认证件要求。"
+    },
+    "泰国": {
+      "driving_side": "靠左行驶",
+      "plug": "A/B/C型混用",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "新加坡": {
+      "driving_side": "靠左行驶",
+      "plug": "G型（英式三方）",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "马来西亚": {
+      "driving_side": "靠左行驶",
+      "plug": "G型",
+      "voltage": "240V",
+      "_stability": "stable"
+    },
+    "韩国": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F型（韩规两脚扁插）",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "美国": {
+      "driving_side": "靠右行驶",
+      "plug": "A/B型",
+      "voltage": "120V",
+      "_stability": "stable"
+    },
+    "英国": {
+      "driving_side": "靠左行驶",
+      "plug": "G型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "欧元区": {
+      "driving_side": "靠右行驶（德国例外无）",
+      "plug": "C/F型",
+      "voltage": "230V",
+      "_stability": "stable",
+      "note": "德国等部分国家现金使用率仍较高。"
+    },
+    "澳大利亚": {
+      "driving_side": "靠左行驶",
+      "plug": "I型（斜脚）",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "新西兰": {
+      "driving_side": "靠左行驶",
+      "plug": "I型",
+      "voltage": "230V",
+      "_stability": "stable"
+    }
+  },
+  "customs_and_tips": {
+    "_note": "文化禁忌与小费。硬规矩，务必遵守。",
+    "日本": {
+      "taboos": [
+        "不给小费，给反而不适",
+        "公共场合保持安静，手机不外放",
+        "电车不占优先席（老人/孕妇）",
+        "神社鸟居前脱帽、不踩踏门槛",
+        "垃圾分类极严（可燃/可回收/不可燃），乱扔高额罚款"
+      ],
+      "dress": "无特殊要求，商务场合忌过于随意",
+      "_stability": "stable"
+    },
+    "泰国": {
+      "taboos": [
+        "进寺庙遮肩遮膝、务必脱鞋",
+        "不可触摸他人头部",
+        "对皇室不敬为严重冒犯",
+        "对僧侣女性接触有严格礼仪"
+      ],
+      "dress": "寺庙要求过膝/过肩",
+      "_stability": "stable"
+    },
+    "新加坡": {
+      "taboos": [
+        "禁烟罚款严厉（含电子烟）",
+        "禁食口香糖与口香糖糖",
+        "地铁禁食禁饮（饮料除外）",
+        "乱丢垃圾罚重"
+      ],
+      "dress": "无特殊要求",
+      "_stability": "stable"
+    },
+    "韩国": {
+      "taboos": [
+        "不给小费",
+        "公共场合相对年轻化，氛围较宽松"
+      ],
+      "dress": "无特殊要求",
+      "_stability": "stable"
+    },
+    "美国": {
+      "taboos": [
+        "餐厅小费是惯例（15%–20%）",
+        "禁带未经安检液体",
+        "各州枪支管制差异大"
+      ],
+      "dress": "无特殊要求",
+      "_stability": "stable"
+    },
+    "英国": {
+      "taboos": [
+        "小费非强制，10% 左右",
+        "周日多数店铺关闭",
+        "进教堂保持安静",
+        "观看体育时勿起哄干扰"
+      ],
+      "dress": "无特殊要求",
+      "_stability": "stable"
+    },
+    "欧元区": {
+      "taboos": [
+        "小费凑整或留零钱",
+        "教堂内保持安静与得体着装",
+        "部分老城区对游客行为有约束"
+      ],
+      "dress": "教堂等宗教场所需遮肩",
+      "_stability": "stable"
+    }
+  },
+  "dietary_and_drugs": {
+    "_note": "饮食禁忌与管制药品。药品管制属易变项，出行前务必核验官方清单；此处仅列高频高风险提示。",
+    "_high_risk_drugs": [
+      "含麻黄碱的感冒药（部分国家属管制）",
+      "含可待因的止咳药",
+      "部分安眠药与处方精神类药物"
+    ],
+    "_drug_rule": "携带管制类药品必须备原包装与处方/说明；入境前查目的国海关与卫生部门清单。",
+    "halal_note": "穆斯林地区与国家：斋月白天不在公共场所进食；左手视为不洁；多数国家禁酒（以当地法规为准）。",
+    "vegetarian_note": "印度等地素食比例极高，餐厅多为纯素，需提前沟通。",
+    "japan": {
+      "dietary": [
+        "拉面等汤底常含猪骨/鱼汤，注意饮食禁忌",
+        "生食刺身常见，肠胃敏感者注意"
+      ],
+      "drugs_note": "含麻黄碱感冒药属管制，带入需处方",
+      "_stability": "volatile"
+    },
+    "singapore": {
+      "dietary": [
+        "清真饮食需找Halal认证餐厅"
+      ],
+      "drugs_note": "严格管制，部分常见药品入境即违规",
+      "_stability": "volatile"
+    },
+    "usa": {
+      "dietary": [
+        "生食、未经巴氏消毒的奶制品与果汁有风险"
+      ],
+      "drugs_note": "管制严格，大麻等严禁入境",
+      "_stability": "volatile"
+    }
+  },
+  "local_transport_and_apps": {
+    "_note": "当地交通与必装App。交通票制与App 属易变项，核验后再用。",
+    "日本": {
+      "transport": "JR 与地铁公司各成体系，IC卡（Suica/PASMO）通用最省心",
+      "apps": [
+        "交通换乘类App查路线最优",
+        "Google Maps 日本覆盖好",
+        "翻译类App"
+      ],
+      "_stability": "volatile",
+      "note": "每日换乘与末班车时刻是行程设计关键，务必按当日时刻排。"
+    },
+    "泰国": {
+      "transport": "BTS 空铁与 MRT 地铁，刷卡或单程票；出租车需打表",
+      "apps": [
+        "Grab 打车",
+        "Google Maps",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "新加坡": {
+      "transport": "地铁与公交极便利，需交通卡或直接刷银联/Visa",
+      "apps": [
+        "Google Maps",
+        "外卖类App",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "美国": {
+      "transport": "依赖自驾或网约车，城市公共交通有限",
+      "apps": [
+        "Google Maps",
+        "Uber/Lyft",
+        "打车类"
+      ],
+      "_stability": "volatile",
+      "note": "自驾需确认驾照与保险（见 driving_and_plug）。"
+    },
+    "英国": {
+      "transport": "地铁与双层巴士，Oyster/交通卡",
+      "apps": [
+        "Google Maps",
+        "Tube App",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "欧元区": {
+      "transport": "各国地铁/城际火车，票制各异",
+      "apps": [
+        "Google Maps",
+        "各铁路公司App",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    }
+  },
+  "connectivity": {
+    "_note": "电话与网络。境外必查，易变。",
+    "common_options": [
+      "办理国际漫游（开通快，按天计费）",
+      "购买 eSIM（落地即用，便宜）",
+      "当地电话卡（通话与流量便宜）"
+    ],
+    "note": "出境前确认手机是否支持对应频段与 eSIM；中国大陆手机出境漫游需提前开通国际漫游功能。"
+  }
+}

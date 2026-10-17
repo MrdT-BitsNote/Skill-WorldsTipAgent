@@ -1,0 +1,209 @@
+{
+  "version": "1.0",
+  "_updated": "2026-10-12",
+  "_sources": {
+    "currency_code": "ISO 4217 货币代码（stable，不会变）",
+    "tz_offset": "IANA Time Zone Database 时区数据库（stable）",
+    "exchange_rate_approx": "仅量级参考；出行前以中国银行/央行中间价或权威行情当日为准（volatile）",
+    "payment_and_tipping": "以银联国际/发卡行/当地商户公告为准；换汇与境外交易开通属易变项，出发前确认"
+  },
+  "_note": "货币与时差基线。本地货币、汇率量级、时差属于高度稳定的结构信息，内置基线可直接输出；具体汇率数值是易变的，仅给量级参考并标注核验要求。",
+  "_stability_split": "currency_code/symbol = stable；exchange_rate_approx = volatile（仅量级参考，出行前查当日）；tz_offset = stable",
+  "_redline": "绝不给出精确汇率并声称是实时值。只给量级区间，并提示以银行或权威行情当日为准。",
+  "currencies": {
+    "日本": {
+      "code": "JPY",
+      "symbol": "¥",
+      "unit": "日元",
+      "rate_note": "1 元人民币约合 20 日元量级",
+      "_rate": "volatile"
+    },
+    "泰国": {
+      "code": "THB",
+      "symbol": "฿",
+      "unit": "泰铢",
+      "rate_note": "1 元人民币约合 5 泰铢量级",
+      "_rate": "volatile"
+    },
+    "新加坡": {
+      "code": "SGD",
+      "symbol": "S$",
+      "unit": "新元",
+      "rate_note": "1 元人民币约合 0.2 新元量级",
+      "_rate": "volatile"
+    },
+    "马来西亚": {
+      "code": "MYR",
+      "symbol": "RM",
+      "unit": "林吉特",
+      "rate_note": "1 元人民币约合 0.7 林吉特量级",
+      "_rate": "volatile"
+    },
+    "韩国": {
+      "code": "KRW",
+      "symbol": "₩",
+      "unit": "韩元",
+      "rate_note": "1 元人民币约合 190 韩元量级",
+      "_rate": "volatile"
+    },
+    "美国": {
+      "code": "USD",
+      "symbol": "$",
+      "unit": "美元",
+      "rate_note": "1 人民币约合 0.14 美元",
+      "_rate": "volatile"
+    },
+    "英国": {
+      "code": "GBP",
+      "symbol": "£",
+      "unit": "英镑",
+      "rate_note": "1 人民币约合 0.11 英镑量级",
+      "_rate": "volatile"
+    },
+    "欧元区": {
+      "code": "EUR",
+      "symbol": "€",
+      "unit": "欧元",
+      "rate_note": "1 人民币约合 0.13 欧元量级",
+      "_rate": "volatile"
+    },
+    "澳大利亚": {
+      "code": "AUD",
+      "symbol": "$",
+      "unit": "澳元",
+      "rate_note": "1 人民币约合 0.21 澳元量级",
+      "_rate": "volatile"
+    },
+    "新西兰": {
+      "code": "NZD",
+      "symbol": "$",
+      "unit": "新西兰元",
+      "rate_note": "1 人民币约合 0.24 新西兰元量级",
+      "_rate": "volatile"
+    },
+    "加拿大": {
+      "code": "CAD",
+      "symbol": "$",
+      "unit": "加元",
+      "rate_note": "1 人民币约合 0.19 加元量级",
+      "_rate": "volatile"
+    }
+  },
+  "timezones": {
+    "_note": "北京时间为 UTC+8。下表为当地标准时与北京时间的常见时差（不精确到夏令时起止，夏令时属易变项，涉及时提醒按当日官方公告核验）。",
+    "日本": {
+      "utc_offset": 9,
+      "diff_beijing": "+1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "泰国": {
+      "utc_offset": 7,
+      "diff_beijing": "-1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "新加坡": {
+      "utc_offset": 8,
+      "diff_beijing": "0 小时（同北京时间）",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "马来西亚": {
+      "utc_offset": 8,
+      "diff_beijing": "0 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "韩国": {
+      "utc_offset": 9,
+      "diff_beijing": "+1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "美国": {
+      "utc_offset_note": "跨多时区，夏令时切换",
+      "zones": {
+        "美东": "-5（夏令时 -4）",
+        "美中": "-6（夏令时 -5）",
+        "美山": "-7（夏令时 -6）",
+        "美西": "-8（夏令时 -7）"
+      },
+      "diff_beijing": "美东约 -13 小时（夏令时 -12）",
+      "dst": "有，3月与11月切换",
+      "_dst_stability": "volatile"
+    },
+    "英国": {
+      "utc_offset": 0,
+      "diff_beijing": "-8 小时（夏令时 -7）",
+      "dst": "有，3月末与10月末切换",
+      "_dst_stability": "volatile"
+    },
+    "欧元区": {
+      "utc_offset": 1,
+      "diff_beijing": "-7 小时（夏令时 -6）",
+      "dst": "有，3月末与10月末切换",
+      "_dst_stability": "volatile"
+    },
+    "澳大利亚": {
+      "utc_offset": 10,
+      "diff_beijing": "+2 小时",
+      "note": "跨多个时区，部分州不实行夏令时",
+      "_stability": "volatile"
+    }
+  },
+  "payment_and_tipping": {
+    "_note": "支付与小费。这是出境最常踩坑且 AI 最少主动给的环节之一（竞品共性短板）。",
+    "日本": {
+      "card": "通用，海外卡多数可用",
+      "cash": "便利店与部分小店仍现金友好",
+      "ic_card": "Suica/PASMO 交通卡便利",
+      "mobile_pay": "多数需绑定国际卡，Apple Pay 便利",
+      "tipping": "不收小费（给反而可能造成困扰）",
+      "_tipping": "stable"
+    },
+    "泰国": {
+      "card": "景区与商户普遍收卡",
+      "cash": "必要，现金为王",
+      "mobile_pay": "本地钱包与境外扫码并存",
+      "tipping": "非必需，服务行业习惯按件给小费",
+      "_tipping": "stable"
+    },
+    "新加坡": {
+      "card": "高度普及",
+      "cash": "备用",
+      "mobile_pay": "本地支付 App 较多，需游客版本",
+      "tipping": "非必需，多为凑整",
+      "_tipping": "stable"
+    },
+    "美国": {
+      "card": "高度普及，小费文化强",
+      "cash": "备用",
+      "mobile_pay": "需国际卡",
+      "tipping": "餐厅通常需 15%–20% 小费",
+      "_tipping": "stable"
+    },
+    "英国": {
+      "card": "普及",
+      "cash": "部分小店偏好现金",
+      "mobile_pay": "需国际卡",
+      "tipping": "非强制，10% 左右常见",
+      "_tipping": "stable"
+    },
+    "欧元区": {
+      "card": "普及，部分商户收现金为主",
+      "cash": "德国等仍较依赖现金",
+      "mobile_pay": "需国际卡",
+      "tipping": "非强制，凑整或留零钱",
+      "_tipping": "stable"
+    },
+    "韩国": {
+      "card": "普及",
+      "cash": "备用",
+      "mobile_pay": "本地支付强，游客需国际卡",
+      "tipping": "不收小费",
+      "_tipping": "stable"
+    }
+  },
+  "triage_note": "换汇与支付能力属易变项，出发前请确认：当地 ATM 是否支持银联/境外卡取现、是否需提前开通境外交易、国际漫游或 eSIM 方案。"
+}

@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "_note": "可信度内核：事实稳定性分类字典。stable=内置基线可直出；volatile=易变，强制联网核验并打日期戳，未核验必须挂降级角标；unknown=查不到就写'以官方/使领馆为准'，绝不猜测。同一条事实的分类与国别/城市无关，只与字段性质有关。",
+  "_principle": "零依赖不等于离线可信。零依赖指运行时不依赖第三方包与API key；调研仍走宿主 WebSearch/WebFetch。要放弃的是'离线也给确定答案'这个隐含承诺。",
+  "levels": {
+    "stable": {
+      "label": "稳定基线",
+      "policy": "内置基线可直接输出，不强制核验；仍允许联网时顺带确认。",
+      "badge": "",
+      "decay_days": 365
+    },
+    "volatile": {
+      "label": "易变·须核验",
+      "policy": "必须联网核验并打核验日期戳；无网络或核验失败时必须挂降级角标，提示'以官方当日为准'。禁止以确定语气直出。",
+      "badge": "未核验",
+      "decay_days": 30
+    },
+    "unknown": {
+      "label": "待查·以官方为准",
+      "policy": "内置库无可靠基线且现场无法核验时，输出'以××使馆/领事服务网/景区官网当日为准'并说明去哪查，禁止编造具体数字或结论。",
+      "badge": "待查",
+      "decay_days": 0
+    }
+  },
+  "domains": {
+    "准入与证件": {
+      "fields": {
+        "护照有效期规则": "stable",
+        "是否需要签证": "volatile",
+        "签证类型与材料清单": "volatile",
+        "办理时长": "volatile",
+        "入境卡/入境手续": "volatile",
+        "疫苗与健康证明": "volatile",
+        "保险最低保额要求": "volatile",
+        "领事保护电话": "stable",
+        "当地紧急电话": "volatile"
+      }
+    },
+    "货币与购买力": {
+      "fields": {
+        "本地货币名称与符号": "stable",
+        "大致汇率量级": "volatile",
+        "换汇点与是否存在": "stable",
+        "刷卡/移动支付可用性": "volatile",
+        "现金与小费文化": "stable",
+        "单日大致花费基线": "volatile"
+      }
+    },
+    "合规与文化": {
+      "fields": {
+        "靠左/靠右行驶": "stable",
+        "插头标准与电压": "stable",
+        "是否给小费": "stable",
+        "宗教与民族禁忌": "stable",
+        "当地饮食禁忌": "stable",
+        "管制药品清单": "volatile",
+        "当地交通票制与通勤方式": "volatile",
+        "必装App与本地支付工具": "volatile"
+      }
+    },
+    "领事与制度安全": {
+      "fields": {
+        "治安大致水平": "volatile",
+        "常见诈骗手法": "volatile",
+        "外出建议时段": "volatile",
+        "使领馆地址与办公时间": "volatile",
+        "自然灾害与季节风险": "volatile"
+      }
+    },
+    "国内原有字段": {
+      "_note": "反哺国内：这些字段本就是易变的，此前以内置JSON权威口吻直出，是同一类风险。",
+      "fields": {
+        "门票价格": "volatile",
+        "开放时间": "volatile",
+        "景区预约要求": "volatile",
+        "末班车/末班船": "volatile",
+        "天气实况": "volatile",
+        "交通班次与耗时": "volatile",
+        "是否限行": "volatile",
+        "停车与接驳": "volatile",
+        "餐饮营业时间": "volatile",
+        "本地习俗与禁忌": "stable",
+        "地形与步行强度": "stable",
+        "最佳季节窗口": "stable"
+      }
+    }
+  },
+  "render": {
+    "unverified_badge_text": "未核验",
+    "unknown_badge_text": "待查",
+    "unverified_note": "此条为易变信息，本次未能联网核验，请以官方当日公告为准。",
+    "unknown_note": "内置库无可靠基线，请以××官方渠道为准（此条不猜测）。",
+    "stamp_format": "核验于 YYYY-MM-DD",
+    "stale_after_days": 30
+  },
+  "sources": {
+    "visa": "中国领事服务网 cs.mfa.gov.cn ／ 目的国驻华使领馆官网",
+    "exchange": "出发前查询当日汇率，以银行或权威行情为准",
+    "customs": "目的国官方旅游局／使领馆领事提醒",
+    "safety": "外交部安全提醒 cs.mfa.gov.cn ／ 旅行保险承保方",
+    "hours": "景区官网／官方公众号当日公告",
+    "emergency": "全国通用号码直出；目的地号码须核验"
+  }
+}

@@ -1,0 +1,786 @@
+{
+  "_meta": {
+    "name": "摩旅政策与合规库",
+    "purpose": "给摩旅模式提供逐省逐城的政策基线，用于出发前的可行性自检。",
+    "built_at": "2026-10-12",
+    "design_note": "摩托政策的核心特征：它是【逐省甚至逐城】的，且没有全国统一答案。因此本库不用任何「一般来说可以」的概括，每个省份、每个城市各写一条，并标注证据等级。",
+    "evidence_levels": {
+      "statute": "有地方性法规/政府规章明文条文 —— 最可靠，但条文也可能修订",
+      "practice": "无明文，但以官方答复、执法实例或站点禁令标志为准 —— 实际执行有效",
+      "third_party": "仅第三方汇总/媒体梳理，未检索到官方原始出处 —— 可信度低，必须现场核实"
+    },
+    "stability_levels": {
+      "stable": "长期稳定的法律规定，短期内不会变",
+      "volatile": "会变动的政策（禁限摩范围、高速准入、年检周期）",
+      "unknown": "未查证到权威来源。不猜、不给结论，由用户自行核实"
+    },
+    "global_disclaimer": "禁摩/限摩与高速准入属高变动政策，多数通告设有有效期（如深圳至 2028-12-31、哈尔滨 2 年、天津 5 年、佛山至 2028 年底）。出行前务必以【现场禁令标志】与【当地交警最新通告】为准，本库不替代实地核实。"
+  },
+  "highway_access": {
+    "北京": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许摩托上高速且可使用 ETC 通道。但注意市区限制与高速准入是两回事：二/三/四/五环主路全天禁摩，外省市号牌摩托全天禁止进入六环路（不含）以内。",
+      "source": "北京交管局",
+      "stability": "volatile"
+    },
+    "天津": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许上高速。市区外环线以内道路禁止摩托通行（不含外环线）。",
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile"
+    },
+    "河北": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许上高速；通行费按同类路段 1 类客车标准计收。",
+      "source": "河北省发改委",
+      "stability": "volatile"
+    },
+    "山西": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许上高速，但条件明确：须黄牌普通摩托、排量 ≥125cc、设计时速 ≥70km/h；高速上限速 60-80km/h、不得载人、走最右侧车道。",
+      "source": "澎湃新闻/山西高速宣传",
+      "stability": "volatile"
+    },
+    "内蒙古": {
+      "status": "allowed",
+      "evidence": "third_party",
+      "note": "第三方梳理列为允许省份；另有资料称部分路段禁行。实际以现场禁令标志为准。",
+      "source": "齐鲁晚报 2024-09-30",
+      "stability": "volatile"
+    },
+    "辽宁": {
+      "status": "allowed",
+      "evidence": "third_party",
+      "note": "第三方梳理列为允许摩托上高速省份。",
+      "source": "齐鲁晚报 2024-09-30",
+      "stability": "volatile"
+    },
+    "吉林": {
+      "status": "allowed",
+      "evidence": "third_party",
+      "note": "存在矛盾：有执法实例显示摩托可从高速驶出（仅因载人被处罚），但另有来源称吉林禁止。方向不明，出发前务必以入口标志为准。",
+      "source": "齐鲁晚报 2024-09-30 / 北方法制报",
+      "stability": "volatile"
+    },
+    "黑龙江": {
+      "status": "allowed",
+      "evidence": "third_party",
+      "note": "2024 年 9 月起允许摩托上高速（第三方梳理口径）。",
+      "source": "齐鲁晚报 2024-09-30",
+      "stability": "volatile"
+    },
+    "上海": {
+      "status": "banned",
+      "evidence": "practice",
+      "note": "高速公路禁止摩托通行；市区快速路同样禁行。",
+      "source": "陕西省公安厅答复 / 光明网 2025-05-27",
+      "stability": "volatile"
+    },
+    "江苏": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《江苏省高速公路条例》明确规定摩托车禁止进入高速公路，高速公路管理单位有权拒绝其通行。",
+      "source": "江苏省高速公路条例",
+      "stability": "volatile"
+    },
+    "浙江": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《浙江省高速公路运行管理办法》第二十四条禁止摩托进入高速公路。",
+      "source": "浙江省高速公路运行管理办法",
+      "stability": "volatile"
+    },
+    "安徽": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许摩托上高速，须遵守标志标识要求；部分收费站广场另设禁行标志，按现场标志走。",
+      "source": "安徽省交通运输厅 / 淮南市公安局",
+      "stability": "volatile"
+    },
+    "福建": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "存在官方口径矛盾：《福建省高速公路条例》第 26 条将摩托列为禁行，省高速集团在各入口统一设置禁摩标志；但省交通运输厅 2024 年答复称本省无禁止摩托的政府信息。实际全境禁行，以入口标志为准。",
+      "source": "福建省交通运输厅 / 北京青年报",
+      "stability": "volatile"
+    },
+    "江西": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《江西省实施〈道路交通安全法〉办法》明文规定摩托车禁止上高速。",
+      "source": "陕西省公安厅答复",
+      "stability": "volatile"
+    },
+    "山东": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《山东省高速公路交通安全条例》第九条规定摩托车不准在省内高速行驶，违者罚款 200 元。",
+      "source": "山东省高速公路交通安全条例",
+      "stability": "volatile"
+    },
+    "河南": {
+      "status": "banned",
+      "evidence": "third_party",
+      "note": "第三方梳理列为不支持摩托上高速省份。",
+      "source": "陕西省公安厅答复 / 北京青年报",
+      "stability": "volatile"
+    },
+    "湖北": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许上高速，全省无地方性禁行法规。条件：黄牌、排量 ≥125cc、设计时速 ≥70km/h、持相应驾驶证、戴头盔、不载人、最右车道限速 60-80km/h。",
+      "source": "湖北省公安厅 / 湖北日报",
+      "stability": "volatile"
+    },
+    "湖南": {
+      "status": "banned",
+      "evidence": "practice",
+      "note": "高速入口均设禁摩标志；摩托车不属湖南高速公路收费车型，实际不允许上高速。",
+      "source": "湖南省交通运输厅",
+      "stability": "volatile"
+    },
+    "广东": {
+      "status": "banned",
+      "evidence": "practice",
+      "note": "各高速公路入口均设禁令标志，禁止摩托通行。",
+      "source": "人民网领导留言板（广东省政府办公厅答复）",
+      "stability": "volatile"
+    },
+    "广西": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《广西壮族自治区高速公路条例》（2022-10-01 施行）明文禁止摩托车进入高速公路。",
+      "source": "广西壮族自治区高速公路条例",
+      "stability": "volatile"
+    },
+    "海南": {
+      "status": "banned",
+      "evidence": "third_party",
+      "note": "多个第三方来源将海南列入高速禁摩省份，但未检索到省级明文法条原文。方向大概率如此，仍需现场确认。",
+      "source": "中华网汽车（第三方）",
+      "stability": "volatile"
+    },
+    "重庆": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《重庆市公路管理条例》第三十一条规定高速公路及用地范围内禁止摩托车行驶；各收费站上道口均设禁令标志。",
+      "source": "重庆市公路管理条例 / 重庆市公安局",
+      "stability": "volatile"
+    },
+    "四川": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《四川省高速公路条例》第四十三条明文规定摩托车禁止进入高速公路。",
+      "source": "四川省高速公路条例",
+      "stability": "volatile"
+    },
+    "贵州": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许符合条件的两轮摩托驶入高速：入口领卡、限速 60-80km/h、最右车道、戴头盔、不载人、车辆年检与保险有效。",
+      "source": "贵阳市公安局交管支队答复",
+      "stability": "volatile"
+    },
+    "云南": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "允许摩托上高速，要求戴头盔、单人骑行、限速靠右。",
+      "source": "北京青年报 / 齐鲁晚报",
+      "stability": "volatile"
+    },
+    "西藏": {
+      "status": "banned",
+      "evidence": "practice",
+      "note": "西藏全境高速公路禁止摩托车通行。",
+      "source": "拉萨市公安局（拉萨交警）",
+      "stability": "volatile"
+    },
+    "陕西": {
+      "status": "banned",
+      "evidence": "practice",
+      "note": "陕西无省级禁摩立法，但交控集团在收费站入口及省际主线设摩托车禁行标志；2024 年法院判决认定该标志符合国家标准、对驾驶人具约束力。实际全境禁行。",
+      "source": "咸阳市交警支队 / 2024 西安铁路运输法院案例",
+      "stability": "volatile"
+    },
+    "甘肃": {
+      "status": "conditional",
+      "evidence": "practice",
+      "note": "法无明文禁止（道交法未禁摩托），但甘肃省高速公路运营部门明确对摩托上高速采取「劝阻和管控」，实际难以正常通行。属执法口径而非立法，因此标为有条件通行——但请按「大概率上不去」来做计划。",
+      "source": "甘肃省高速公路运营服务中心",
+      "stability": "volatile"
+    },
+    "青海": {
+      "status": "banned",
+      "evidence": "third_party",
+      "note": "多个第三方来源将青海列入高速禁摩省份，未检索到省级明文法条原文。需现场确认。",
+      "source": "中华网汽车（第三方）",
+      "stability": "volatile"
+    },
+    "宁夏": {
+      "status": "banned",
+      "evidence": "statute",
+      "note": "《宁夏回族自治区道路交通安全条例》第五十五条规定只有一个转向车轮的机动车不得进入高速公路——两轮与正三轮摩托均不得上高速。",
+      "source": "宁夏回族自治区道路交通安全条例",
+      "stability": "volatile"
+    },
+    "新疆": {
+      "status": "allowed",
+      "evidence": "practice",
+      "note": "法律允许合规摩托上高速：最右车道、60-80km/h、禁载人。个别高速入口设临时禁摩牌，按收费站要求签责任书后通行。",
+      "source": "齐鲁晚报 / 各地通告整理",
+      "stability": "volatile"
+    }
+  },
+  "city_ban": [
+    {
+      "city": "北京",
+      "province": "北京",
+      "scope": "四环内（不含辅路）禁京B号牌摩托；外省市号牌摩托全天禁入六环（不含）以内；二/三/四/五环主路及长安街等全天禁摩；六环内禁正三轮摩托",
+      "time": "全天（部分道路）",
+      "displacement_limit": null,
+      "source": "北京交管局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "上海",
+      "province": "上海",
+      "scope": "悬挂外省市号牌的摩托禁止在指定围合区域内道路通行（约郊环内大部）；本地摩托不得上城市快速路；轻便三轮、正三轮摩托不得上路",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "上海市公安局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "广州",
+      "province": "广东",
+      "scope": "市区范围及广州大学城、广州火车南站等区域禁止摩托车行驶（《广州市非机动车和摩托车管理条例》）；辖区内加油站禁向摩托供油",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "广州市非机动车和摩托车管理条例",
+      "stability": "volatile",
+      "evidence": "statute"
+    },
+    {
+      "city": "深圳",
+      "province": "广东",
+      "scope": "福田/罗湖/南山/盐田/宝安/龙岗/龙华/坪山/光明区内道路，除 107 国道、坪山大道外全天禁摩（含市辖区内高速公路）；大鹏新区除少数道路外全天禁摩",
+      "time": "0:00-24:00",
+      "displacement_limit": null,
+      "source": "深圳市公安局交通管理局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "天津",
+      "province": "天津",
+      "scope": "外环线以内道路（不含外环线）禁止摩托通行",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "重庆",
+      "province": "重庆",
+      "scope": "无全域禁摩令；内环快速路、机场路（渝航大道/渝都大道）等快速路及部分路段禁摩；高速公路全线禁摩",
+      "time": "全天（限行路段）",
+      "displacement_limit": null,
+      "source": "重庆市公安局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "成都",
+      "province": "四川",
+      "scope": "锦江/青羊/金牛/武侯/成华区内及其他区伸入 G4201 绕城高速外侧 500 米生态保护带以内区域，按道路交通情况实行限制通行（《成都市摩托车管理规定》2018 修正）",
+      "time": "全天（限行区域）",
+      "displacement_limit": null,
+      "source": "成都市摩托车管理规定",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "武汉",
+      "province": "湖北",
+      "scope": "三环线以内区域（含三环线）全天禁摩；中心城区停止摩托车注册登记",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "杭州",
+      "province": "浙江",
+      "scope": "主城区（上城/拱墅/西湖/滨江及原下城/江干，钱塘部分区域）禁止各类摩托车通行，且上述区域不予登记",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "杭州公安 / 杭州市政府",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "南京",
+      "province": "江苏",
+      "scope": "无针对本地摩托的限行政策；但外市号牌及江宁/浦口/六合/溧水/高淳号牌摩托不得在长江以南绕城公路以内（含南京长江大桥）行驶",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "苏州",
+      "province": "江苏",
+      "scope": "中心城区以内区域全天禁止二/三轮摩托车、轻便摩托车通行；区域内单位个人需申领通行标识方可在指定区域通行",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "苏州市人民政府",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "西安",
+      "province": "陕西",
+      "scope": "目前无针对摩托的限行政策（2017 年起基本解禁），仅核心区部分路段管控",
+      "time": "无",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "郑州",
+      "province": "河南",
+      "scope": "城市建成区道路上禁止摩托车通行（《郑州市城市道路交通安全管理条例》第 26 条）",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "郑州市城市道路交通安全管理条例",
+      "stability": "volatile",
+      "evidence": "statute"
+    },
+    {
+      "city": "济南",
+      "province": "山东",
+      "scope": "目前未出台针对摩托车的限行政策",
+      "time": "无",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "青岛",
+      "province": "山东",
+      "scope": "八大关景区、太平角景区、高架路、海底隧道、崂山旅游专用路（流清河—仰口）禁摩；市南/市北/李沧/崂山四区除高速外城市道路全天禁噪声超 85 分贝的摩托",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "青岛信网（全国党媒）",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "长沙",
+      "province": "湖南",
+      "scope": "北二环/岳麓大道/西二环/南二环/湘江路/绕城高速/京港澳高速/香樟路/福元路/芙蓉北路等合围区域内道路禁止摩托通行（绕城/京港澳高速除外）",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "昆明",
+      "province": "云南",
+      "scope": "市区实施禁摩；二环内限云A0、云A1号牌车辆通行，滇池路禁摩",
+      "time": "全天（限行区域）",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "南宁",
+      "province": "广西",
+      "scope": "禁止摩托车在本市绕城环道以内道路通行；城市快速路主路禁摩",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "厦门",
+      "province": "福建",
+      "scope": "思明区、湖里区（岛内）禁止摩托车上道路行驶（《厦门经济特区道路交通安全若干规定》第 21 条）；集美区多座高架/隧道及海翔大道主道禁摩",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "厦门经济特区道路交通安全若干规定 / 集美区政府",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "珠海",
+      "province": "广东",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "佛山",
+      "province": "广东",
+      "scope": "禅城区（除南庄镇）、南海桂城部分区域、顺德（佛山新城/大良部分）、高明荷城部分、三水西南部分全天 24 小时禁摩；禁摩区停止摩托登记，部分区域一户一摩",
+      "time": "8:00-18:30",
+      "displacement_limit": null,
+      "source": "佛山市人民政府",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "东莞",
+      "province": "广东",
+      "scope": "2009 年起市区环城路范围内全天禁摩；非粤S号牌禁入市区及镇中心区",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "第三方整理（引东莞通告）",
+      "stability": "volatile",
+      "evidence": "third_party"
+    },
+    {
+      "city": "中山",
+      "province": "广东",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "汕头",
+      "province": "广东",
+      "scope": "西港路—金凤路辅道—护堤路—梅溪桥—汕樟北路—泰山路—汕汾路—新津河以西—中阳大道—外砂河以西—东海岸大道—内海湾北岸合围的中心区域内，非本市号牌及 2014-03-01 后在澄海/潮阳/潮南/南澳注册的摩托不得进入",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "汕头市政府公告（汕府〔2025〕17号）",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "宁波",
+      "province": "浙江",
+      "scope": "中心区（北环东路—北环西路—机场北路—机场路—鄞州大道—鄞县大道—东环南路—东环北路封闭圈）全天禁摩；东钱湖全域禁止 300cc 及以上排量；中心城区高架禁摩",
+      "time": "0:00-24:00",
+      "displacement_limit": "东钱湖禁 300cc 及以上",
+      "source": "宁波交警（官方答复）",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "无锡",
+      "province": "江苏",
+      "scope": "山水东路等环线以内 7-21 时禁正三轮摩托；新园路/高浪路等特定道路全天禁摩；江海路—金城路—环湖路等环线以内按 2007 年通告执行",
+      "time": "7:00-21:00（部分全天）",
+      "displacement_limit": null,
+      "source": "无锡交警",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "常州",
+      "province": "江苏",
+      "scope": "每日 8:00-18:30 禁止摩托在市区长江路以东、龙城大道以南、丽华北路/青龙西路以西、中吴大道以北范围内通行",
+      "time": "8:00-18:30",
+      "displacement_limit": null,
+      "source": "第三方整理（非官方，可信度低）",
+      "stability": "volatile",
+      "evidence": "third_party"
+    },
+    {
+      "city": "南昌",
+      "province": "江西",
+      "scope": "2016 年通告：全天禁止南昌市属及外地号牌摩托车、轻便摩托车在市区多个区域通行",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "合肥",
+      "province": "安徽",
+      "scope": "市区外摩托车不得进入市区二环路以内（不含二环路）及其他限行区域；高架及上跨式立交桥禁摩；市区停止摩托注册登记",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "合肥市公安局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "福州",
+      "province": "福建",
+      "scope": "二环路（含主辅路）以内所有道路及二环外杨桥路/工业路等指定道路禁摩；外地摩托（含六县市、长乐区）禁入鼓楼/台江/仓山/晋安行政区及马尾区城区道路",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "福州市公安局交警支队",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "海口",
+      "province": "海南",
+      "scope": "仍施行市区禁摩",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "三亚",
+      "province": "海南",
+      "scope": "设有燃油摩托限摩区域，按燃油动力判定不限排量，限行区域外可行驶",
+      "time": "全天（限行区域）",
+      "displacement_limit": "不按排量，按燃油动力判定",
+      "source": "三亚市政府/12345",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "乌鲁木齐",
+      "province": "新疆",
+      "scope": "无官方正式全域禁摩通告；城市快速路、部分高架桥及隧道禁摩；中心商圈重点查处改装炸街，城区外围正常骑行",
+      "time": "部分路段全天",
+      "displacement_limit": null,
+      "source": "第三方整理（非官方）",
+      "stability": "volatile",
+      "evidence": "third_party"
+    },
+    {
+      "city": "兰州",
+      "province": "甘肃",
+      "scope": "不再全城禁行，改为指定区域限行：桃树坪三叉路口以西、南环路以北、西柳沟水厂三叉路口/201 省道以东、北环路以南合围区域；正三轮昼夜 24 小时限行",
+      "time": "全天（限行区域）",
+      "displacement_limit": null,
+      "source": "新浪新闻（整理自兰州公安交警通告，非官方）",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "西宁",
+      "province": "青海",
+      "scope": "2025 年 3 月取消全面禁行，放宽为特定路段限行",
+      "time": "部分路段",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "银川",
+      "province": "宁夏",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "太原",
+      "province": "山西",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源（仅百科/自媒体提及）",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "石家庄",
+      "province": "河北",
+      "scope": "摩托车限制通行三环路（含主路、辅路）以内道路、复兴大街（安济路至衡井公路）",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "2024 年石家庄市政府通告",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "呼和浩特",
+      "province": "内蒙古",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源（仅自媒体提及）",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "贵阳",
+      "province": "贵州",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源（仅第三方维基/百科提及）",
+      "stability": "unknown",
+      "evidence": "third_party"
+    },
+    {
+      "city": "拉萨",
+      "province": "西藏",
+      "scope": "",
+      "time": null,
+      "displacement_limit": null,
+      "source": "未查证到权威来源（已知西藏全境高速禁摩）",
+      "stability": "unknown",
+      "evidence": "practice"
+    },
+    {
+      "city": "哈尔滨",
+      "province": "黑龙江",
+      "scope": "黑A牌照摩托全天禁止在三环路（阳明滩大桥/达康路/电碳路/化工路/滨北桥/中源大道/祥安南大街）围合区域（含三环路）内通行（2024-09-13 起，有效期 2 年）",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "哈尔滨市公安交通管理局",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "长春",
+      "province": "吉林",
+      "scope": "仍施行市区禁摩",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "沈阳",
+      "province": "辽宁",
+      "scope": "仍施行市区禁摩（三环以内，管理相对宽松，三环外可行驶）",
+      "time": "全天",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    },
+    {
+      "city": "大连",
+      "province": "辽宁",
+      "scope": "2025 年 4 月放宽：本地号牌摩托除东北快速路、5 条主干路和 2 处广场、部分隧道及高架桥禁行外全天可通行；外地号牌摩托全天禁止在中山/西岗/沙河口/甘井子（含高新区）通行",
+      "time": "全天（外牌）",
+      "displacement_limit": null,
+      "source": "光明网/半月谈 2025-05-27",
+      "stability": "volatile",
+      "evidence": "practice"
+    }
+  ],
+  "license_chain": {
+    "D": {
+      "desc": "普通三轮摩托车（含正三轮、偏三轮），无排量/设计车速限制，准驾范围包含 E、F",
+      "source": "公安部准驾车型定义",
+      "stability": "stable"
+    },
+    "E": {
+      "desc": "普通二轮摩托车：发动机排量 >50cc 或设计车速 >50km/h（电动：电机功率 >4kW），准驾范围包含 F",
+      "source": "公安部准驾车型定义",
+      "stability": "stable"
+    },
+    "F": {
+      "desc": "轻便摩托车：发动机排量 ≤50cc 或电机功率 ≤4kW，最大设计时速 ≤50km/h",
+      "source": "公安部准驾车型定义",
+      "stability": "stable"
+    },
+    "c1_warning": "持 C1/C2/B/A 等汽车准驾车型骑摩托，属「准驾车型不符」，按无证驾驶处理：可拘留、扣车，且事故时保险不予赔付。这是摩旅最容易踩的坑。",
+    "年检": {
+      "desc": "摩托车 10 年内仅需第 6 年、第 10 年上线检验，期间每两年申领一次检验标志；超过 10 年每年上线检验 1 次。6 年内免上线（仍需按期申领标志）。发生致人伤亡事故或非法改装被处罚的仍按原周期检验。普通两轮摩托 13 年强制报废。",
+      "source": "公安部《关于深化机动车检验制度改革优化车检服务工作的意见》2022",
+      "stability": "volatile"
+    },
+    "异地年检": {
+      "desc": "摩托车实行全国通检：可在全国范围内任一地直接检验并申领检验合格标志，无需办理异地检验委托手续（2019-06-01 起全国统一实施）。",
+      "source": "公安部",
+      "stability": "stable"
+    },
+    "头盔": {
+      "desc": "强制佩戴。《道路交通安全法》第五十一条规定摩托车驾驶人及乘坐人员应当按规定戴安全头盔；违反处警告或 20-200 元罚款，并按《道路交通安全违法行为记分管理办法》第十二条一次记 1 分。头盔应符合 GB 811 标准。",
+      "source": "道路交通安全法第 51 条 / 记分管理办法",
+      "stability": "stable"
+    },
+    "交强险": {
+      "desc": "摩托车上路必须持有行驶证并投保交强险（国家强制）。未年检车辆事故时保险公司可能拒赔；逾期未年检罚 200 元记 3 分，连续 3 个检验周期未取得合格标志将被强制报废。",
+      "source": "道交法 / 机动车强制报废标准规定",
+      "stability": "volatile"
+    },
+    "跨省通行证": {
+      "desc": "国家层面不存在「跨省摩托车通行证」制度。跨省骑行只需有效的驾驶证、行驶证、交强险、年检标志。但部分城市对外地号牌另行限行（如北京外牌禁入六环内、上海外牌禁入指定区域、厦门外牌禁入岛内、大连外牌禁入主城区等）。出发前须逐城核对目的地外地号牌政策。",
+      "source": "各地通告汇总",
+      "stability": "volatile"
+    }
+  },
+  "fuel_model": {
+    "displacement_bands": {
+      "0-125": {
+        "label": "≤125cc",
+        "range_km_lo": 200,
+        "range_km_mid": 350,
+        "range_km_hi": 500,
+        "tank_l": "踏板 5-7L / 跨骑 10-14L",
+        "note": "踏板续航短（200-300km），跨骑大油箱可达 400-800km。摩旅多为跨骑，取中位 350km。",
+        "stability": "volatile"
+      },
+      "126-250": {
+        "label": "126-250cc",
+        "range_km_lo": 300,
+        "range_km_mid": 420,
+        "range_km_hi": 500,
+        "tank_l": "12-17L",
+        "note": "满油约 400-500km；高速巡航油耗上升，约 300-400km。",
+        "stability": "volatile"
+      },
+      "251-400": {
+        "label": "251-400cc",
+        "range_km_lo": 380,
+        "range_km_mid": 440,
+        "range_km_hi": 500,
+        "tank_l": "约 17L（ADV 可 25L）",
+        "note": "约 380-500km；ADV 大油箱车型偏上限。",
+        "stability": "volatile"
+      },
+      "401-99999": {
+        "label": ">400cc",
+        "range_km_lo": 250,
+        "range_km_mid": 400,
+        "range_km_hi": 600,
+        "tank_l": "17-42L",
+        "note": "大排量油耗高，常规约 200-400km；大油箱车型可远超此值。区间宽，建议直接提供实际续航。",
+        "stability": "volatile"
+      }
+    },
+    "terrain_factor": {
+      "highway": 1.2,
+      "national_road": 1.0,
+      "mountain": 1.4,
+      "note": "以下为经验估算（以国道为基准 1.0），未检索到权威量化测定数据。已知定性规律：小排量高速油耗明显上升、山区与拥堵大幅增加油耗、60-80km/h 最经济、急加速急刹 +20-30%、每 10kg 载重 +1-2%。本项标 unknown，仅作定性参考，不作为精确计算依据。",
+      "stability": "unknown"
+    },
+    "station_notes": [
+      "现行《加油站作业安全规范》AQ3010-2022（2023-04-01 实施）已删除旧版「加油后人力推离加油机 4.5 米方可启动」的要求，并允许在设可燃气体声光报警装置条件下进行手机支付；新规要求摩托车驾驶人离座、熄火、放置平稳后可直接用油枪加油。",
+      "但实践中部分加油站仍按旧习惯要求摩托车推离加油区、或用油桶在加油区外加油。遇到请以现场要求为准，不必与工作人员硬争——争赢了也耽误行程。",
+      "广州：摩托车禁止行驶区域内的加油站禁止向摩托车供油，且不得向未悬挂本市号牌摩托供油（《广州市非机动车和摩托车管理条例》）。",
+      "高速服务区加油站是否给摩托加油各站不一，部分服务区可能存在限制。建议上高速前加满，并在下高速前规划好加油点。"
+    ]
+  }
+}
