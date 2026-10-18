@@ -21,14 +21,11 @@ import re
 import sys
 from pathlib import Path
 
-# 可选依赖：UGC 可信度分层（纯标准库；缺失时自动降级为空）
-try:
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from ugc_badge import render_ugc as _render_ugc, to_sorted as _to_sorted, render_pitfalls as _render_pitfalls
-except Exception:  # pragma: no cover
-    _render_ugc = None
-    _to_sorted = None
-    _render_pitfalls = None
+# UGC 抓取渲染模块（ugc_badge）已随平台合规整改移除（见 SKILL.md v0.1.17 ⑭）。
+# _sec_ugc / _sec_pitfall 保留 None 守卫恒返回空串，公开检索结论改由紧凑版渲染器以文字呈现。
+_render_ugc = None      # type: ignore[assignment]
+_to_sorted = None       # type: ignore[assignment]
+_render_pitfalls = None  # type: ignore[assignment]
 
 REF = Path(__file__).resolve().parent.parent / "references"
 SEASON_DATA = REF / "seasons_climate.json"
@@ -327,8 +324,10 @@ def apply_style(style_key: str | None, plan: dict) -> None:
     STYLE_OVERRIDE = _style_root(spec.get("vars", {})) + "\n" + (spec.get("deco", "") or "")
 
 
-# ───────────────────────── 路线地图组件（合规版）：纯离线 SVG 示意，零外部依赖、零境外地图服务
-# none = 不画（默认零依赖）；offline = SVG 等距投影手绘折线（自驾/跨城默认，仅本地坐标，不调用任何在线地图瓦片）。
+# ───────────────────────── 路线地图组件（v0.1.17 策略改判）
+# 报告地图层优先级：地图服务 API 真地图 → 备用地图服务 API 备用 → 纯文字兜底；失败即切、不重试不阻塞。
+# MAP_MODE 三档：none=不画（默认，走文字衔接卡，已是本册现状）；amap/在线真地图由编排层注入折线后渲染；
+#   offline=SVG 手绘示意【已废止，不得作为降级产物输出——用户明确反馈"不用真地图太难看"】。
 MAP_MODE = "none"
 # 可行性体检关卡：none=关闭（纯零依赖）；advisory=册首提示+板块（默认）；strict=置顶红色强制门禁
 FEAS_MODE = "advisory"
@@ -587,46 +586,6 @@ def stamina_svg(values: list, w: int = 300, h: int = 92) -> str:
         f'<path d="{area}" fill="url(#sg)"/>'
         f'<polyline points="{poly}" fill="none" stroke="var(--stamina)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'
         f'{dots}</svg>'
-    )
-
-
-def route_map_svg(days: list, w: int = 640, h: int = 150) -> str:
-    """行程动线示意图：天节点沿波浪路径排布，段间标注里程与交通方式（非地理精确）。"""
-    n = len(days)
-    if n == 0:
-        return ""
-    pad = 44
-    pts = []
-    for i in range(n):
-        x = pad + (w - 2 * pad) * (i / max(1, n - 1))
-        y = h / 2 + (26 if i % 2 == 0 else -26) * (1 if n > 1 else 0)
-        pts.append((x, y))
-    path = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-    # 段标注：仅在有具体里程时显示（含首日到达里程），避免无意义的"市内"噪音
-    legs = ""
-    for i, (x, y), d in zip(range(n), pts, days):
-        km = d.get("leg_km")
-        if not km:
-            continue
-        mode = d.get("leg_mode") or "·"
-        if i == 0:
-            lx, ly = x, y - 22
-        else:
-            px, py = pts[i - 1]
-            lx, ly = (px + x) / 2, (py + y) / 2 - 6
-        legs += (f'<text x="{lx:.1f}" y="{ly:.1f}" text-anchor="middle" '
-                 f'class="rm-leg">{esc(mode)} {km}km</text>')
-    nodes = "".join(
-        f'<g transform="translate({x:.1f},{y:.1f})">'
-        f'<circle r="13" fill="#fff" stroke="var(--node-stroke)" stroke-width="2.4"/>'
-        f'<text text-anchor="middle" dy="4" class="rm-n">{i+1}</text>'
-        f'<text text-anchor="middle" y="28" class="rm-c">{esc((d.get("city") or "")[:6])}</text></g>'
-        for i, (x, y), d in zip(range(n), pts, days)
-    )
-    return (
-        f'<svg class="rmap" viewBox="0 0 {w} {h}" width="100%" style="max-height:170px">'
-        f'<path d="{path}" fill="none" stroke="var(--route-line)" stroke-width="2" stroke-dasharray="5 5"/>'
-        f'{legs}{nodes}</svg>'
     )
 
 
@@ -923,7 +882,7 @@ tr:last-child td{border-bottom:none}
 .chain-name{flex:1}
 .chain-gap{font-size:11px;color:var(--tip);background:rgba(52,199,89,.12);
   padding:1px 7px;border-radius:980px;white-space:nowrap}
-/* ── 悬浮操作按钮组（FAB，v0.0.10 学习 JinPeng 交互） ── */
+/* ── 悬浮操作按钮组（FAB，v0.0.10 借鉴同类路书交互） ── */
 .fab-stack{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;flex-direction:column;gap:10px}
 .fab{width:46px;height:46px;border:none;cursor:pointer;border-radius:50%;
   background:var(--accent);color:#fff;font-size:18px;line-height:46px;text-align:center;
@@ -1002,7 +961,7 @@ CSS2 = """
   background:rgba(255,149,0,.14);color:#C93400;margin-left:8px;vertical-align:middle;white-space:nowrap}
 /* 动线段标注 */
 .rmap .rm-leg{font-size:10px;fill:var(--sub);font-weight:600}
-/* UGC 真实反馈卡（v0.0.10 学习 ycyliu 可信度分层） */
+/* UGC 真实反馈卡（v0.0.10 学习 同类方案 可信度分层） */
 .ugc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px}
 .ugc-card{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;
   padding:10px 12px;background:#fff}
@@ -1036,7 +995,7 @@ function savePDF(){window.print();}
 function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
 function toast(msg){var t=document.getElementById('tg-toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1600);}
 
-/* ── 数据-呈现分离：从内嵌 trip-data 重建行程文本/日历（学习 JinPeng） ── */
+/* ── 数据-呈现分离：从内嵌 trip-data 重建行程文本/日历（借鉴同类路书） ── */
 function tripData(){try{return JSON.parse(document.getElementById('trip-data').textContent);}catch(e){return null;}}
 function tripHash(){var d=tripData()||{};var k=(d.title||document.title||'trip')+':'+(d.destinations||[]).join(',');
   var h=0;for(var i=0;i<k.length;i++){h=(h*31+k.charCodeAt(i))>>>0;}return 'tg-'+h.toString(36);}
@@ -1158,7 +1117,7 @@ def est_badge() -> str:
             '以官方实时渠道为准">估算 ⓘ</span>')
 
 
-def real_badge(source: str = "高德") -> str:
+def real_badge(source: str = "地图服务") -> str:
     """实算徽章：仅当真实 API 成功返回数据时才调用，并标注来源，杜绝假徽章。"""
     return (f'<span class="est-badge" style="background:rgba(52,199,89,.16);color:#1E7B32" '
             f'title="里程/天气来自 {esc(source)} 真实 API（已配置 Key 并成功返回）">实算✓·{esc(source)}</span>')
@@ -1270,7 +1229,7 @@ def _sec_transit(plan: dict, transit: dict | None) -> str:
     t = transit or plan.get("transit") or {}
     if not t:
         return ""
-    badge = real_badge(t.get("distance_source") or "高德") if t.get("computed") else est_badge()
+    badge = real_badge(t.get("distance_source") or "地图服务") if t.get("computed") else est_badge()
     P = [sec_open("transit", "🚄", "交通方案比选", f"{t.get('from','')} → {t.get('to','')}", badge)]
     if t.get("distance_km"):
         P.append(f'<div class="card"><h3>直线距离约 {t.get("distance_km")} km</h3>'
@@ -1346,7 +1305,7 @@ def _sec_research(plan: dict, research: dict | None) -> str:
 
 
 def _sec_ugc(research: dict | None) -> str:
-    """实时 UGC 反馈卡（学习 ycyliu：小红书 UGC + 评论挖掘 + 可信度分层）。
+    """实时 UGC 反馈卡（学习 同类方案：社交平台 UGC + 评论挖掘 + 可信度分层）。
 
     research JSON 中的 "ugc" 键承载结构化条目；无条目或模块缺失时返回空。
     真实联网抓取由宿主 Agent 在规划阶段完成，本函数只做分层可视化。
@@ -1839,7 +1798,7 @@ def _sec_altitude(plan: dict) -> str:
             hub, dist = _nearest_hub(*coord_map[base])
             hub_lines.append(f"{m} → 就近就医参考：{hub}（约 {dist:.0f} km）")
         else:
-            hub_lines.append(f"{m} → 抵达后定位最近三甲医院（高德 / 美团可查）")
+            hub_lines.append(f"{m} → 抵达后定位最近三甲医院（用地图 App 检索）")
     P = [sec_open("altitude", "🩺", "高反应急与就近就医", "高原线 / 自驾线必备")]
     grades = data.get("grades", [])
     for g in grades:
@@ -2515,7 +2474,7 @@ def main() -> int:
     ap.add_argument("--map", choices=["none", "offline"], default="none",
                     help="路线地图层：none=零依赖不画；offline=SVG 离线手绘示意（不调用在线地图）")
     ap.add_argument("--compute", choices=["none", "amap", "12306"], default="none",
-                    help="实算插件：amap=高德距离/路径；12306=票价。需配置环境变量，否则回落估算")
+                    help="实算插件：amap=地图服务距离/路径；12306=票价。需配置环境变量，否则回落估算")
     ap.add_argument("--feasibility", choices=["none", "advisory", "strict"], default="advisory",
                     help="可行性体检门禁：none=关闭；advisory=册首提示+板块(默认)；strict=置顶红色强制关卡")
     ap.add_argument("--no-images", action="store_true",
@@ -2577,7 +2536,7 @@ def _md_esc(s) -> str:
 
 
 def render_markdown(plan, research, weather, poi, context, transit, out_path, title=None) -> None:
-    """输出纯文本 Markdown 小册子：便于贴入笔记/微信/文档，零样式依赖。"""
+    """输出纯文本 Markdown 小册子：便于贴入便签 / 即时通讯 / 文档，零样式依赖。"""
     L = []
     dest = " · ".join(plan.get("destinations") or [])
     h1 = title or f"{dest}{plan.get('days')}日 · {plan.get('style_label','')}小册子"

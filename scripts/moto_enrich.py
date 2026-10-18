@@ -10,7 +10,7 @@
   ③ 塌方、断路、施工（山区线每年都在变）
   ④ 补给点与加油站实况（关闭、改造、不给摩托加油）
 
-把这四类写进静态库 = 埋雷。学摩托范的数据池思路 + 用户要求的小红书交互：
+把这四类写进静态库 = 埋雷。学行业数据池的数据池思路 + 用户要求的社交平台交互：
 **不是把社媒内容爬进库，而是给一条「检索 → 校验 → 落地」的管道。**
 
 ## 管道怎么走
@@ -23,7 +23,7 @@
 ## 证据纪律（不可让步）
 
   社媒/第三方来源**永远**是 third_party + volatile，无论多少人说一样的话。
-  只有政府/交管原文才能标 statute。把「小红书上都说可以上」写成结论，
+  只有政府/交管原文才能标 statute。把「社交平台上都说可以上」写成结论，
   和编造一个绿灯是同一类错误。
 """
 from __future__ import annotations
@@ -50,12 +50,12 @@ except Exception:  # 独立运行时的降级（仅影响 HTML 输出）
 SOURCE_TIERS = [
     {"name": "当地交管/政府官网", "weight": "statute 候选",
      "how": "搜「XX市 摩托车 禁行 通告 site:gov.cn」或直接查交警公众号"},
-    {"name": "小红书", "weight": "third_party",
+    {"name": "社交平台", "weight": "third_party",
      "how": "搜「XX 摩旅 路线/禁摩/加油」，看最近 30 天的实测笔记；"
             "多人近期说法一致才可作为参考，且必须记录发布日期"},
-    {"name": "摩托范 / 哈罗摩托", "weight": "third_party",
+    {"name": "行业数据池", "weight": "third_party",
      "how": "摩友社区有禁摩区域地图与沿途补给讨论，适合看趋势"},
-    {"name": "高德 / 百度地图", "weight": "third_party",
+    {"name": "地图服务 / 备用地图服务", "weight": "third_party",
      "how": "导航 App 的限行图层与实时路况；注意驾车模式不含摩托禁行数据"},
     {"name": "中国天气网 / 垭口实况", "weight": "third_party",
      "how": "高海拔垭口天气变化快，出发前 1 天与当天各查一次"},
@@ -105,7 +105,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
                     + ("出发前 1-3 天快速复核入口标志即可。" if not must
                        else "存在被现场劝返风险，务必查最新通告并在导航里避开。")),
             "query": f"{p} 摩托车 高速 禁行 通告",
-            "sources": ["当地交管/政府官网", "小红书", "摩托范 / 哈罗摩托"],
+            "sources": ["当地交管/政府官网", "社交平台", "行业数据池"],
         })
     for rec in (r.get("city_ban") or []):
         city = rec.get("city") or ""
@@ -121,7 +121,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
                     "必须以当地最新通告为准。" if stab == "unknown"
                     else "限行政策有时效性，本库口径需复核。"),
             "query": f"{city} 摩托车 限行 {today()[:4]}",
-            "sources": ["当地交管/政府官网", "小红书"],
+            "sources": ["当地交管/政府官网", "社交平台"],
         })
 
     # ②-b 未收录城市兜底：不在 45 城名单内 ≠ 不禁摩。
@@ -138,7 +138,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
             "why": ("该城市不在本库禁摩名单内。**未收录只代表没有数据，不代表不禁摩**——"
                     "县级市与非常规目的地恰恰是政策真空带，必须单独查一次。"),
             "query": f"{c} 摩托车 禁行 限行 通告",
-            "sources": ["当地交管/政府官网", "小红书"],
+            "sources": ["当地交管/政府官网", "社交平台"],
         })
 
     # ② 补给类：只对稀疏段要求查
@@ -152,7 +152,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
                 "why": (f"该线补给密度「{dens}」——单段无补给可能超过安全续航，"
                         "必须提前标出加油点。"),
                 "query": f"{rt.get('name')} 摩旅 加油站 实测",
-                "sources": ["小红书", "摩托范 / 哈罗摩托", "高德 / 百度地图"],
+                "sources": ["社交平台", "行业数据池", "地图服务 / 备用地图服务"],
             })
 
     # ③ 路况类：山区线 + 雨季必查
@@ -167,7 +167,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
                 "evidence": "unknown",
                 "why": "山区与砂石路段受季节与施工影响大，库内只有地形性质，没有当期路况。",
                 "query": f"{rt.get('name')} 路况 塌方 最近",
-                "sources": ["小红书", "高德 / 百度地图"],
+                "sources": ["社交平台", "地图服务 / 备用地图服务"],
             })
 
     # ④ 天气类：高海拔线
@@ -180,7 +180,7 @@ def build_checklist(*, from_city: str | None = None, to_city: str | None = None,
                 "evidence": "unknown",
                 "why": "高海拔垭口天气突变频繁，出发前 1 天与当天早晨各查一次。",
                 "query": f"{rt.get('name')} 天气 垭口",
-                "sources": ["中国天气网 / 垭口实况", "小红书"],
+                "sources": ["中国天气网 / 垭口实况", "社交平台"],
             })
 
     # 去重（同 topic 只留 must_check=True 的那条）
@@ -341,10 +341,10 @@ if __name__ == "__main__":
         print(f" {mark} [{it['kind']}] {it['topic']}  (query: {it['query']})")
     print()
     try:
-        ingest_note("成都 高速准入", "可以上", "小红书", "2027-01-01")
+        ingest_note("成都 高速准入", "可以上", "社交平台", "2027-01-01")
     except ValueError as e:
         print("未来日期被拦截:", e)
-    n = ingest_note("康定 禁摩", "未查到禁摩区", "小红书", "2026-09-20",
+    n = ingest_note("康定 禁摩", "未查到禁摩区", "社交平台", "2026-09-20",
                     "https://example.com/x")
     print("落地记录:", json.dumps(n, ensure_ascii=False))
     print("HTML 长度:", len(enrichment_html(cl, [n])))

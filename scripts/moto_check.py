@@ -530,7 +530,7 @@ def check_range(daily_km, total_km, displacement_cc, tank_l=None, range_km=None,
     t_km = float(total_km) if total_km else None
 
     # ── 加油动作序列 ────────────────────────────────────────────────
-    # 学自百度地图摩托车出行智能体的「高速前 2km 挑服务区」：
+    # 学自备用地图服务摩托车出行智能体的「高速前 2km 挑服务区」：
     # 原版只给"满油续航 X km / 预计加油 N 次"这类数字，用户拿到还是不知道
     # 什么时候该干什么。这里把数字翻译成**可执行的决策点**——什么时候、
     # 在多少公里处、做什么动作、为什么。
@@ -677,7 +677,7 @@ def _season_covers_summer(season: str) -> bool:
 def shade_advice(shade: str, season: str = "") -> str:
     """按线路绿荫等级给暴晒防护建议。
 
-    学自百度地图摩托车出行智能体的「绿荫优先」：暴晒是摩托党大敌，
+    学自备用地图服务摩托车出行智能体的「绿荫优先」：暴晒是摩托党大敌，
     但智能体只回答问题不拦截——这里在选线阶段就把防护要求一次说清。
     """
     s = (shade or "").strip()

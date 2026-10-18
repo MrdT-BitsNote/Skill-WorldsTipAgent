@@ -267,7 +267,7 @@ def t_routes() -> None:
         ck(r.get("distance_source") in ("editorial_estimate", "amap_measured"),
            f"线路 {r.get('name')} 需有 distance_source（实算优先/估值标注）")
 
-    # v0.1.13 里程纪律须写进 _meta（高德实算优先 / 估值标(估) / >150km评估拆天 / 路点校验）
+    # v0.1.13 里程纪律须写进 _meta（地图服务实算优先 / 估值标(估) / >150km评估拆天 / 路点校验）
     dd = (routes().get("_meta", {}) or {}).get("distance_discipline", {})
     ck(bool(dd), "moto_routes._meta 须含 distance_discipline")
     for k in ("实算优先", "估值标注", "单日里程阈值", "路点校验"):

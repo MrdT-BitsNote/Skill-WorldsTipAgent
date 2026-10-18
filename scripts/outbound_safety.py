@@ -120,7 +120,7 @@ def check_tables() -> tuple[int, int]:
             bad += 1
             continue
         n = sum(len(d[k]) for k in found if hasattr(d[k], "__len__"))
-        say(f"  ✅ {fname}（{label}）：键 {found}，{n} 项，{ev}")
+        say(f"  [OK] {fname}（{label}）：键 {found}，{n} 项，{ev}")
         ok += 1
     return ok, bad
 
@@ -161,7 +161,7 @@ def check_unknown() -> tuple[int, int]:
                 f"这是编造，比不答更危险")
             bad += 1
         elif visa is None or verdict in ("caution", "domestic"):
-            say(f"  ✅ {name} → 未解析，走 unknown（visa_required=None，"
+            say(f"  [OK] {name} → 未解析，走 unknown（visa_required=None，"
                 f"verdict={verdict}）")
             ok += 1
         else:
@@ -178,7 +178,7 @@ def check_unknown() -> tuple[int, int]:
             bad += 1
             continue
         if inst.country == real and gate:
-            say(f"  ✅ {real} → 正常解析（visa_required="
+            say(f"  [OK] {real} → 正常解析（visa_required="
                 f"{gate.get('visa_required')}）")
             ok += 1
         else:
@@ -213,10 +213,10 @@ def check_mismap() -> tuple[int, int]:
             say(f"  ❌ {city} → {got}（{why}）——误映射复现")
             bad += 1
         elif expect and got == expect:
-            say(f"  ✅ {city} → {got}（{why}）")
+            say(f"  [OK] {city} → {got}（{why}）")
             ok += 1
         elif not expect and got == "":
-            say(f"  ✅ {city} → 未解析（{why}）")
+            say(f"  [OK] {city} → 未解析（{why}）")
             ok += 1
         else:
             say(f"  ⚠️ {city} → {got!r}（期望 {expect or '未解析'}）——需人工确认")
@@ -238,7 +238,7 @@ def check_mismap() -> tuple[int, int]:
             say(f"  ❌ {ctry} 被标为「{status}」——免签结论错误")
             bad += 1
         else:
-            say(f"  ✅ {ctry} visa_status={status[:36]}（未误标免签）")
+            say(f"  [OK] {ctry} visa_status={status[:36]}（未误标免签）")
             ok += 1
     return ok, bad
 
@@ -263,7 +263,7 @@ def check_gate() -> tuple[int, int]:
         cards = card.get("cards") or []
         lights = [c.get("light") for c in cards]
         if len(cards) == 4:
-            say(f"  ✅ 四灯齐备（{len(cards)} 张卡，灯色 {lights}）")
+            say(f"  [OK] 四灯齐备（{len(cards)} 张卡，灯色 {lights}）")
             ok += 1
         else:
             say(f"  ❌ 门禁卡只有 {len(cards)} 张：缺灯的结论会假阴/假阳")
@@ -276,7 +276,7 @@ def check_gate() -> tuple[int, int]:
     try:
         card = gc.gate_card(None)
         if card.get("verdict") == "domestic" and not card.get("cards"):
-            say(f"  ✅ 国内 gate=None → verdict=domestic，不弹门禁卡")
+            say(f"  [OK] 国内 gate=None → verdict=domestic，不弹门禁卡")
             ok += 1
         else:
             say(f"  ❌ 国内行程竟渲染门禁卡：{card.get('verdict')}")
@@ -296,7 +296,7 @@ def check_gate() -> tuple[int, int]:
             s = str(page)
             has_action = any(k in s for k in ("行动", "核验", "怎么办", "建议"))
             if has_action:
-                say(f"  ✅ 红灯 blocked=True（red={card['red']}），"
+                say(f"  [OK] 红灯 blocked=True（red={card['red']}），"
                     f"拦停页含行动项/核验渠道")
                 ok += 1
             else:
@@ -342,7 +342,7 @@ def check_traceability() -> tuple[int, int]:
         has_src = bool(src) and isinstance(src, dict)
         if has_src and upd:
             extra = f"，另 {per} 条带逐条来源" if per else ""
-            say(f"  ✅ {fname}（{label}）：来源 {len(src)} 项 + 日期 {upd}{extra}")
+            say(f"  [OK] {fname}（{label}）：来源 {len(src)} 项 + 日期 {upd}{extra}")
             ok += 1
         elif has_src or upd:
             say(f"  ⚠️ {fname}：来源={'有' if has_src else '无'} "
@@ -374,7 +374,7 @@ def main() -> int:
     total_bad = sum(b for _, _, b in results)
     say("─" * 72)
     for name, o, b in results:
-        mark = "✅" if b == 0 else "❌"
+        mark = "[OK]" if b == 0 else "❌"
         say(f"  {mark} {name:<20} 通过 {o}　失败 {b}")
     say("─" * 72)
     if total_bad:

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "_updated": "2026-10-12",
+  "_updated": "2026-10-18",
   "_sources": {
     "currency_code": "ISO 4217 货币代码（stable，不会变）",
     "tz_offset": "IANA Time Zone Database 时区数据库（stable）",
@@ -87,6 +87,153 @@
       "unit": "加元",
       "rate_note": "1 人民币约合 0.19 加元量级",
       "_rate": "volatile"
+    },
+    "越南": {
+      "code": "VND",
+      "symbol": "₫",
+      "unit": "越南盾",
+      "rate_note": "1 元人民币约合 3,400-3,600 越南盾量级",
+      "_rate": "volatile"
+    },
+    "印度尼西亚": {
+      "code": "IDR",
+      "symbol": "Rp",
+      "unit": "印尼盾",
+      "rate_note": "1 元人民币约合 2,100-2,300 印尼盾量级",
+      "_rate": "volatile"
+    },
+    "菲律宾": {
+      "code": "PHP",
+      "symbol": "₱",
+      "unit": "菲律宾比索",
+      "rate_note": "1 元人民币约合 7.5-8.0 菲律宾比索量级",
+      "_rate": "volatile"
+    },
+    "柬埔寨": {
+      "code": "KHR/USD",
+      "symbol": "៛/$",
+      "unit": "柬埔寨瑞尔/美元",
+      "rate_note": "美元通用，1 美元约合 4,000-4,100 瑞尔；1 元人民币约合 550-580 瑞尔量级",
+      "_rate": "volatile"
+    },
+    "老挝": {
+      "code": "LAK",
+      "symbol": "₭",
+      "unit": "老挝基普",
+      "rate_note": "1 元人民币约合 2,800-3,100 老挝基普量级（通胀剧烈，以当日为准）",
+      "_rate": "volatile"
+    },
+    "缅甸": {
+      "code": "MMK",
+      "symbol": "K",
+      "unit": "缅甸元",
+      "rate_note": "1 元人民币约合 350-400 缅甸元量级（官方/黑市汇率差异大）",
+      "_rate": "volatile"
+    },
+    "土耳其": {
+      "code": "TRY",
+      "symbol": "₺",
+      "unit": "土耳其里拉",
+      "rate_note": "1 元人民币约合 4-5 里拉量级（高通胀、汇率波动大，以当日为准）",
+      "_rate": "volatile"
+    },
+    "马尔代夫": {
+      "code": "MVR",
+      "symbol": "Rf",
+      "unit": "马尔代夫拉菲亚",
+      "rate_note": "美元在度假村通用；1 美元约合 15-17 拉菲亚量级",
+      "_rate": "volatile"
+    },
+    "意大利": {
+      "code": "EUR",
+      "symbol": "€",
+      "unit": "欧元",
+      "rate_note": "1 欧元约合 7-8 元人民币量级",
+      "_rate": "volatile"
+    },
+    "阿联酋": {
+      "code": "AED",
+      "symbol": "د.إ",
+      "unit": "迪拉姆",
+      "rate_note": "1 迪拉姆约合 1.9-2.0 人民币（1 元≈0.52 迪拉姆量级）",
+      "_rate": "volatile"
+    },
+    "卡塔尔": {
+      "code": "QAR",
+      "symbol": "﷼",
+      "unit": "里亚尔",
+      "rate_note": "1 美元约合 3.64 卡塔尔里亚尔（固定联系汇率）",
+      "_rate": "volatile"
+    },
+    "塞尔维亚": {
+      "code": "RSD",
+      "symbol": "din.",
+      "unit": "第纳尔",
+      "rate_note": "1 人民币约合 20-21 第纳尔量级（1欧元≈117第纳尔）",
+      "_rate": "volatile"
+    },
+    "波黑": {
+      "code": "BAM",
+      "symbol": "КМ",
+      "unit": "可兑换马克",
+      "rate_note": "1 欧元约合 1.96 BAM（与欧元挂钩）；1 元≈0.28 BAM 量级",
+      "_rate": "volatile"
+    },
+    "白俄罗斯": {
+      "code": "BYN",
+      "symbol": "Br",
+      "unit": "白俄罗斯卢布",
+      "rate_note": "1 人民币约合 0.4-0.5 卢布量级（波动，以当日为准）",
+      "_rate": "volatile"
+    },
+    "格鲁吉亚": {
+      "code": "GEL",
+      "symbol": "₾",
+      "unit": "拉里",
+      "rate_note": "1 美元约合 2.7-2.9 拉里量级（1 元≈0.4 拉里）",
+      "_rate": "volatile"
+    },
+    "亚美尼亚": {
+      "code": "AMD",
+      "symbol": "֏",
+      "unit": "亚美尼亚德拉姆",
+      "rate_note": "1 美元约合 380-400 德拉姆量级",
+      "_rate": "volatile"
+    },
+    "毛里求斯": {
+      "code": "MUR",
+      "symbol": "₨",
+      "unit": "毛里求斯卢比",
+      "rate_note": "1 美元约合 45-48 卢比量级",
+      "_rate": "volatile"
+    },
+    "塞舌尔": {
+      "code": "SCR",
+      "symbol": "₨",
+      "unit": "塞舌尔卢比",
+      "rate_note": "1 美元约合 13-14 卢比量级",
+      "_rate": "volatile"
+    },
+    "斐济": {
+      "code": "FJD",
+      "symbol": "$",
+      "unit": "斐济元",
+      "rate_note": "1 斐济元约合 3.1-3.3 人民币量级",
+      "_rate": "volatile"
+    },
+    "摩洛哥": {
+      "code": "MAD",
+      "symbol": "د.م.",
+      "unit": "摩洛哥迪拉姆",
+      "rate_note": "1 欧元约合 10.8 迪拉姆；1 元≈1.4 迪拉姆量级",
+      "_rate": "volatile"
+    },
+    "埃及": {
+      "code": "EGP",
+      "symbol": "E£",
+      "unit": "埃及镑",
+      "rate_note": "1 美元约合 47-50 埃镑量级（波动大，以当日为准）",
+      "_rate": "volatile"
     }
   },
   "timezones": {
@@ -150,6 +297,132 @@
       "diff_beijing": "+2 小时",
       "note": "跨多个时区，部分州不实行夏令时",
       "_stability": "volatile"
+    },
+    "越南": {
+      "utc_offset": 7,
+      "diff_beijing": "-1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "印度尼西亚": {
+      "utc_offset": 7,
+      "diff_beijing": "-1 小时（雅加达WIB）/ 同北京（巴厘岛WITA UTC+8）/ +1（东部WIT UTC+9）",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "菲律宾": {
+      "utc_offset": 8,
+      "diff_beijing": "与北京相同",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "柬埔寨": {
+      "utc_offset": 7,
+      "diff_beijing": "-1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "老挝": {
+      "utc_offset": 7,
+      "diff_beijing": "-1 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "缅甸": {
+      "utc_offset": 6.5,
+      "diff_beijing": "-1.5 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "土耳其": {
+      "utc_offset": 3,
+      "diff_beijing": "-5 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "马尔代夫": {
+      "utc_offset": 5,
+      "diff_beijing": "-3 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "意大利": {
+      "utc_offset": 1,
+      "diff_beijing": "-7 小时（夏令时 -6）",
+      "dst": "夏令时 3月底-10月底 +1 小时",
+      "_stability": "stable"
+    },
+    "阿联酋": {
+      "utc_offset": 4,
+      "diff_beijing": "-4 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "卡塔尔": {
+      "utc_offset": 3,
+      "diff_beijing": "-5 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "塞尔维亚": {
+      "utc_offset": 1,
+      "diff_beijing": "-7 小时（夏令时 -6）",
+      "dst": "夏令时 3月底-10月底 +1 小时",
+      "_stability": "stable"
+    },
+    "波黑": {
+      "utc_offset": 1,
+      "diff_beijing": "-7 小时（夏令时 -6）",
+      "dst": "夏令时 +1",
+      "_stability": "stable"
+    },
+    "白俄罗斯": {
+      "utc_offset": 3,
+      "diff_beijing": "-5 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "格鲁吉亚": {
+      "utc_offset": 4,
+      "diff_beijing": "-4 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "亚美尼亚": {
+      "utc_offset": 4,
+      "diff_beijing": "-4 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "毛里求斯": {
+      "utc_offset": 4,
+      "diff_beijing": "-4 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "塞舌尔": {
+      "utc_offset": 4,
+      "diff_beijing": "-4 小时",
+      "dst": "无夏令时",
+      "_stability": "stable"
+    },
+    "斐济": {
+      "utc_offset": 12,
+      "diff_beijing": "+4 小时（比北京早4小时）",
+      "dst": "部分年份有夏令时",
+      "_stability": "stable"
+    },
+    "摩洛哥": {
+      "utc_offset": 1,
+      "diff_beijing": "-7 小时",
+      "dst": "偶有夏令时（斋月期调整）",
+      "_stability": "stable"
+    },
+    "埃及": {
+      "utc_offset": 2,
+      "diff_beijing": "-6 小时",
+      "dst": "有夏令时",
+      "_stability": "stable"
     }
   },
   "payment_and_tipping": {
@@ -202,6 +475,153 @@
       "cash": "备用",
       "mobile_pay": "本地支付强，游客需国际卡",
       "tipping": "不收小费",
+      "_tipping": "stable"
+    },
+    "越南": {
+      "card": "大城市商场/酒店可刷卡，小商户仅收现金",
+      "cash": "必要，现金为王，越南盾面额大注意数零",
+      "mobile_pay": "MoMo/ZaloPay 本地流行，主流移动支付在旅游区部分可用",
+      "tipping": "非必需，高档餐厅可留5-10%",
+      "_tipping": "stable"
+    },
+    "印度尼西亚": {
+      "card": "巴厘岛/雅加达商户普遍收卡",
+      "cash": "必要，偏远地区仅收现金",
+      "mobile_pay": "GoPay/OVO/DANA 本地主流，主流移动支付在巴厘岛部分可用",
+      "tipping": "非必需，餐厅已含10%服务费；司机/导游可给小费",
+      "_tipping": "stable"
+    },
+    "菲律宾": {
+      "card": "马尼拉/宿务商场酒店可刷卡",
+      "cash": "必要，小商户和突突车仅收现金",
+      "mobile_pay": "GCash 本地主流，主流移动支付在旅游区部分可用",
+      "tipping": "习惯给小费，餐厅10%、司机/行李员20-50比索",
+      "_tipping": "stable"
+    },
+    "柬埔寨": {
+      "card": "金边/暹粒高档场所可刷卡",
+      "cash": "美元通用为王，瑞尔用于小额找零",
+      "mobile_pay": "ABA Pay/Wing 本地流行，主流移动支付在吴哥旅游区部分可用",
+      "tipping": "非必需，但旅游业从业者期望小费（司机/导游1-2美元/次）",
+      "_tipping": "stable"
+    },
+    "老挝": {
+      "card": "万象/琅勃拉邦少数酒店可刷卡，其余仅收现金",
+      "cash": "必要，基普现金为王；泰铢和美元在旅游区也接受",
+      "mobile_pay": "BCEL One 本地银行App，主流移动支付极少",
+      "tipping": "非必需，非小费文化",
+      "_tipping": "stable"
+    },
+    "缅甸": {
+      "card": "仰光/曼德勒少数高档酒店可刷卡，绝大多数仅收现金",
+      "cash": "必要，缅甸元现金为王；美元须为无折痕新版",
+      "mobile_pay": "KBZ Pay/Wave Money 本地流行，主流移动支付极少",
+      "tipping": "非必需，但旅游业逐步接受小费",
+      "_tipping": "stable"
+    },
+    "土耳其": {
+      "card": "城市与旅游区普遍收卡",
+      "cash": "必要，巴扎/小摊多只收现金",
+      "mobile_pay": "本地银行App为主，境外卡多不支持",
+      "tipping": "餐厅约 5-10% 现金小费为礼数，理发/出租车凑整",
+      "_tipping": "stable"
+    },
+    "马尔代夫": {
+      "card": "度假村普遍收卡（另加10%服务费+税）",
+      "cash": "马累/居民岛需拉菲亚现金",
+      "mobile_pay": "度假村以卡为主",
+      "tipping": "非必需但水上屋/行李员小额美元小费常见",
+      "_tipping": "stable"
+    },
+    "意大利": {
+      "card": "普遍收卡，小店可能设最低额",
+      "cash": "必要，公厕/小费/集市用现金",
+      "mobile_pay": "本地以卡+contactless为主",
+      "tipping": "非必需，coperto已含服务费，满意可留零钱",
+      "_tipping": "stable"
+    },
+    "阿联酋": {
+      "card": "普遍收卡",
+      "cash": "商场/超市通用现金",
+      "mobile_pay": "Apple Pay/本地钱包普及",
+      "tipping": "高档餐厅账单已含服务费，可留零钱",
+      "_tipping": "stable"
+    },
+    "卡塔尔": {
+      "card": "商场/酒店普遍收卡",
+      "cash": "小摊/集市备现金",
+      "mobile_pay": "主流国际卡可用",
+      "tipping": "账单多含服务费，凑整即可",
+      "_tipping": "stable"
+    },
+    "塞尔维亚": {
+      "card": "城市收卡",
+      "cash": "小店多收第纳尔现金",
+      "mobile_pay": "—",
+      "tipping": "餐厅约10%现金小费为礼数",
+      "_tipping": "stable"
+    },
+    "波黑": {
+      "card": "城市收卡，小城/山区现金为主",
+      "cash": "现金为主",
+      "mobile_pay": "—",
+      "tipping": "餐厅可留零钱凑整",
+      "_tipping": "stable"
+    },
+    "白俄罗斯": {
+      "card": "明斯克普遍收卡",
+      "cash": "小镇/市场备现金",
+      "mobile_pay": "—",
+      "tipping": "餐厅约10%",
+      "_tipping": "stable"
+    },
+    "格鲁吉亚": {
+      "card": "城市收卡",
+      "cash": "小馆/市场现金",
+      "mobile_pay": "—",
+      "tipping": "满意可留5-10%",
+      "_tipping": "stable"
+    },
+    "亚美尼亚": {
+      "card": "城市收卡",
+      "cash": "现金常用",
+      "mobile_pay": "—",
+      "tipping": "餐厅可留零钱",
+      "_tipping": "stable"
+    },
+    "毛里求斯": {
+      "card": "度假村普遍收卡",
+      "cash": "小店/市场备卢比现金",
+      "mobile_pay": "—",
+      "tipping": "账单常已含服务费，可小额现金",
+      "_tipping": "stable"
+    },
+    "塞舌尔": {
+      "card": "度假村收卡",
+      "cash": "现金卢比用于小店/市场",
+      "mobile_pay": "—",
+      "tipping": "账单含服务费，可留零钱",
+      "_tipping": "stable"
+    },
+    "斐济": {
+      "card": "度假区收卡",
+      "cash": "村庄/市场备现金",
+      "mobile_pay": "—",
+      "tipping": "度假村可留少量",
+      "_tipping": "stable"
+    },
+    "摩洛哥": {
+      "card": "城市收卡",
+      "cash": "集市/小摊现金为王",
+      "mobile_pay": "—",
+      "tipping": "餐厅/向导可给小费（凑整）",
+      "_tipping": "stable"
+    },
+    "埃及": {
+      "card": "酒店/景区收卡",
+      "cash": "大量场景要埃镑现金，备小额",
+      "mobile_pay": "部分收美元",
+      "tipping": "习惯给小费（baksheesh），随身备零钞",
       "_tipping": "stable"
     }
   },

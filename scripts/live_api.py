@@ -8,13 +8,13 @@
 - 所有对外函数返回 (data, source) 二元组，source 用于渲染端「实算✓·来源」徽章，杜绝假徽章。
 
 三个真实数据源：
-  1. 高德 (AMap)  Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 AMAP_KEY）
-  2. 和风 (QWeather) 天气 API —— 7 天预报（环境变量 QWEATHER_KEY）
-  3. Open-Meteo            —— 天气（免 key，作为和风的 keyless 兜底）
+  1. 地图服务 (AMap)  Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 AMAP_KEY）
+  2. 天气服务 (QWeather) 天气 API —— 7 天预报（环境变量 QWEATHER_KEY）
+  3. Open-Meteo            —— 天气（免 key，作为天气服务的 keyless 兜底）
 
 环境变量：
-  AMAP_KEY       高德 Web 服务 Key
-  QWEATHER_KEY   和风天气 Key（开发者免费版即可；location 直接用 "经度,纬度"）
+  AMAP_KEY       地图服务 Web 服务 Key
+  QWEATHER_KEY   天气服务 Key（开发者免费版即可；location 直接用 "经度,纬度"）
 """
 from __future__ import annotations
 
@@ -56,10 +56,10 @@ def _http_json(url: str, retries: int = 2) -> dict | None:
 
 
 # ───────────────────────────────────────────────────────────────
-# 高德 (AMap)
+# 地图服务 (AMap)
 # ───────────────────────────────────────────────────────────────
 def amap_distance_matrix(origins: list, destinations: list, mode: str = "driving") -> list | None:
-    """高德距离矩阵 v3。origins/destinations: [(lat, lon), ...]。返回 [米]。"""
+    """地图服务距离矩阵 v3。origins/destinations: [(lat, lon), ...]。返回 [米]。"""
     key = os.environ.get("AMAP_KEY")
     if not key or not origins or not destinations:
         return None
@@ -76,7 +76,7 @@ def amap_distance_matrix(origins: list, destinations: list, mode: str = "driving
 
 
 def amap_driving(origin: tuple, destination: tuple) -> dict | None:
-    """高德驾车路径规划 v3，返回 {"distance_km":float, "duration_h":float}。"""
+    """地图服务驾车路径规划 v3，返回 {"distance_km":float, "duration_h":float}。"""
     key = os.environ.get("AMAP_KEY")
     if not key or not origin or not destination:
         return None
@@ -100,23 +100,23 @@ def amap_driving(origin: tuple, destination: tuple) -> dict | None:
 
 
 def amap_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
-    """高德实算城际里程。返回 (distance_km, duration_h, source) 或 (None, None, None)。"""
+    """地图服务实算城际里程。返回 (distance_km, duration_h, source) 或 (None, None, None)。"""
     if not (from_coord and to_coord and os.environ.get("AMAP_KEY")):
         return None, None, None
     drv = amap_driving(from_coord, to_coord)
     if drv:
-        return drv["distance_km"], drv["duration_h"], "高德"
+        return drv["distance_km"], drv["duration_h"], "地图服务"
     dm = amap_distance_matrix([from_coord], [to_coord])
     if dm:
-        return round(dm[0] / 1000, 1), None, "高德"
+        return round(dm[0] / 1000, 1), None, "地图服务"
     return None, None, None
 
 
 # ───────────────────────────────────────────────────────────────
-# 和风 (QWeather)
+# 天气服务 (QWeather)
 # ───────────────────────────────────────────────────────────────
 def qweather(lat: float, lon: float, days: int = 7) -> dict | None:
-    """和风天气 7 天预报。返回归一化 dict（同 open_meteo 输出结构）或 None。
+    """天气服务 7 天预报。返回归一化 dict（同 open_meteo 输出结构）或 None。
 
     免费开发者版 location 直接用 "经度,纬度" 即可；precip_prob 在免费 7d 接口
     不返回，置 None 并如实标注。
@@ -145,7 +145,7 @@ def qweather(lat: float, lon: float, days: int = 7) -> dict | None:
         })
     if not out_days:
         return None
-    return {"days": out_days, "source": "和风"}
+    return {"days": out_days, "source": "天气服务"}
 
 
 # ───────────────────────────────────────────────────────────────
@@ -186,14 +186,14 @@ def open_meteo(lat: float, lon: float, days: int = 7) -> dict | None:
 
 
 def weather_unified(lat: float, lon: float, days: int = 7) -> tuple:
-    """天气统一入口：优先和风（有 key），否则 Open-Meteo。
+    """天气统一入口：优先天气服务（有 key），否则 Open-Meteo。
 
     返回 (days_list, source) 或 (None, None)。
     """
-    # 和风优先
+    # 天气服务优先
     qw = qweather(lat, lon, days)
     if qw:
-        return qw["days"], "和风"
+        return qw["days"], "天气服务"
     om = open_meteo(lat, lon, days)
     if om:
         return om["days"], "Open-Meteo"

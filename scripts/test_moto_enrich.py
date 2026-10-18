@@ -82,7 +82,7 @@ g2 = mc.moto_card(from_city="武汉", to_city="贵阳", total_km=1000, displacem
                   has_insurance=True, has_helmet=True, prefer_highway=True)
 p2 = [c for c in g2["cards"] if c["title"].startswith("续航")][0]["items"]
 ck("服务区" in p2["fuel_actions"][0]["why"],
-   "prefer_highway 时出发前提示须提服务区（学百度的「高速前挑服务区」）")
+   "prefer_highway 时出发前提示须提服务区（学备用地图服务的「高速前挑服务区」）")
 ck(p2.get("expected_refuels") == 3, f"1000km/400km 安全续航应设 3 站，实得 {p2.get('expected_refuels')}")
 
 # 无里程时仍要给动作基线（出发前加满），不得空序列
@@ -91,17 +91,17 @@ p3 = [c for c in g3["cards"] if c["title"].startswith("续航")][0]["items"]
 ck(len(p3.get("fuel_actions") or []) >= 1, "无里程时也应有出发前加满的动作基线")
 
 # ── 四、ingest_note 证据纪律 ─────────────────────────────────────────
-n = me.ingest_note("康定 禁摩", "市区不禁摩", "小红书", "2026-09-20")
+n = me.ingest_note("康定 禁摩", "市区不禁摩", "社交平台", "2026-09-20")
 ck(n["evidence"] == "third_party", "社媒来源必须标 third_party，不得升级")
 ck(n["stability"] == "volatile", "会变信息必须标 volatile")
 ck("age_days" in n, "记录须带时效天数")
 
-for bad, kw in ((("", "内容", "小红书", "2026-01-01"), "topic"),
-                (("主题", "", "小红书", "2026-01-01"), "content"),
+for bad, kw in ((("", "内容", "社交平台", "2026-01-01"), "topic"),
+                (("主题", "", "社交平台", "2026-01-01"), "content"),
                 (("主题", "内容", "", "2026-01-01"), "source"),
-                (("主题", "内容", "小红书", ""), "date"),
-                (("主题", "内容", "小红书", "2026/01/01"), "YYYY-MM-DD"),
-                (("主题", "内容", "小红书", "2999-01-01"), "晚于今天")):
+                (("主题", "内容", "社交平台", ""), "date"),
+                (("主题", "内容", "社交平台", "2026/01/01"), "YYYY-MM-DD"),
+                (("主题", "内容", "社交平台", "2999-01-01"), "晚于今天")):
     try:
         me.ingest_note(*bad)
         ck(False, f"缺 {kw} 必须抛错")
@@ -109,15 +109,15 @@ for bad, kw in ((("", "内容", "小红书", "2026-01-01"), "topic"),
         ck(True, "")
 
 # 超 30 天告警
-old = me.ingest_note("旧闻", "内容", "小红书",
+old = me.ingest_note("旧闻", "内容", "社交平台",
                      (dt.date.today() - dt.timedelta(days=45)).isoformat())
 ck("stale_warning" in old, "超过 30 天的笔记必须带 stale_warning")
 
 # ── 五、validate_notes：坏数据不毁整包 ──────────────────────────────
 mixed = {"notes": [
-    {"topic": "A", "content": "可以", "source": "小红书", "date": "2026-10-01"},
+    {"topic": "A", "content": "可以", "source": "社交平台", "date": "2026-10-01"},
     {"topic": "B", "content": "缺来源", "date": "2026-10-01"},
-    {"topic": "C", "content": "未来日期", "source": "小红书", "date": "2999-01-01"},
+    {"topic": "C", "content": "未来日期", "source": "社交平台", "date": "2999-01-01"},
 ]}
 out = me.validate_notes(mixed)
 good = [x for x in out if "_errors" not in x]
@@ -143,7 +143,7 @@ if sc:
     ck(topics[sc[0]]["must_check"] is False,
        "statute 级政策应只列为建议复核，把「必须查」留给真有风险的信息")
 ck(cl.get("must_count", 0) >= 2, f"成都→康定至少 2 项必须查，实得 {cl.get('must_count')}")
-ck("小红书" in json.dumps(cl, ensure_ascii=False), "建议来源须含小红书")
+ck("社交平台" in json.dumps(cl, ensure_ascii=False), "建议来源须含社交平台")
 ck("不做批量抓取" in cl.get("compliance_note", ""), "合规边界必须写明")
 
 # ── 七、渲染不得因缺数据崩 ──────────────────────────────────────────

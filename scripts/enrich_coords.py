@@ -92,7 +92,7 @@ def geocode(name: str, region: str) -> dict | None:
     def acceptable(item: dict) -> bool:
         """结果的省份必须与目标区域辖省一致。"""
         if not provinces:
-            return True  # 主题乐园/港澳台海外等无省份约束
+            return True  # 主题乐园/港澳台/海外等无省份约束
         blob = f"{item.get('admin1','')}{item.get('admin2','')}"
         return any(p in blob for p in provinces)
 

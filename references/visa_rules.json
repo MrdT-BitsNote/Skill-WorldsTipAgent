@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "_updated": "2026-10-12",
+  "_updated": "2026-10-18",
   "_note": "出境准入基线缓存（Top 国家/地区）。这不是权威答案库，而是『基线 + 核验清单』——签证政策属易变信息(stability=volatile)，每次规划必须联网核验并打日期戳；查不到就输出'以××官网为准'，绝不猜测。港澳台属中国境内，不在此表。",
   "_sources": {
     "primary": "中国领事服务网 cs.mfa.gov.cn",
@@ -9,7 +9,6 @@
     "warning": "外交部全球安全提醒 cs.mfa.gov.cn"
   },
   "_redline": "免签/签证结论只采信官方三类来源；第三方签证代办站点的说法一律不作为事实依据，仅作线索。用户出行前必须自行在官网复核。",
-
   "passport_general": {
     "_note": "通用护照规则。各国具体月数要求不同，部分差异极大，必须逐国查。",
     "validity_months_typical": 6,
@@ -21,46 +20,99 @@
     "consular_hotline_overseas": "+86-10-12308",
     "_consular_stability": "stable"
   },
-
   "visa_free_for_cn_ordinary": {
     "_note": "对中国普通护照免签/互免的国家与地区。免签入境通常仍受停留期限制（常见每180日累计不超过90日或单次不超过30日），且可能需在线登记。逐项核验后再用。",
     "_stability": "volatile",
-    "_updated": "2026-05-29",
-
+    "_updated": "2026-10-18",
     "mutual_agreement": {
       "_note": "中外互免签证协定（含普通护照互免）。停留期一般不超过 30 日。",
       "_stability": "volatile",
       "list": [
-        "阿尔巴尼亚", "阿联酋", "安提瓜和巴布达", "巴巴多斯", "巴哈马",
-        "白俄罗斯", "波斯尼亚和黑塞哥维那（波黑）", "多米尼克", "厄瓜多尔",
-        "斐济", "格林纳达", "格鲁吉亚", "哈萨克斯坦", "卡塔尔",
-        "马尔代夫", "毛里求斯", "摩尔多瓦", "塞尔维亚", "塞舌尔",
-        "圣马力诺", "苏里南", "所罗门群岛", "泰国", "汤加",
-        "新加坡", "亚美尼亚", "文莱", "马来西亚", "阿塞拜疆"
+        "阿尔巴尼亚",
+        "阿联酋",
+        "安提瓜和巴布达",
+        "巴巴多斯",
+        "巴哈马",
+        "白俄罗斯",
+        "波斯尼亚和黑塞哥维那（波黑）",
+        "多米尼克",
+        "厄瓜多尔",
+        "斐济",
+        "格林纳达",
+        "格鲁吉亚",
+        "哈萨克斯坦",
+        "卡塔尔",
+        "马尔代夫",
+        "毛里求斯",
+        "摩尔多瓦",
+        "塞尔维亚",
+        "塞舌尔",
+        "圣马力诺",
+        "苏里南",
+        "所罗门群岛",
+        "泰国",
+        "汤加",
+        "新加坡",
+        "亚美尼亚",
+        "文莱",
+        "马来西亚",
+        "阿塞拜疆"
       ],
       "caveat": "马来西亚互免政策曾注明『至2026年底』，属有明确期限的临时政策，使用前必须复核当前是否仍然有效。",
       "verify_hint": "中国领事服务网 → 中国公民出国 → 签证/APEC商务旅行卡 → 中外互免签证协定一览表"
     },
-
     "unilateral_exempt": {
       "_note": "单方面允许中国公民免签入境的国家/地区。政策多为试行、有期限，且常要求在线登记。",
       "_stability": "volatile",
-      "asia": ["印度尼西亚", "韩国济州岛", "伊朗", "乌兹别克斯坦", "巴基斯坦"],
-      "africa": ["摩洛哥", "突尼斯"],
-      "americas": ["古巴", "海地", "牙买加", "多米尼加", "圣基茨和尼维斯", "安提瓜和巴布达"],
-      "oceania": ["新西兰（附带条件：持有效澳大利亚签证的中国公民，试行政策）", "萨摩亚", "法属波利尼西亚"],
+      "asia": [
+        "印度尼西亚",
+        "韩国济州岛",
+        "伊朗",
+        "乌兹别克斯坦",
+        "巴基斯坦"
+      ],
+      "africa": [
+        "摩洛哥",
+        "突尼斯"
+      ],
+      "americas": [
+        "古巴",
+        "海地",
+        "牙买加",
+        "多米尼加",
+        "圣基茨和尼维斯",
+        "安提瓜和巴布达"
+      ],
+      "oceania": [
+        "新西兰（附带条件：持有效澳大利亚签证的中国公民，试行政策）",
+        "萨摩亚",
+        "法属波利尼西亚"
+      ],
       "time_limited": [
-        {"region": "新西兰", "policy": "持有效澳大利亚旅游/工作/学生/家庭签证的中国公民可免签停留不超过3个月", "note": "试行12个月，自2025年11月起；不适用于经澳洲中转旅客。以新西兰移民局公告为准。", "stability": "volatile"},
-        {"region": "柬埔寨", "policy": "2026-06-15 至 2026-10-15 试点免签，单次入境停留不超过14天", "note": "需填写电子入境卡。属限期试点，过期即失效。", "stability": "volatile"},
-        {"region": "俄罗斯", "policy": "对中国公民免签政策延长至 2027-12-31", "note": "以俄法律信息网站总统令文件为准。", "stability": "volatile"}
+        {
+          "region": "新西兰",
+          "policy": "持有效澳大利亚旅游/工作/学生/家庭签证的中国公民可免签停留不超过3个月",
+          "note": "试行12个月，自2025年11月起；不适用于经澳洲中转旅客。以新西兰移民局公告为准。",
+          "stability": "volatile"
+        },
+        {
+          "region": "柬埔寨",
+          "policy": "2026-06-15 至 2026-10-15 试点免签，单次入境停留不超过14天",
+          "note": "需填写电子入境卡。属限期试点，过期即失效。",
+          "stability": "volatile"
+        },
+        {
+          "region": "俄罗斯",
+          "policy": "对中国公民免签政策延长至 2027-12-31",
+          "note": "以俄法律信息网站总统令文件为准。",
+          "stability": "volatile"
+        }
       ],
       "verify_hint": "中国领事服务网 → 入境便利待遇一览表"
     }
   },
-
   "countries": {
     "_note": "重点国家的准入基线。仅收录已核实来源的信息；其余国家内核自动输出 unknown → '以使领馆官网为准'。",
-
     "日本": {
       "iso": "JP",
       "visa_required": "required",
@@ -86,7 +138,6 @@
       ],
       "verify": "日本驻华大使馆 mofa.go.jp；中国领事服务网 cs.mfa.gov.cn"
     },
-
     "泰国": {
       "iso": "TH",
       "visa_required": "none",
@@ -103,7 +154,6 @@
       ],
       "verify": "中国驻泰大使馆 fmprc.gov.cn；中国领事服务网"
     },
-
     "新加坡": {
       "iso": "SG",
       "visa_required": "none",
@@ -119,7 +169,6 @@
       ],
       "verify": "中国驻新加坡大使馆；新加坡移民与关卡局 ICA"
     },
-
     "马来西亚": {
       "iso": "MY",
       "visa_required": "none",
@@ -133,7 +182,6 @@
       ],
       "verify": "中国驻马大使馆；马来西亚移民局"
     },
-
     "韩国": {
       "iso": "KR",
       "visa_required": "conditional",
@@ -147,7 +195,6 @@
       ],
       "verify": "中国驻韩大使馆；韩国法务部"
     },
-
     "申根区": {
       "_note": "申根26国共用一套签证规则（法国、德国、意大利、西班牙、葡萄牙、荷兰、瑞士、瑞典、丹麦、挪威、芬兰、希腊、奥地利、比利时、捷克、波兰、匈牙利、斯洛伐克、斯洛文尼亚、爱沙尼亚、拉脱维亚、立陶宛、卢森堡、马耳他、塞浦路斯、冰岛）。",
       "visa_required": "required",
@@ -166,7 +213,6 @@
       ],
       "verify": "中国领事服务网；拟停留时间最长国的使领馆官网"
     },
-
     "美国": {
       "iso": "US",
       "visa_required": "required",
@@ -182,7 +228,6 @@
       ],
       "verify": "中国驻美使领馆；美国国务院 travel.state.gov"
     },
-
     "英国": {
       "iso": "GB",
       "visa_required": "required",
@@ -191,9 +236,10 @@
       "_passport_stability": "volatile",
       "insurance_required": true,
       "_insurance_note": "旅游签证常要求购买含医疗的旅行保险。",
-      "special": ["入境须在线申请 ETA（电子旅行授权，仅限免签国籍；持中国护照需签证）。"]
+      "special": [
+        "入境须在线申请 ETA（电子旅行授权，仅限免签国籍；持中国护照需签证）。"
+      ]
     },
-
     "法国": {
       "iso": "FR",
       "visa_required": "required",
@@ -202,7 +248,6 @@
       "passport_validity_months": 3,
       "_passport_stability": "volatile"
     },
-
     "德国": {
       "iso": "DE",
       "visa_required": "required",
@@ -210,9 +255,355 @@
       "_note": "属申根区。",
       "passport_validity_months": 3,
       "_passport_stability": "volatile"
+    },
+    "越南": {
+      "iso": "VN",
+      "visa_required": "evisa",
+      "visa_note": "中国普通护照需提前办理电子签证（e-Visa），有效期90天，单次25美元/多次50美元，3-5个工作日出签，覆盖83个口岸。富国岛直飞可免签停留30天（离开该岛需办签）。2026年10月12日起，组团赴庆和省（芽庄）可免签停留30天，政策至2027年12月31日。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "2026年起须提前72小时填写数字入境卡，保存二维码。",
+        "富国岛免签仅限直飞，经河内/胡志明转机不算免签。",
+        "庆和省团队免签须2人以上、由越南国际旅行社组织、直飞金兰机场、同口岸出入境。",
+        "越南对无人机管控严格，未经许可不得携带。"
+      ],
+      "verify": "越南出入境管理局；中国驻越南大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "印度尼西亚": {
+      "iso": "ID",
+      "visa_required": "evisa_voa",
+      "visa_note": "2026年政策收紧：普通护照不再享受免签，须办理电子落地签（e-VOA）或机场落地签（VOA），停留30天，可延期一次至60天，费用约500,000印尼盾（~35美元）。巴厘岛曾免签但已取消。雅加达、泗水、棉兰、巴厘岛等国际机场均可办理。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境须携带纸质版往返机票和酒店订单，手机截图不被认可。",
+        "出行前完成 All Indonesia 线上申报。",
+        "巴厘岛额外缴纳旅游税。",
+        "旅游签严禁用于商业拍摄、短视频带货等，违者遣返拉黑。",
+        "14岁以下儿童需提供出生证明，走人工通道。"
+      ],
+      "verify": "印尼移民局官网；中国驻印尼大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "菲律宾": {
+      "iso": "PH",
+      "visa_required": "visa_free_14d",
+      "visa_note": "2026年1月16日起，中国普通护照以旅游/商务为目的可免签入境14天，仅限马尼拉NAIA和宿务MCIA两个机场，不可延期、不可转签。政策有效期1年，到期前评估。超过14天或从其他口岸入境须提前办理9(a)旅游签证或电子签证。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境前72小时内须在 etravel.gov.ph 免费填写电子入境登记（eTravel），携带打印凭证。",
+        "仅接受电子/机读护照，手写护照不予认可。",
+        "免签14天严格不可延期，逾期将面临罚款和入境黑名单。",
+        "持有效美/日/澳/加/申根签证者可免签停留7天（部分可延至14天）。"
+      ],
+      "verify": "菲律宾外交部；菲律宾移民局；中国驻菲律宾大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "柬埔寨": {
+      "iso": "KH",
+      "visa_required": "conditional_free",
+      "visa_note": "2026年6月15日至10月15日临时免签：持普通护照可免签入境，单次停留不超过14天，可多次出入境，无需提前办签，仅需填写电子入境卡（E-Arrival Card）。10月15日后恢复常规政策：电子签（e-Visa）30美元/30天/3个工作日出签，或落地签30美元/30天（金边、暹粒、西港国际机场及主要陆路口岸）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "电子入境卡须在抵达前7天通过 Cambodia e-arrival App 或 arrival.gov.kh 填报，也可口岸现场填写。",
+        "柬政府禁止口岸官员索要小费，遇索贿应明确拒绝并留存证据。",
+        "无人机未经许可不得携带或使用。",
+        "参观寺庙/王宫/吴哥古迹须着装得体，不触摸攀爬文物。",
+        "远离黄赌毒，不参与网络博彩、电诈，不轻信高薪招聘。"
+      ],
+      "verify": "柬埔寨移民局；中国驻柬埔寨大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "老挝": {
+      "iso": "LA",
+      "visa_required": "evisa_voa",
+      "visa_note": "中国普通护照不免签（2024年临时免签已于2025年1月终止）。电子签（eVisa）约35-50美元，3个工作日出签，60天有效、单次停留30天，适用8个指定口岸。落地签约30-45美元，万象/琅勃拉邦/巴色国际机场及磨丁等主要陆路口岸可办，停留30天。重要：中老铁路磨丁口岸不支持落地签，坐火车必须提前办电子签。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "2026年全面推行LDIF电子入境卡，须在抵达前72小时内通过 immigration.gov.la 在线填写，获取二维码。",
+        "中老铁路磨丁口岸不支持落地签，必须提前办好电子签，否则国内边检劝返。",
+        "电子烟全面禁止，携带可能面临法律后果。",
+        "旅行社组团入境强制要求全程酒店预订单，自由行建议也备着。"
+      ],
+      "verify": "老挝移民与人口部；中国驻老挝大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "缅甸": {
+      "iso": "MM",
+      "visa_required": "evisa",
+      "visa_note": "中国普通护照需办签证（仅外交/公务护照免签30天）。电子签：旅游签50美元/停留30天（2026年从28天延长），商务签70美元/停留70天，3个工作日出签，材料已简化（无需往返机票和酒店订单）。落地签：仅限仰光、曼德勒、内比都三个国际机场，50美元现金，仅限旅游，不可延期，且必须从同一机场离境。陆路口岸不支持落地签。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "外交部2026年7月旅行风险等级：实皆省、马圭省、钦邦、若开邦、克钦邦为橙色（高风险），其他地区蓝色（低风险）。",
+        "缅北敏感地区需额外通行证，普通游客切勿前往。",
+        "持出入境通行证自中缅边境口岸入缅者，仅限在缅方边境城市活动，切勿越界前往内陆。",
+        "警惕涉外婚姻骗局，近期多起中国公民因此被捕。",
+        "军事冲突持续，出行前务必查看使领馆最新安全提醒。"
+      ],
+      "verify": "缅甸移民与人口部官网；中国驻缅甸大使馆/驻曼德勒总领馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "土耳其": {
+      "iso": "TR",
+      "visa_required": "none",
+      "visa_note": "自 2026-01-02 起，持中国普通护照以旅游/过境目的免签入境土耳其，任意 180 天内累计停留不超过 90 天。工作/学习/长期居留不适用，须入境前另办签证。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签仅限旅游与过境；商务谈判可另申电子签（须持有效申根/OECD 签证或居留），工作学习须提前办签。",
+        "入境边检可能抽查返程机票、酒店订单与资金证明，建议随身备纸质+电子件。",
+        "逾期滞留将罚款并可能禁止入境；180 天滚动周期累计不超 90 天，务必自查已停留天数。"
+      ],
+      "verify": "中国驻土耳其大使馆；土耳其《官方公报》第10798号总统令；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "马尔代夫": {
+      "iso": "MV",
+      "visa_required": "none",
+      "visa_note": "依《中马互免签证协定》（2022-05-20 生效），持中国普通护照因旅游/商务/探亲/过境免签入境，单次停留不超过 30 天，每 180 天累计不超过 90 天。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境须备已确认往返机票 + 预订确认函（或每日 500 美元以上旅费证明）+ 资金证明。",
+        "须在抵达前 96 小时内于官方 IMUGA（imuga.immigration.gov.mv）免费完成电子旅客申报，生成二维码留存。",
+        "护照须含机读区且有效期充足（移民局≥1 月，但多数航司按≥6 月放行）；有效期经延长的护照不允许入境。",
+        "工作/定居/新闻报道等须入境前办妥相应手续。"
+      ],
+      "verify": "马尔代夫移民局 IMUGA；中国驻马尔代夫大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "意大利": {
+      "iso": "IT",
+      "visa_required": "schengen",
+      "visa_note": "意大利属申根区，持有效申根签证即可入境，任意 180 天内累计停留不超过 90 天。以意大利为主要停留国者向意使领馆递交申根签申请。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 3,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": true,
+      "insurance_note": "申根签证要求投保覆盖全停留期、保额≥3 万欧元的旅行医疗保险。",
+      "special": [
+        "申根签按主要目的地国申请；多国行程按停留最久国，无法判定则按首个入境国。",
+        "过境申根国家转机若不入境国际区无需签，出关即计入境。"
+      ],
+      "verify": "中国驻意大利使领馆申根签证须知；意大利外交部；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "阿联酋": {
+      "iso": "AE",
+      "visa_required": "none",
+      "visa_note": "中阿互免签证，持有效期6个月以上普通护照免签入境。2025年4月起调整为每180天内累计停留不超过90天（此前为30天，可缴费延期）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签适用于旅游/商务/探亲/过境；工作、长期居留须另办签证。",
+        "穆斯林国家：斋月白天公共场合忌当众饮食吸烟；着装保守，公共场合勿过度亲昵。",
+        "入境可能抽查回程机票与酒店订单，建议随身备纸质件。"
+      ],
+      "verify": "中国驻阿联酋大使馆／驻迪拜总领馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "卡塔尔": {
+      "iso": "QA",
+      "visa_required": "none",
+      "visa_note": "中卡互免签证，中国普通护照免签入境，停留不超过30天，可申请延长一次（不超30天）。不分出行目的（旅游/商务/探亲）均适用。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签停留30天，可境内申请延长一次至60天。",
+        "穆斯林国家，公共场合着装保守、斋月白天忌当众饮食。",
+        "入境备护照有效期≥6月、≥2页空白页、回程机票与酒店订单。"
+      ],
+      "verify": "中国驻卡塔尔大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "塞尔维亚": {
+      "iso": "RS",
+      "visa_required": "none",
+      "visa_note": "持有效期6个月以上普通护照免签入境塞尔维亚，停留不超过30天（2017年起稳定执行，欧洲最早对华免签国之一）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签停留30天，入境材料简单（护照+回程机票+酒店订单，边检通常抽查）。",
+        "贝尔格莱德为主城，诺维萨德/泽蒙/塔拉国家公园为延伸。",
+        "货币为塞尔维亚第纳尔，欧元广泛但找零用第纳尔。"
+      ],
+      "verify": "中国驻塞尔维亚大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "波黑": {
+      "iso": "BA",
+      "visa_required": "none",
+      "visa_note": "持中国普通护照免签入境波黑，每180天内累计停留不超过90天。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签适合莫斯塔尔古桥、萨拉热窝老城。",
+        "货币可兑换马克（BAM），与欧元挂钩。",
+        "萨拉热窝周边仍有未爆地雷历史区域，切勿脱离标记步道进入野地。"
+      ],
+      "verify": "中国驻波黑大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "白俄罗斯": {
+      "iso": "BY",
+      "visa_required": "none",
+      "visa_note": "中国普通护照免签入境白俄罗斯，停留不超过30天（旅游/商务/过境）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签入境建议持有覆盖停留期且在白名单内的医疗保险。",
+        "货币白俄罗斯卢布，刷卡在明斯克普及、小镇备现金。",
+        "俄语为主，英语普及度低，备离线翻译。"
+      ],
+      "verify": "中国驻白俄罗斯大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "格鲁吉亚": {
+      "iso": "GE",
+      "visa_required": "none",
+      "visa_note": "《中格互免签证协定》（2024-05-28 生效）：单次停留不超过30天、每180天累计不超过90天免签。逾期一般仅限人道/不可抗力可延。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": true,
+      "special": [
+        "2026起强制境外旅游医疗险（≥30,000拉里），务必出发前投保并备好保单。",
+        "高加索国家，第比利斯/卡兹别克山/西格纳吉葡萄酒庄为热点。",
+        "山区天气突变，自驾注意路况。"
+      ],
+      "verify": "中国驻格鲁吉亚大使馆；格外交部；中国领事服务网 cs.mfa.gov.cn",
+      "insurance_note": "2026 年起新增强制要求：所有入境游客须购买旅游医疗及意外保险，保额不低于 30,000 拉里（约合 7 万人民币），且须完整覆盖停留期——无保险在边境可能被直接拒入境。"
+    },
+    "亚美尼亚": {
+      "iso": "AM",
+      "visa_required": "none",
+      "visa_note": "中国普通护照可免签入境亚美尼亚短期停留（各来源对停留上限表述不一：常见为180天内累计不超90天。以官方与边检实际盖章为准，出行前核实）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签天数存在不同口径，出行前务必核对官方与边检实际允许停留天数。",
+        "埃里温为门户，塞凡湖、霍尔维拉普修道院、格加尔德为热点。",
+        "海拔较高，高海拔地区注意保暖与适应。"
+      ],
+      "verify": "中国驻亚美尼亚大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "毛里求斯": {
+      "iso": "MU",
+      "visa_required": "none",
+      "visa_note": "《中毛互免签证协定》：持有效护照、往返机票、住宿与经济能力证明，入境/过境毛里求斯停留不超过60天免签（部分旅游口径称90天，以驻毛使馆与边检为准）。工作/居留/学习须另办。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "入境备好回程机票、酒店订单与经济能力证明；护照有效期须覆盖行程。",
+        "一岛多玩法：七色土、追海豚、水下瀑布、鹿岛。",
+        "防日晒/离岸流，浮潜注意安全。"
+      ],
+      "verify": "中国驻毛里求斯大使馆 mu.china-embassy.gov.cn；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "塞舌尔": {
+      "iso": "SC",
+      "visa_required": "none",
+      "visa_note": "中国普通护照免签入境塞舌尔（停留以边检核准，常见为30天内），无需签证费，属对华免签海岛目的地。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签但须备好回程机票、住宿确认与经济能力证明；入境时边检核准停留期。",
+        "海岛分散（马埃/普拉兰/拉迪格），岛间靠国内航班+渡轮。",
+        "浮潜/潜水注意海洋生物与珊瑚保护法规。"
+      ],
+      "verify": "中国驻塞舌尔大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "斐济": {
+      "iso": "FJ",
+      "visa_required": "none",
+      "visa_note": "中国普通护照免签入境斐济短期旅游（多数口径为30天，个别来源称最长120天；以官方与边检盖章为准）。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签天数口径不一，出行前核对官方与边检实际允许停留。",
+        "软珊瑚之都，主岛+玛玛努卡/亚萨瓦群岛跳岛。",
+        "防气旋季与海上活动安全。"
+      ],
+      "verify": "中国驻斐济大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "摩洛哥": {
+      "iso": "MA",
+      "visa_required": "none",
+      "visa_note": "中国普通护照免签入境摩洛哥（短期旅游，常见口径90天），无需签证。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "免签旅游；工作/长期居留须办签。",
+        "马拉喀什/菲斯古城、撒哈拉沙漠、舍夫沙万蓝城为热点。",
+        "老城易迷路，建议本地向导或标记路线；防宰与高溢价讲价。"
+      ],
+      "verify": "中国驻摩洛哥大使馆；中国领事服务网 cs.mfa.gov.cn"
+    },
+    "埃及": {
+      "iso": "EG",
+      "visa_required": "arrival",
+      "visa_note": "非全面免签：经西奈半岛/红海（沙姆沙伊赫等指定口岸）可免签停留不超14天；赴开罗等其他地区旅游通常需办理落地签（约25美元，须备好材料）或提前电子签。",
+      "_visa_stability": "volatile",
+      "passport_validity_months": 6,
+      "_passport_stability": "volatile",
+      "vaccine_required": "none",
+      "insurance_required": false,
+      "special": [
+        "落地签/免签适用口岸与停留有限制（西奈免签不等于全国免签），出行前按目的地核实。",
+        "落地签常需备好≥2000美元等值现金/存款证明、行程与酒店、返程机票。",
+        "文物古迹（金字塔/卢克索）周边强卖与门票骗局高发，走正规入口。"
+      ],
+      "verify": "中国驻埃及大使馆；中国领事服务网 cs.mfa.gov.cn"
     }
   },
-
   "_fallback_policy": {
     "_note": "表里没有的国家，一律走这条：level=unknown，输出'签证/免签政策请以中国领事服务网与目的国驻华使领馆官网当日信息为准'，并在门禁卡上显示灰灯（待查），禁止给出任何免签或签证结论。",
     "output_phrase": "该目的地未收录基线，请以中国领事服务网 cs.mfa.gov.cn 与目的国驻华使领馆官网为准（此处不作猜测）"

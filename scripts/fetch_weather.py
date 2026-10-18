@@ -3,11 +3,11 @@
 """查询目的地实时天气与预报。
 
 数据源（v0.1.0 统一接入 live_api）：
-  - 和风 (QWeather)：优先，环境变量 QWEATHER_KEY 配置后启用（更准确的中文天气 + 国内覆盖）
+  - 天气服务 (QWeather)：优先，环境变量 QWEATHER_KEY 配置后启用（更准确的中文天气 + 国内覆盖）
   - Open-Meteo：免 key 兜底（无 QWEATHER_KEY 时自动使用）
 
 用法:
-  python fetch_weather.py 成都                # 读预置坐标, 默认和风优先/Open-Meteo 兜底
+  python fetch_weather.py 成都                # 读预置坐标, 默认天气服务优先/Open-Meteo 兜底
   python fetch_weather.py 成都 --days 7        # 7天预报
   python fetch_weather.py 成都 拉萨 --days 5    # 多地对比
   python fetch_weather.py --lat 30.57 --lon 104.07   # 手动坐标(库里没收录时)
@@ -20,7 +20,7 @@ import json
 import sys
 from pathlib import Path
 
-# 真实天气统一入口（和风优先 / Open-Meteo 兜底）
+# 真实天气统一入口（天气服务优先 / Open-Meteo 兜底）
 from live_api import weather_unified  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "references" / "destinations.json"
@@ -50,7 +50,7 @@ def render(name: str, days: list, source: str, dest: dict | None = None) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="查询目的地天气（和风优先 / Open-Meteo 兜底）")
+    ap = argparse.ArgumentParser(description="查询目的地天气（天气服务优先 / Open-Meteo 兜底）")
     ap.add_argument("cities", nargs="*", help="目的地名(须在库内)")
     ap.add_argument("--lat", type=float, help="手动指定纬度")
     ap.add_argument("--lon", type=float, help="手动指定经度")
@@ -89,7 +89,7 @@ def main() -> int:
     for name, lat, lon, dest in targets:
         day_list, source = weather_unified(lat, lon, days)
         if not day_list:
-            print(f"{name}: 天气查询失败（网络和风/Open-Meteo 均不可用）", file=sys.stderr)
+            print(f"{name}: 天气查询失败（网络天气服务/Open-Meteo 均不可用）", file=sys.stderr)
             continue
         payload["results"].append({
             "city": name,

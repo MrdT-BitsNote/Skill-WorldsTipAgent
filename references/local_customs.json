@@ -1,11 +1,12 @@
 {
   "version": "1.0",
-  "_updated": "2026-10-12",
+  "_updated": "2026-10-18",
   "_sources": {
     "driving_and_plug": "行驶方向与插头电压按 IEC/各国交通法规通行标准（stable）",
     "customs_and_tips": "小费与宗教习俗以各国旅游局及使领馆公告为准",
     "dietary_and_drugs": "药品管制清单以入境国海关/药监公告为准；属易变项，携药前必须核验",
-    "local_transport_and_apps": "当地票制与必装 App 以运营方及官方应用商店为准（volatile）"
+    "local_transport_and_apps": "当地票制与必装 App 以运营方及官方应用商店为准（volatile）",
+    "connectivity": "通用通信常识 + 各运营商国际漫游页面（中国移动/联通/电信出境漫游说明）；eSIM 信息参考 Airalo/Holafly 等 eSIM 平台公开说明"
   },
   "_note": "合规与文化基线。行驶方向、插头电压、小费、宗教禁忌、饮食禁忌、药品管制属高度稳定信息，内置基线可直接输出，是本表最有价值的部分（竞品普遍缺失，且不会过期）。管制药品清单、当地交通票制、必装App 为易变项，需核验。",
   "_principle": "文化禁忌不是『礼貌提醒』，是保命项——违规可能引发罚款、拒入境甚至更严重后果。本表宁可多列真实硬规矩，不写泛泛的『尊重当地文化』。",
@@ -70,6 +71,132 @@
       "driving_side": "靠左行驶",
       "plug": "I型",
       "voltage": "230V",
+      "_stability": "stable"
+    },
+    "越南": {
+      "driving_side": "靠右行驶",
+      "plug": "A/C型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "印度尼西亚": {
+      "driving_side": "靠左行驶",
+      "plug": "C/F型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "菲律宾": {
+      "driving_side": "靠右行驶",
+      "plug": "A/B/C型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "柬埔寨": {
+      "driving_side": "靠右行驶",
+      "plug": "A/C/G型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "老挝": {
+      "driving_side": "靠右行驶",
+      "plug": "A/C/E/F型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "缅甸": {
+      "driving_side": "靠右行驶",
+      "plug": "C/D/F/G型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "土耳其": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "马尔代夫": {
+      "driving_side": "靠左行驶",
+      "plug": "G 型（英标三方脚）",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "意大利": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F/L 型（意标三方脚为主）",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "阿联酋": {
+      "driving_side": "靠右行驶",
+      "plug": "G 型（英标三方脚）",
+      "voltage": "240V",
+      "_stability": "stable"
+    },
+    "卡塔尔": {
+      "driving_side": "靠右行驶",
+      "plug": "D/G 型",
+      "voltage": "240V",
+      "_stability": "stable"
+    },
+    "塞尔维亚": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "波黑": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "白俄罗斯": {
+      "driving_side": "靠右行驶",
+      "plug": "C 型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "格鲁吉亚": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "亚美尼亚": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "毛里求斯": {
+      "driving_side": "靠左行驶",
+      "plug": "C/G 型（英标三方脚）",
+      "voltage": "230V",
+      "_stability": "stable"
+    },
+    "塞舌尔": {
+      "driving_side": "靠左行驶",
+      "plug": "G 型（英标）",
+      "voltage": "250V",
+      "_stability": "stable"
+    },
+    "斐济": {
+      "driving_side": "靠左行驶",
+      "plug": "I 型（澳标斜扁脚）",
+      "voltage": "240V",
+      "_stability": "stable"
+    },
+    "摩洛哥": {
+      "driving_side": "靠右行驶",
+      "plug": "C/E 型",
+      "voltage": "220V",
+      "_stability": "stable"
+    },
+    "埃及": {
+      "driving_side": "靠右行驶",
+      "plug": "C/F 型",
+      "voltage": "220V",
       "_stability": "stable"
     }
   },
@@ -141,6 +268,179 @@
       ],
       "dress": "教堂等宗教场所需遮肩",
       "_stability": "stable"
+    },
+    "越南": {
+      "taboos": [
+        "进寺庙脱鞋、着装得体",
+        "不可触摸他人头部",
+        "拍照前征得同意（尤其少数民族）",
+        "勿议论越南共产党/政府"
+      ],
+      "dress": "寺庙要求过膝/过肩；日常着装随意",
+      "_stability": "stable"
+    },
+    "印度尼西亚": {
+      "taboos": [
+        "穆斯林地区（亚齐）遵守伊斯兰教法",
+        "进清真寺脱鞋、女性遮头",
+        "不可用左手递物/指人",
+        "勿触摸他人头部",
+        "巴厘岛印度教寺庙须着沙龙"
+      ],
+      "dress": "亚齐省女性须遮头/着长袖；巴厘岛寺庙须着沙龙和腰带",
+      "_stability": "stable"
+    },
+    "菲律宾": {
+      "taboos": [
+        "天主教国家，勿亵渎宗教",
+        "勿议论政治/家族纷争",
+        "对长辈须用尊敬用语（po/opo）"
+      ],
+      "dress": "教堂须着装得体；日常偏西式休闲",
+      "_stability": "stable"
+    },
+    "柬埔寨": {
+      "taboos": [
+        "进寺庙脱鞋、着装过膝过肩",
+        "不可触摸僧侣（女性尤禁）",
+        "勿用脚指人/物",
+        "勿攀爬文物古迹",
+        "勿议论政治"
+      ],
+      "dress": "寺庙/王宫要求过膝过肩；吴哥窟严格检查着装",
+      "_stability": "stable"
+    },
+    "老挝": {
+      "taboos": [
+        "进寺庙脱鞋、女性不可触摸僧侣",
+        "勿触摸他人头部",
+        "佛像不可攀爬或背对拍照",
+        "老挝人性格温和，勿大声喧哗"
+      ],
+      "dress": "寺庙要求过膝过肩；琅勃拉邦清晨布施须着得体",
+      "_stability": "stable"
+    },
+    "缅甸": {
+      "taboos": [
+        "进佛塔/寺庙必须赤脚、着过膝衣物",
+        "女性不可触摸僧侣或递物",
+        "不可背对佛像拍照",
+        "勿议论军政府/政治",
+        "进民宅须脱鞋"
+      ],
+      "dress": "所有宗教场所须赤脚+过膝；女性建议备长裙/筒裙",
+      "_stability": "stable"
+    },
+    "土耳其": {
+      "taboos": [
+        "进清真寺脱鞋、女性备头巾遮发、着过膝装",
+        "斋月白天公共场合忌当众饮食",
+        "勿将国旗/国父像作不当用途",
+        "买讲价是常态但谈妥别反悔"
+      ],
+      "dress": "清真寺遮肩遮膝、女性备头巾；日常宽松即可",
+      "_stability": "stable"
+    },
+    "马尔代夫": {
+      "taboos": [
+        "伊斯兰国家：居民岛/马累忌公开饮酒、忌猪肉入境",
+        "公共场合着泳装仅限度假岛指定区域，居民岛需得体",
+        "斋月白天公共场合忌当众饮食"
+      ],
+      "dress": "度假岛宽松；上居民岛/马累遮肩过膝",
+      "_stability": "stable"
+    },
+    "意大利": {
+      "taboos": [
+        "进教堂遮肩过膝、保持安静",
+        "餐饮重传统，忌卡布奇诺配海鲜/下午后点奶咖（本地习惯）",
+        "教堂/古迹禁无人机与攀爬"
+      ],
+      "dress": "教堂需遮肩过膝；正式餐厅忌短裤拖鞋",
+      "_stability": "stable"
+    },
+    "阿联酋": {
+      "taboos": [
+        "进清真寺需着长袍遮体、脱鞋",
+        "斋月白天公共场合勿饮食",
+        "公共场合亲昵、左手指人都属冒犯",
+        "勿拍摄政府/军事设施与当地人肖像"
+      ],
+      "dress": "商场/景点需得体（遮肩过膝），清真寺备头巾",
+      "_stability": "stable"
+    },
+    "卡塔尔": {
+      "taboos": [
+        "公共场合忌过度亲昵、左手示意",
+        "斋月白天公共场所勿饮食",
+        "着装保守，海滩限于度假区"
+      ],
+      "dress": "公共场合遮肩过膝；酒店泳池区宽松",
+      "_stability": "stable"
+    },
+    "塞尔维亚": {
+      "taboos": [
+        "购物用第纳尔而非欧元（易被多收）"
+      ],
+      "dress": "日常着装即可",
+      "_stability": "stable"
+    },
+    "波黑": {
+      "taboos": [],
+      "dress": "日常着装即可",
+      "_stability": "stable"
+    },
+    "白俄罗斯": {
+      "taboos": [],
+      "dress": "日常着装即可",
+      "_stability": "stable"
+    },
+    "格鲁吉亚": {
+      "taboos": [],
+      "dress": "东正教堂需遮肩过膝、女性建议备头巾",
+      "_stability": "stable"
+    },
+    "亚美尼亚": {
+      "taboos": [],
+      "dress": "教堂遮肩过膝",
+      "_stability": "stable"
+    },
+    "毛里求斯": {
+      "taboos": [
+        "多宗教并存，寺庙/清真寺着装得体"
+      ],
+      "dress": "海滩比基尼限于度假区，镇上/宗教场所需得体",
+      "_stability": "stable"
+    },
+    "塞舌尔": {
+      "taboos": [],
+      "dress": "海滩装限度假岛，镇上需得体",
+      "_stability": "stable"
+    },
+    "斐济": {
+      "taboos": [
+        "进村庄勿戴帽（传统忌）、头为神圣勿触摸当地人头部"
+      ],
+      "dress": "村庄着装保守（遮肩过膝）",
+      "_stability": "stable"
+    },
+    "摩洛哥": {
+      "taboos": [
+        "穆斯林国家：斋月白天公共场合忌当众饮食",
+        "左手递物不礼",
+        "勿拍军事/政府设施"
+      ],
+      "dress": "保守社会，女性与老城建议遮肩过膝",
+      "_stability": "stable"
+    },
+    "埃及": {
+      "taboos": [
+        "穆斯林为主，斋月白天公共场合忌饮食",
+        "左手递物不礼",
+        "女性建议随身披肩"
+      ],
+      "dress": "清真寺遮肩过膝；普通城市着装保守",
+      "_stability": "stable"
     }
   },
   "dietary_and_drugs": {
@@ -153,7 +453,7 @@
     "_drug_rule": "携带管制类药品必须备原包装与处方/说明；入境前查目的国海关与卫生部门清单。",
     "halal_note": "穆斯林地区与国家：斋月白天不在公共场所进食；左手视为不洁；多数国家禁酒（以当地法规为准）。",
     "vegetarian_note": "印度等地素食比例极高，餐厅多为纯素，需提前沟通。",
-    "japan": {
+    "日本": {
       "dietary": [
         "拉面等汤底常含猪骨/鱼汤，注意饮食禁忌",
         "生食刺身常见，肠胃敏感者注意"
@@ -161,14 +461,14 @@
       "drugs_note": "含麻黄碱感冒药属管制，带入需处方",
       "_stability": "volatile"
     },
-    "singapore": {
+    "新加坡": {
       "dietary": [
         "清真饮食需找Halal认证餐厅"
       ],
       "drugs_note": "严格管制，部分常见药品入境即违规",
       "_stability": "volatile"
     },
-    "usa": {
+    "美国": {
       "dietary": [
         "生食、未经巴氏消毒的奶制品与果汁有风险"
       ],
@@ -231,6 +531,179 @@
         "Google Maps",
         "各铁路公司App",
         "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "越南": {
+      "transport": "河内/胡志明有Grab打车；城际巴士（Open Bus）覆盖主要旅游城市；火车南北线（统一快车）；市内出租车认准Mai Linh/Vinasun",
+      "apps": [
+        "Grab 打车",
+        "Google Maps",
+        "Baemin 外卖",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "印度尼西亚": {
+      "transport": "Grab/Gojek 打车（巴厘岛/雅加达）；城际飞机（狮航/鹰航）；雅加达TransJakarta公交/MRT；巴厘岛租摩托车须国际驾照",
+      "apps": [
+        "Grab 打车",
+        "Gojek 打车+外卖",
+        "Google Maps",
+        "Traveloka 订票"
+      ],
+      "_stability": "volatile"
+    },
+    "菲律宾": {
+      "transport": "Grab 打车（马尼拉/宿务）；吉普尼（Jeepney）为特色公共交通但路线复杂；出租车须坚持打表；城际飞机（宿务太平洋/菲律宾航空）",
+      "apps": [
+        "Grab 打车",
+        "Google Maps",
+        "Angkas 摩托车打车（马尼拉）"
+      ],
+      "_stability": "volatile"
+    },
+    "柬埔寨": {
+      "transport": "PassApp/Grab 突突车（金边/暹粒）；城际巴士（Giant Ibis/Virak Buntham）；暹粒吴哥景区须包突突车或租自行车",
+      "apps": [
+        "PassApp 突突车",
+        "Grab 打车",
+        "Google Maps",
+        "柬埔寨e-arrival入境卡"
+      ],
+      "_stability": "volatile"
+    },
+    "老挝": {
+      "transport": "LOCA 打车（万象/琅勃拉邦）；突突车须议价；中老铁路（万象-磨丁）为主要城际交通；湄公河慢船（琅勃拉邦-会晒）",
+      "apps": [
+        "LOCA 打车",
+        "Google Maps（离线地图必备）",
+        "LDIF电子入境卡"
+      ],
+      "_stability": "volatile"
+    },
+    "缅甸": {
+      "transport": "Grab 有限覆盖（仰光）；出租车须议价；城际巴士（JJ Express等）；国内航班（仰光-曼德勒-蒲甘）；曼德勒/蒲甘须包车",
+      "apps": [
+        "Grab（仰光）",
+        "Google Maps（离线）",
+        "翻译类"
+      ],
+      "_stability": "volatile"
+    },
+    "土耳其": {
+      "transport": "伊斯坦布尔有轨电车/地铁/渡轮统一用 Istanbulkart；官方打车 App 计价，避免路边扬招被宰",
+      "apps": [
+        "官方打车 App",
+        "Google Maps 离线地图",
+        "Istanbulkart 交通卡"
+      ],
+      "_stability": "volatile"
+    },
+    "马尔代夫": {
+      "transport": "一岛一酒店：岛间靠水飞/快艇（度假村安排），马累/居民岛靠出租车；无公交体系",
+      "apps": [
+        "IMUGA 电子入境申报",
+        "度假村接送预约"
+      ],
+      "_stability": "volatile"
+    },
+    "意大利": {
+      "transport": "城际高铁 Trenitalia/Italo 快且省；城市地铁+公交按次票需在机器打票",
+      "apps": [
+        "Trenitalia/Italo 订票",
+        "Google Maps",
+        "打车 App"
+      ],
+      "_stability": "volatile"
+    },
+    "阿联酋": {
+      "transport": "迪拜地铁/轻轨用 Nol 卡；打车用官方 App 计价；机场到市区可预订接驳",
+      "apps": [
+        "官方打车 App",
+        "Google Maps 离线地图"
+      ],
+      "_stability": "volatile"
+    },
+    "卡塔尔": {
+      "transport": "多哈地铁用金卡/手机支付；官方打车 App",
+      "apps": [
+        "Google Maps",
+        "多哈地铁 App"
+      ],
+      "_stability": "volatile"
+    },
+    "塞尔维亚": {
+      "transport": "城际大巴/火车连通贝尔格莱德与诺维萨德；市内公交+日票",
+      "apps": [
+        "Google Maps 离线地图"
+      ],
+      "_stability": "volatile"
+    },
+    "波黑": {
+      "transport": "城际以大巴为主（无高铁）；萨拉热窝有老城有轨电车",
+      "apps": [
+        "Google Maps 离线地图"
+      ],
+      "_stability": "volatile"
+    },
+    "白俄罗斯": {
+      "transport": "明斯克地铁+公交；城际火车连接布列斯特/戈梅利",
+      "apps": [
+        "Yandex/Google Maps",
+        "离线翻译 App"
+      ],
+      "_stability": "volatile"
+    },
+    "格鲁吉亚": {
+      "transport": "第比利斯地铁+公交；marshutka 小巴城际；山区包车找正规司机",
+      "apps": [
+        "Google Maps 离线地图"
+      ],
+      "_stability": "volatile"
+    },
+    "亚美尼亚": {
+      "transport": "marshrutka 小巴城际；第比利斯⇄埃里温陆路常用",
+      "apps": [
+        "Google Maps 离线地图"
+      ],
+      "_stability": "volatile"
+    },
+    "毛里求斯": {
+      "transport": "环岛公路自驾（靠左）需国际驾照；环岛巴士+出租车",
+      "apps": [
+        "Google Maps",
+        "租车预订 App"
+      ],
+      "_stability": "volatile"
+    },
+    "塞舌尔": {
+      "transport": "岛际渡轮+小飞机（以度假村预订为主）；马埃岛自驾或包车",
+      "apps": [
+        "Google Maps"
+      ],
+      "_stability": "volatile"
+    },
+    "斐济": {
+      "transport": "主岛巴士+跳岛渡轮/小飞机；自驾靠左需国际驾照",
+      "apps": [
+        "Google Maps"
+      ],
+      "_stability": "volatile"
+    },
+    "摩洛哥": {
+      "transport": "国铁 ONCF 连接卡萨/拉巴特/马拉喀什；城际 CTM 大巴；沙漠团提前订正规商",
+      "apps": [
+        "Google Maps",
+        "CTM 订票"
+      ],
+      "_stability": "volatile"
+    },
+    "埃及": {
+      "transport": "开罗地铁+官方打车；尼罗河邮轮/包车；卢克索热气球走正规商",
+      "apps": [
+        "打车 App",
+        "Google Maps"
       ],
       "_stability": "volatile"
     }

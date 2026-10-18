@@ -1,0 +1,124 @@
+{
+  "_meta": {
+    "purpose": "车辆续航与加油/充电规划参数。自驾/摩托/房车模式下用于计算补给半径与加油策略。",
+    "version": "0.1.0",
+    "updated": "2026-10-17",
+    "discipline": [
+      "EV 实际续航 = 标称 × 0.65（保守下限，冬季/高速/空调可再降 10-30%）",
+      "PHEV 纯电续航 = 标称 × 0.70（混动模式另算油箱）",
+      "燃油车续航 = 油箱容积 ÷ 百公里油耗 × 100，按保守油耗估算",
+      "规划时用 real_world_range_km 而非 rated_range_km",
+      "加油/充电策略：剩余续航 < min_reserve_km 时必须补给，不等亮灯",
+      "无人区/偏远路段加油站间隔可能 >150km，需提前加满"
+    ]
+  },
+  "vehicles": {
+    "sedan_fuel": {
+      "label": "燃油轿车",
+      "tank_liters": 50,
+      "consumption_l_per_100km": 7,
+      "range_km": 700,
+      "range_source": "50L ÷ 7L/100km × 100",
+      "min_reserve_km": 100,
+      "refuel_time_min": 5,
+      "note": "续航最可靠，服务区密布场景无压力"
+    },
+    "suv_fuel": {
+      "label": "燃油 SUV / 越野",
+      "tank_liters": 65,
+      "consumption_l_per_100km": 10,
+      "range_km": 650,
+      "range_source": "65L ÷ 10L/100km × 100",
+      "min_reserve_km": 100,
+      "refuel_time_min": 5,
+      "note": "油耗高于轿车，山区/满载再降 10-15%"
+    },
+    "mpv_fuel": {
+      "label": "燃油 MPV",
+      "tank_liters": 60,
+      "consumption_l_per_100km": 9,
+      "range_km": 660,
+      "range_source": "60L ÷ 9L/100km × 100",
+      "min_reserve_km": 100,
+      "refuel_time_min": 5,
+      "note": "满载人多油耗偏高"
+    },
+    "ev": {
+      "label": "纯电",
+      "rated_range_km": 500,
+      "real_world_ratio": 0.65,
+      "range_km": 325,
+      "range_source": "标称 × 0.65 折扣（保守下限）",
+      "min_reserve_km": 50,
+      "refuel_time_min": 40,
+      "note": "实际受温度影响大（冬季 -20%~30%）、高速工况 -15%、空调 -10%。充电桩间距比加油站大，需提前规划",
+      "charging_notes": {
+        "fast_charge_30_80_pct_min": 30,
+        "slow_charge_full_hours": 8,
+        "cold_weather_penalty": 0.75,
+        "highway_penalty": 0.85
+      }
+    },
+    "phev": {
+      "label": "插电混动",
+      "ev_rated_range_km": 100,
+      "ev_real_world_ratio": 0.70,
+      "ev_range_km": 70,
+      "total_range_km": 1000,
+      "range_source": "纯电 100×0.70=70km；混动模式油箱约 50L 可跑 700+km",
+      "min_reserve_km": 30,
+      "refuel_time_min": 5,
+      "note": "短途用电、长途用油。纯电段按 EV 纪律，混动段按燃油车纪律。规划时关注是否有充电条件"
+    },
+    "motorcycle": {
+      "label": "摩托车",
+      "tank_liters": 15,
+      "consumption_l_per_100km": 3.5,
+      "range_km": 400,
+      "range_source": "15L ÷ 3.5L/100km × 100（按 250-400cc 均值）",
+      "min_reserve_km": 50,
+      "refuel_time_min": 3,
+      "note": "排量越大油耗越高（500cc+ 约 5L/100km）。山区站间距可达 150km，续航 <200km 时每次见站就加",
+      "cc_variants": {
+        "150cc": {"range_km": 500, "tank_liters": 12},
+        "250cc": {"range_km": 400, "tank_liters": 15},
+        "400cc": {"range_km": 350, "tank_liters": 18},
+        "500cc_plus": {"range_km": 280, "tank_liters": 20}
+      }
+    },
+    "rv": {
+      "label": "房车",
+      "tank_liters": 80,
+      "consumption_l_per_100km": 13,
+      "range_km": 600,
+      "range_source": "80L ÷ 13L/100km × 100",
+      "min_reserve_km": 100,
+      "refuel_time_min": 10,
+      "note": "油耗高、车重大，实际可能再降 10-15%。另需考虑生活用水/电补给（见 rv_logistics.json）",
+      "additional_resupply": {
+        "fresh_water_tank_liters": 100,
+        "grey_black_water_tank_liters": 80,
+        "battery_kwh": 10,
+        "solar_panel_w": 200,
+        "water_usage_per_day_liters": 30,
+        "power_usage_per_day_kwh": 3
+      }
+    }
+  },
+  "planning_rules": {
+    "fuel_station_max_gap_km": {
+      "highway": 50,
+      "national_road": 80,
+      "mountain_remote": 150,
+      "desert_warning": "无人区加油站间隔可能 >150km，必须提前加满并携带备用油"
+    },
+    "ev_charger_max_gap_km": {
+      "highway": 80,
+      "national_road": 150,
+      "remote": 300,
+      "note": "充电桩密度远低于加油站，偏远地区需提前确认充电桩可用性"
+    },
+    "daily_range_safety_factor": 0.7,
+    "safety_note": "单日计划里程不应超过实际续航的 70%，留 30% 余量应对绕路/堵车/天气"
+  }
+}

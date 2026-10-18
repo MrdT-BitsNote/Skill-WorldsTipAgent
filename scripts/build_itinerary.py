@@ -34,6 +34,7 @@ DATA = Path(__file__).resolve().parent.parent / "references" / "destinations.jso
 RESTRICTIONS = Path(__file__).resolve().parent.parent / "references" / "restrictions.json"
 COLD = Path(__file__).resolve().parent.parent / "references" / "cold_knowledge.json"
 AUDIENCE = Path(__file__).resolve().parent.parent / "references" / "audience_profiles.json"
+PARTY = Path(__file__).resolve().parent.parent / "references" / "party_playbooks.json"
 
 # ── v0.1.1 摩旅模式：摩旅校验引擎（单独 try，缺失只关摩旅，不连带关掉其它能力）──
 # 教训来自 render_booklet：曾把 credibility 与 gate_card 放同一个 try，
@@ -97,6 +98,61 @@ def load_audience() -> dict:
             return json.load(f)
     except Exception:
         return {}
+
+
+def load_party() -> dict:
+    """读取出行陪伴结构（Party Type）玩法库。与 audience/style/theme 正交。"""
+    try:
+        with open(PARTY, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+# 陪伴结构关键词（与 party_playbooks.json 一致；优先级 group→family→couple→friends→solo）
+_GROUP_KW = ("团建", "研学", "夕阳红", "俱乐部", "团队", "旅行团", "公司", "工会", "协会",
+             "定制团", "拓展", "会务", "包团", "组织者", "领队")
+_FAMILY_KW = ("带娃", "带孩子", "亲子", "一家三口", "一家四口", "二大一小", "一大一小",
+              "带父母", "带爸妈", "长辈", "老人", "全家", "家庭游", "家庭")
+_COUPLE_KW = ("情侣", "夫妻", "蜜月", "新婚", "对象", "未婚夫", "未婚妻", "男友情", "女友情")
+_FRIENDS_KW = ("闺蜜", "姐妹", "兄弟", "哥们", "同学", "朋友", "结伴", "宿舍", "搭子", "一群", "驴友", "球友")
+
+
+def resolve_party_type(people: int, composition: str, hints=None, override: str = "") -> str:
+    """判定出行陪伴结构（party type）。override 非空则直接采用（编排层显式指定）。
+    优先级：group(有组织方) > family(跨代亲属/带娃老人) > couple(2人亲密) >
+    friends-large(≥5)/friends-small(2-4) > solo(=1)。跨代亲属或组织方优先于纯朋友计数。"""
+    if override:
+        return override
+    text = (composition or "") + " " + " ".join(hints or [])
+    if any(k in text for k in _GROUP_KW):
+        return "group"
+    if any(k in text for k in _FAMILY_KW):
+        return "family"
+    if any(k in text for k in _COUPLE_KW) and people <= 2:
+        return "couple"
+    if people <= 1:
+        return "solo"
+    if any(k in text for k in _FRIENDS_KW) or people >= 2:
+        return "friends-large" if people >= 5 else "friends-small"
+    return "friends-small" if people >= 2 else "solo"
+
+
+def party_block(party_db: dict, ptype: str, people: int, inferred: bool) -> dict:
+    """从玩法库组装报告用的 party 块（缺该 type 数据则降级为占位，不抛错）。"""
+    pt = (party_db.get("party_types") or {}).get(ptype, {})
+    return {
+        "type": ptype,
+        "label": pt.get("label", ptype),
+        "inferred": inferred,
+        "room_note": pt.get("room_default", ""),
+        "budget_mode": pt.get("budget_mode", ""),
+        "budget_note": pt.get("budget_note", ""),
+        "safety_focus": pt.get("safety_focus", []),
+        "pacing_focus": pt.get("pacing_focus", []),
+        "pitfalls": pt.get("pitfalls", ""),
+        "people": people,
+    }
 
 
 def infer_audience(args) -> str:
@@ -171,6 +227,14 @@ STYLE_PROFILES = {
         budget_ratio={"交通": 0.20, "住宿": 0.42, "餐饮": 0.22, "门票": 0.05, "其他": 0.11},
         tone=["轻快", "发呆", "放空", "不设闹钟", "躺平"],
         gear_focus=["泳衣", "防晒", "浴巾", "遮阳帽"],
+        intensity=1,
+    ),
+    "relax": StyleProfile(
+        key="relax", label="散心", spots_per_day=(1, 1),
+        slot_hours=(2, 2), stay_per_spot_h=4.0, day_span_h=(5, 7),
+        budget_ratio={"交通": 0.15, "住宿": 0.45, "餐饮": 0.25, "门票": 0.03, "其他": 0.12},
+        tone=["治愈", "放空", "慢", "不赶路", "对自己好一点"],
+        gear_focus=["书", "耳机", "舒适鞋", "保温杯"],
         intensity=1,
     ),
     "honeymoon": StyleProfile(
@@ -357,6 +421,7 @@ MODE_TO_STYLE = {
     "摩旅": "moto", "摩托车": "moto", "机车": "moto", "骑行摩托": "moto",
     "特种兵": "commando", "特种兵旅游": "commando", "暴走": "commando",
     "度假": "resort", "躺平": "resort", "休息": "resort", "放松": "resort",
+    "散心": "relax", "心情不好": "relax", "治愈": "relax", "relax": "relax",
     "蜜月": "honeymoon", "度蜜月": "honeymoon", "新婚": "honeymoon", "纪念日": "honeymoon",
     "休闲": "leisure", "慢游": "leisure", "不赶": "leisure",
     # 扩展方式(国内全场景)
@@ -527,7 +592,7 @@ def build_slots(profile: StyleProfile, spots: int) -> list[dict]:
     am_s = max(1, round(spots * ratio_am))
     pm_s = max(1, spots - am_s)
     night_s = 0
-    if profile.key not in ("resort", "leisure") and spots >= 4:
+    if profile.key not in ("resort", "relax", "leisure") and spots >= 4:
         night_s = 1
         pm_s = max(1, spots - am_s - 1)
 
@@ -541,7 +606,7 @@ def build_slots(profile: StyleProfile, spots: int) -> list[dict]:
     slots = []
     # 起始时间随画像调整: 度假/蜜月不赶早, 特种兵/自驾早出发
     am_start = "09:30" if profile.key in (
-        "resort", "leisure", "honeymoon", "silver", "island",
+        "resort", "relax", "leisure", "honeymoon", "silver", "island",
         "camping", "ancient", "study", "ski", "rv",
     ) else "08:30"
     if am_s:
@@ -588,7 +653,7 @@ def _slot_note(profile: StyleProfile, slot: str, spots: int) -> str:
             "下午": "边开边停, 日落前到观景点",
             "晚上": "抵达后吃饭休整",
         }[slot]
-    if profile.key in ("resort", "leisure"):
+    if profile.key in ("resort", "relax", "leisure"):
         return {
             "上午": "自然醒, 一个主活动足矣",
             "下午": "不设闹钟, 随性安排",
@@ -657,8 +722,19 @@ def stay_plan(people: int, profile: StyleProfile, composition: str = "",
     # 户外/骑行/摩旅人群通常装备多, 倾向单间; 休闲度假多人常合住别墅
     solo_oriented = profile.key in ("moto", "cycling", "hiking", "commando", "roadtrip")
 
+    # ── 团体（有组织方：团建/研学/夕阳红/俱乐部/定制团）→ 组织者统订标准间按性别拼 ──
+    if any(k in comp for k in _GROUP_KW):
+        rooms = max(1, (people + 1) // 2)
+        types = [f"标准双床间 ×{rooms}(组织者统一预订, 按性别/级别拼房)"]
+        why = f"团体出行({people} 人)由组织者统一订 {rooms} 间标准双床间并按性别拼房，比各自下单更好管理与议价"
+        tips = [
+            "统一开一张/多张同抬头发票，便于公司报销或包价结算",
+            "要求同楼层或相邻房间，方便集合点名与夜间照应",
+            "领队/导游同住便于应急；确认每间独立卫浴与每房入住上限(多 2-3 人)",
+            "旺季/热门研学基地提前 2-3 周锁房，留团队取消政策缓冲",
+        ]
     # ── 智能分房: 多对情侣 (每对 1 间大床房) ──
-    if any(k in comp for k in ("两对情侣", "两对夫妻", "两对", "3对", "三对", "4对", "四对")):
+    elif any(k in comp for k in ("两对情侣", "两对夫妻", "两对", "3对", "三对", "4对", "四对")):
         pairs = 2
         for k, n in (("三对", 3), ("3对", 3), ("四对", 4), ("4对", 4)):
             if k in comp:
@@ -818,7 +894,7 @@ def budget_for(profile: StyleProfile, days: int, people: int,
             "commando": 800, "leisure": 1200, "resort": 1800, "honeymoon": 2500,
             "roadtrip": 900, "cycling": 400, "hiking": 500, "moto": 600,
             "family": 1100, "couple": 1500, "friends": 1000,
-            "rv": 900, "camping": 500,
+            "rv": 900, "camping": 500, "relax": 1500,
         }.get(profile.key, 900)
     else:
         base_transport = 800
@@ -866,6 +942,7 @@ def gear_for(profile: StyleProfile, season: str = "") -> dict:
         "commando": ["速干T恤", "运动鞋", "大容量水壶", "能量棒", "快干毛巾"],
         "leisure": ["折叠椅", "保温杯", "相机", "速干毛巾", "小零食"],
         "resort": ["泳衣", "浴巾", "人字拖", "遮阳帽", "防水袋", "防晒喷雾"],
+        "relax": ["书", "耳机", "舒适鞋", "保温杯", "眼罩", "日记本"],
         "honeymoon": ["情侣装/正装", "拍立得", "红酒/巧克力", "香薰", "花束"],
         "roadtrip": ["行车记录仪", "充气泵", "拖车绳", "三角警示牌", "车载急救包", "保温箱", "颈枕"],
         "cycling": ["头盔", "骑行服", "码表", "补胎工具", "骑行手套", "反光条", "骑行水壶", "防晒袖套"],
@@ -987,6 +1064,12 @@ def build(args) -> dict:
     aud_ages = aud_blk.get("ages", {})
     aud_band = resolve_family_band(args.composition) if aud_key == "family" else ""
     aud_band_tips = aud_ages.get(aud_band, []) if aud_key == "family" else []
+
+    # ── 出行陪伴结构（Party Type）·与 audience/style/theme 正交 ──
+    party_db = load_party()
+    _party_override = (getattr(args, "party", "") or "").strip()
+    party_type = resolve_party_type(args.people, args.composition, args.hint, _party_override)
+    party = party_block(party_db, party_type, args.people, inferred=not _party_override)
 
     targets = []
     # 连写多目的地自动拆分: "丽江大理香格里拉" → ["丽江","大理","香格里拉"]
@@ -1151,7 +1234,7 @@ def build(args) -> dict:
         moto_block["routes"] = (hit or moto_suggest_routes(days=days, limit=3))[:3]
 
         # 线路候选已定，接着做两件 v0.1.2 新增的事：
-        # ① 绿荫优先排序/筛选（学百度地图智能体：暴晒是摩托党大敌，选线阶段就该管）
+        # ① 绿荫优先排序/筛选（学备用地图服务智能体：暴晒是摩托党大敌，选线阶段就该管）
         #    纪律：绿荫偏好只作用于【已按目的地匹配出来的候选】，不拿全库线路覆盖匹配结果。
         if getattr(args, "moto_shade_first", False) or getattr(args, "moto_shade_min", None):
             pool = hit or moto_suggest_routes(days=days, limit=99)
@@ -1225,12 +1308,19 @@ def build(args) -> dict:
         rv_block["total_km"] = auto_total
 
     stay = stay_plan(args.people, profile, args.composition, args.lodging)
+    _budget = budget_for(profile, days, args.people, args.lodging, args.food, stay=stay)
+    # 预算分摊口径由 party 决定（不改动金额计算，只标注口径）
+    _budget["split_mode"] = party.get("budget_mode", "")
+    _budget["split_note"] = party.get("budget_note", "")
+    # audience tips 叠加 party 安全/节奏要点（正交：只追加不覆盖）
+    _aud_tips = list(aud_tips) + list(party.get("safety_focus", [])) + list(party.get("pacing_focus", []))
     return {
         "origin": args.origin or "未指定",
         "destinations": [t["name"] for t in targets],
         "days": days,
         "people": args.people,
         "composition": args.composition or "",
+        "party": party,
         "style": profile.key,
         "style_label": profile.label,
         "intensity": profile.intensity,
@@ -1242,9 +1332,9 @@ def build(args) -> dict:
             "room_types": stay.room_types,
             "rationale": stay.rationale,
             "tips": stay.tips,
+            "room_note": party.get("room_note", ""),
         },
-        "budget": budget_for(profile, days, args.people, args.lodging, args.food,
-                             stay=stay),
+        "budget": _budget,
         "gear": gear_for(profile, season),
         "season": season,
         "special": special_advice(profile),
@@ -1276,6 +1366,7 @@ def _day_note(profile: StyleProfile, i: int, days: int) -> str:
         "commando": "早出晚归，一天刷完核心清单，晚上回酒店泡脚",
         "leisure": "上午一个主点，下午一个副点，傍晚随便逛逛",
         "resort": "睡到自然醒，一个活动 + 一顿饭，把时间交给度假村",
+        "relax": "不赶时间不打卡，睡到自然醒，想出门就出门，想待着就待着",
         "honeymoon": "看一次日出或日落，安排一顿有仪式感的晚餐",
         "roadtrip": "边开边停，服务区补给；日落前到观景点",
         "cycling": "按码表配速，午后注意返程，留出补水补给点",
@@ -1317,6 +1408,8 @@ def main() -> int:
     ap.add_argument("--people", type=int, default=2, help="总人数")
     ap.add_argument("--composition", default="",
                     help="人员构成, 如 三口/二大一小/两大两小/情侣/朋友4人。影响房间分配")
+    ap.add_argument("--party", default="",
+                    help="出行陪伴结构(显式指定优先): solo/couple/friends-small/friends-large/family/group；未给则自动推断")
     ap.add_argument("--style", help="节奏画像 key")
     ap.add_argument("--hint", nargs="*", help="用户原话片段, 用于推断画像")
     ap.add_argument("--lodging", default="舒适", choices=list(LODGING))

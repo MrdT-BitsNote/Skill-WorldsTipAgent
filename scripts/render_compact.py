@@ -11,6 +11,57 @@ import sys, json, argparse, re
 from pathlib import Path
 from datetime import datetime
 
+try:
+    from rv_check import rv_html as _rv_html
+except ImportError:
+    _rv_html = None
+
+try:
+    from transit_links import generate as _transit_links, render_html as _transit_links_html
+except ImportError:
+    _transit_links = None
+    _transit_links_html = None
+
+_MODE_KEYS = ('高铁', '普铁', '飞机', '客车', '轮船', '自驾')
+
+def _normalize_transit(transit: dict) -> dict:
+    """把 plan_transit.py 的顶层中文 key 格式转为 render_compact 期望的 modes 列表。
+    如果已有 modes 列表则原样返回（幂等）。"""
+    if not transit or transit.get('modes'):
+        return transit or {}
+    modes = []
+    for mk in _MODE_KEYS:
+        m = transit.get(mk)
+        if not m or not isinstance(m, dict):
+            continue
+        if mk == '高铁':
+            modes.append({'mode': '高铁', 'duration': f'{m.get("hours", "?")}h',
+                          'cost': f'¥{m.get("price_est", "?")}'})
+        elif mk == '普铁':
+            modes.append({'mode': '普铁', 'duration': f'{m.get("hours", "?")}h',
+                          'cost': f'硬座¥{m.get("price_hard_seat_est", "?")} / 硬卧¥{m.get("price_hard_sleeper_est", "?")}'})
+        elif mk == '飞机':
+            disc = m.get('price_discount_est', {})
+            lo = min(disc.values()) if disc else '?'
+            hi = m.get('price_full_est', '?')
+            modes.append({'mode': '飞机', 'duration': f'{m.get("hours_total_est", "?")}h(含地面)',
+                          'cost': f'¥{lo}~{hi}'})
+        elif mk == '客车':
+            modes.append({'mode': '客车', 'duration': f'{m.get("hours", "?")}h',
+                          'cost': f'¥{m.get("price_est", "?")}'})
+        elif mk == '轮船':
+            modes.append({'mode': '轮船', 'duration': f'{m.get("hours", "?")}h',
+                          'cost': f'¥{m.get("price_est", "?")}'})
+        elif mk == '自驾':
+            modes.append({'mode': '自驾', 'duration': f'{m.get("hours", "?")}h',
+                          'cost': f'约¥{m.get("cost_est", "?")}(油费+过路)'})
+    out = dict(transit)
+    out['modes'] = modes
+    rec = transit.get('recommend', '')
+    if rec:
+        out['recommend'] = rec.replace('(默认)', '').replace('机票参考', '飞机')
+    return out
+
 # === 通用辅助 ===
 def esc(s):
     if s is None: return ''
@@ -36,7 +87,7 @@ def section_no(n): return f'<span class="sec-no">§ {n:02d}</span>'
 # === 明确通行方式识别 ===
 # 规则：用户已明确通行方式（摩旅/自驾/骑行/指定航班等）→ 只渲染该方式的通行卡，
 #       不再出 6 方式比选表；未明确时才比选公共交通。
-_SELF_DRIVEN = {'moto': '摩托', 'roadtrip': '自驾', 'cycling': '骑行'}
+_SELF_DRIVEN = {'moto': '摩托', 'roadtrip': '自驾', 'cycling': '骑行', 'rv': '房车'}
 
 def _explicit_mode(plan: dict, transit: dict = None):
     """返回明确通行方式 key：moto / roadtrip / cycling / flight / hsr / None"""
@@ -264,18 +315,20 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 </div>
 <footer>
 <div class="wrap">
-本报告由 WorldsTip 旅行指南小册子技能生成 · 票价与开放时间以官方当日为准 · 户外活动请量力而行 · <a href="https://www.qianwenai.com/hub/skills/@user_gc9bq/worldstip-travel-planner" target="_blank" rel="noopener">千问 AI 上架页</a>
+本报告由 WorldsTip 旅行指南小册子技能生成 · 票价与开放时间以官方当日为准 · 户外活动请量力而行
 </div>
 </footer>
 </body>
 </html>'''
 
 def render(plan: dict, title: str, transit: dict = None) -> str:
+    transit = _normalize_transit(transit) if transit else None
     origin = pick(plan, 'origin', 'from', default='出发地')
     dest = '、'.join(plan.get('destinations', []) or ['目的地'])
     days = plan.get('days', '?')
     people = plan.get('people', '1')
     composition = plan.get('composition', '独自一人')
+    party = plan.get('party', {}) or {}
     style = plan.get('style_label') or plan.get('style', '')
     intensity = plan.get('intensity', '?')
     season = plan.get('season', '')
@@ -299,11 +352,12 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
   <span class="tag accent">强度 {intensity} · {intensity_label}</span>
 </div>
 <h1>{esc(title)}</h1>
-<p class="lead">{esc(origin)} → <b>{esc(dest)}</b> · {days} 天 · {esc(composition)} · 节奏画像「{esc(style)}」</p>
+<p class="lead">{esc(origin)} → <b>{esc(dest)}</b> · {days} 天 · {esc(composition)} · 节奏画像「{esc(style)}」{' · ' + esc(party.get('label','')) if party.get('label') else ''}</p>
 <div class="meta">
   <span>人均预算 <b>¥{int(total_pp):,}</b></span>
   <span>住宿 {esc(budget.get('lodging_level','—'))} / 餐饮 {esc(budget.get('food_level','—'))}</span>
   <span>房间 {esc(stay_plan.get('rooms','?'))} 间 · {esc(budget.get('nights','?'))} 晚</span>
+  {'<span>费用口径 ' + esc(budget.get('split_mode','')) + '</span>' if budget.get('split_mode') else ''}
 </div>
 </div>'''
 
@@ -371,7 +425,24 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
                 transit_html.append(f'<p>直线距离 <b>{transit["distance_km"]} km</b></p>')
         else:
             transit_html.append('<p>估算 <b>400–700 km</b> · 跨省行程推荐高铁或飞机（实际余票查 12306 / 航司官网）</p>')
+        # 12306/航司实时查询深链
+        if _transit_links and _transit_links_html and origin != '出发地':
+            dest_first = (plan.get('destinations') or [''])[0]
+            if dest_first:
+                try:
+                    links = _transit_links(origin, dest_first, plan.get('start_date'))
+                    transit_html.append(_transit_links_html(links))
+                except Exception:
+                    pass
         transit_html.append('</section>')
+
+    # === 房车后勤自检（仅 rv 画像或用户声明房车时） ===
+    rv_data = plan.get('rv')
+    if rv_data and _rv_html:
+        dest_str = '、'.join(plan.get('destinations', []))
+        rv_html_str = _rv_html(rv_data, dest_str)
+        if rv_html_str:
+            transit_html.append(rv_html_str)
 
     # === 逐日动线 ===
     day_html = ['<section class="sec" id="sec3">', section_no(3), '<h2>逐日动线<span class="en">Day by Day</span></h2>']
@@ -461,6 +532,10 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
         budget_html.append(f'<tr><td><b>人均合计</b></td><td class="r" colspan="2"><b>¥{budget.get("per_person_total",0):,}</b></td><td class="r">100%</td></tr>')
         budget_html.append('</tbody></table>')
     budget_html.append('<h4>💡 节省口诀</h4><ul><li>住宿按<b>房间</b>而非按人数 · 单人订大床房最划算</li><li>餐饮：早餐住宿含 / 午晚餐本地老店更地道</li><li>门票：学生证/老年证/军官证带好可省；多日票通常比单日票划算</li><li>机票：周中+提前 14 天是常见低洼；关注临近退票高峰</li></ul>')
+    if budget.get('split_mode'):
+        _sn = budget.get('split_note', '')
+        budget_html.append(f'<em class="note">💑 陪伴结构「{esc(party.get("label",""))}」· 费用口径：<b>{esc(budget.get("split_mode"))}</b>'
+                           + (f' · {esc(_sn)}' if _sn else '') + '</em>')
     budget_html.append('</section>')
 
     # === 行前清单（每类一张卡 · 2 列网格紧凑排布） ===
@@ -484,7 +559,7 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
     else:
         pack_html.append('<div class="pack-grid">'
                          '<div class="pack-card"><h5>🪪 证件</h5><div class="items">身份证<i>·</i>护照（出境 6 个月以上有效期）</div></div>'
-                         '<div class="pack-card"><h5>💰 财物</h5><div class="items">现金<i>·</i>银行卡<i>·</i>微信/支付宝</div></div>'
+                         '<div class="pack-card"><h5>💰 财物</h5><div class="items">现金<i>·</i>银行卡<i>·</i>主流移动支付</div></div>'
                          '<div class="pack-card"><h5>🔌 电子</h5><div class="items">充电器<i>·</i>充电宝（≤100Wh）<i>·</i>数据线</div></div>'
                          '<div class="pack-card"><h5>💊 健康</h5><div class="items">感冒药<i>·</i>肠胃药<i>·</i>创可贴<i>·</i>个人慢病药</div></div>'
                          '<div class="pack-card"><h5>👕 衣物</h5><div class="items">防滑鞋（已磨合）<i>·</i>雨具<i>·</i>保暖外套</div></div>'
@@ -512,6 +587,15 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
             safe_html.append('</ul>')
     else:
         safe_html.append('<h4>🛡 通用安全</h4><ul><li>证件：身份证随身（购票/住宿实名刚需）</li><li>信息留底：行程单发给家人一份，含住宿地址与返程时间</li><li>紧急电话：110 报警 / 120 急救 / 122 交通</li><li>保险：户外活动买含高风险运动的意外险（一天期 5-15 元）</li><li>健康：慢性病患者带足药量+1 天余量；常备创可贴/肠胃药/退烧药</li><li>财物：大额现金分开放，手机挂绳防挤掉</li></ul>')
+    # 陪伴结构（Party Type）安全与节奏叠加
+    _pt_items = [x for x in (party.get('safety_focus', []) or []) + (party.get('pacing_focus', []) or []) if x]
+    if _pt_items or party.get('pitfalls'):
+        safe_html.append(f'<h4>👥 {esc(party.get("label","陪伴结构"))} · 专属提醒</h4><ul>')
+        for it in _pt_items:
+            safe_html.append(f'<li>{esc(it)}</li>')
+        if party.get('pitfalls'):
+            safe_html.append(f'<li>⚠ {esc(party.get("pitfalls"))}</li>')
+        safe_html.append('</ul>')
     em = safety.get('emergency', {}) or {}
     if em:
         hot = em.get('hotline', [])
