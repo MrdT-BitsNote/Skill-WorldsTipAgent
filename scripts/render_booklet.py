@@ -704,6 +704,10 @@ def elasticity_score(day: dict) -> int:
 # ───────────────────────── 规则型「可执行性体检」阈值（可被 references 覆盖）
 def load_feas_rules() -> dict:
     d = load_json(REF / "feasibility_check.json")
+    # v0.1.25 修复：原 JSON 把阈值放在嵌套的 "thresholds" 块里，而本函数与下游 rules.get(...)
+    # 都在顶层读取，导致该块长期被忽略（死配置，实际一直走 setdefault 兜底值）。
+    # 这里把 thresholds 展平到顶层，使 references 中的阈值真正生效。
+    d.update(d.pop("thresholds", {}) or {})
     d.setdefault("max_spots_per_day", 6)
     d.setdefault("max_drive_hours", 8)
     d.setdefault("late_hour", 21)

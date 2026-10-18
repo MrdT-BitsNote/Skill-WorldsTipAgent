@@ -3,18 +3,23 @@
   "_note": "零依赖可行性体检规则库。thresholds 用于通用自检；destinations 为已知目的地 P0/P1 强制关卡。所有时间/价格均为经验值，出行前 1-3 天请以官方实时为准。",
   "thresholds": {
     "max_spots_per_day": 6,
+    "city_max_spots_per_day": 4,
     "max_drive_hours": 9,
     "late_hour": 21,
     "altitude_min_days": 3,
     "long_trip_days": 7,
-    "transfer_max_spots": 3
+    "transfer_max_spots": 3,
+    "max_transfer_ratio": 0.3
   },
   "tips": {
     "too_many_spots": "单日点位过多易赶场，建议合并邻近点位或删减非核心项。",
     "late_night": "末段安排偏晚，注意末班车、夜间步行安全与返程交通。",
     "altitude": "含高海拔目的地，建议前 1–2 天低强度适应，避免抵达首日剧烈活动。",
     "long_trip": "行程较长，建议在第 3–4 天插入半休整日，防止疲劳累积。",
-    "tight_transfer": "跨城转场日点位不宜再排满，预留误点缓冲。"
+    "tight_transfer": "跨城转场日点位不宜再排满，预留误点缓冲。",
+    "too_many_spots_city": "城市游单日点位偏多，通勤会吃掉游玩时间，建议合并同簇或删减。",
+    "transfer_ratio_high": "单日通勤耗时占比过高，动线不经济，建议按地理邻近重新分簇。",
+    "queue_risk": "含高排队风险项目，旺季排队可达 1–3 小时，必须单列排队预算并复核预约/分时政策。"
   },
   "gate_keywords": {
     "booking": ["预约", "预订", "提前订", "线上购票", "网上购", "换乘车", "实名"],
@@ -23,7 +28,8 @@
     "last_transport": ["末班", "末班船", "末班车", "最后一班", "收班", "返程时间"],
     "restriction": ["限行", "单行", "管制", "禁行", "限号"],
     "parking": ["停车", "车位", "停车场", "泊车"],
-    "ticket": ["门票", "观光车", "联票", "必购", "需购", "船票"]
+    "ticket": ["门票", "观光车", "联票", "必购", "需购", "船票"],
+    "queue": ["排队", "排队多久", "排队时长", "等候", "候检", "限流", "分时预约", "入园排队", "热门项目"]
   },
   "destinations": {
     "三峡大坝": {
