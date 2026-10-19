@@ -326,7 +326,7 @@ def apply_style(style_key: str | None, plan: dict) -> None:
 
 # ───────────────────────── 路线地图组件（v0.1.17 策略改判）
 # 报告地图层优先级：地图服务 API 真地图 → 备用地图服务 API 备用 → 纯文字兜底；失败即切、不重试不阻塞。
-# MAP_MODE 三档：none=不画（默认，走文字衔接卡，已是本册现状）；amap/在线真地图由编排层注入折线后渲染；
+# MAP_MODE 三档：none=不画（默认，走文字衔接卡，已是本册现状）；在线真地图由编排层注入折线后渲染；
 #   offline=SVG 手绘示意【已废止，不得作为降级产物输出——用户明确反馈"不用真地图太难看"】。
 MAP_MODE = "none"
 # 可行性体检关卡：none=关闭（纯零依赖）；advisory=册首提示+板块（默认）；strict=置顶红色强制门禁
@@ -2473,8 +2473,8 @@ def main() -> int:
                     help="报告视觉风格（默认按行程类型自动选风）")
     ap.add_argument("--map", choices=["none", "offline"], default="none",
                     help="路线地图层：none=零依赖不画；offline=SVG 离线手绘示意（不调用在线地图）")
-    ap.add_argument("--compute", choices=["none", "amap", "12306"], default="none",
-                    help="实算插件：amap=地图服务距离/路径；12306=票价。需配置环境变量，否则回落估算")
+    ap.add_argument("--compute", choices=["none", "map", "12306"], default="none",
+                    help="实算插件：map=地图服务距离/路径；12306=票价。需配置环境变量，否则回落估算")
     ap.add_argument("--feasibility", choices=["none", "advisory", "strict"], default="advisory",
                     help="可行性体检门禁：none=关闭；advisory=册首提示+板块(默认)；strict=置顶红色强制关卡")
     ap.add_argument("--no-images", action="store_true",

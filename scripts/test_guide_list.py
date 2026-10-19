@@ -84,7 +84,7 @@ ok4, why4 = G.check_url("https://news.example.com/p/zhangjiajie-guide.html")
 check("info article allowed", ok4)
 
 # --- 6) 去重（utm 归一化） -------------------------------------------------
-a = entry(url="https://example.com/a/x?utm_source=weibo")
+a = entry(url="https://example.com/a/x?utm_source=social")
 b = entry(url="https://www.example.com/a/x/", match=0.9)
 dd = G.dedup([a, b])
 check("dedup by normalized url", len(dd) == 1)

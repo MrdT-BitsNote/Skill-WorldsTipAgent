@@ -228,11 +228,11 @@ def main() -> None:
     A(f"同一短名对应多个同级行政区，共 **{amb.get('count', 0)}** 组。"
       "对境内判定**无影响**（撞车项同属中国），但景点归属到省市时必须按全称或省份消歧。")
     A("")
-    amap = amb.get("map") or {}
-    if amap:
+    geo_map = amb.get("map") or {}
+    if geo_map:
         A("| 短名 | 对应行政区 |")
         A("|---|---|")
-        for k, v in list(amap.items()):
+        for k, v in list(geo_map.items()):
             A(f"| {k} | {'、'.join(v)} |")
     A("")
 

@@ -8,8 +8,8 @@
 - 所有对外函数返回 (data, source) 二元组，source 用于渲染端「实算✓·来源」徽章，杜绝假徽章。
 
 三个真实数据源：
-  1. 地图服务 (AMap)  Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 AMAP_KEY）
-  2. 天气服务 (QWeather) 天气 API —— 7 天预报（环境变量 QWEATHER_KEY）
+  1. 地图服务 Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 AMAP_KEY）
+  2. 天气服务 API —— 7 天预报（环境变量 QWEATHER_KEY）
   3. Open-Meteo            —— 天气（免 key，作为天气服务的 keyless 兜底）
 
 环境变量：
@@ -56,7 +56,7 @@ def _http_json(url: str, retries: int = 2) -> dict | None:
 
 
 # ───────────────────────────────────────────────────────────────
-# 地图服务 (AMap)
+# 地图服务
 # ───────────────────────────────────────────────────────────────
 def amap_distance_matrix(origins: list, destinations: list, mode: str = "driving") -> list | None:
     """地图服务距离矩阵 v3。origins/destinations: [(lat, lon), ...]。返回 [米]。"""
@@ -113,7 +113,7 @@ def amap_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
 
 
 # ───────────────────────────────────────────────────────────────
-# 天气服务 (QWeather)
+# 天气服务
 # ───────────────────────────────────────────────────────────────
 def qweather(lat: float, lon: float, days: int = 7) -> dict | None:
     """天气服务 7 天预报。返回归一化 dict（同 open_meteo 输出结构）或 None。

@@ -49,11 +49,11 @@ def rail_12306(from_station: str, to_station: str, date: str = "") -> dict | Non
 
 
 def enrich_transit(transit: dict, coord_lookup: dict | None = None,
-                   compute_mode: str = "amap") -> tuple:
+                   compute_mode: str = "map") -> tuple:
     """给 transit 注入实算距离/票价。
 
     compute_mode:
-      "amap"  → 地图服务距离矩阵 + 驾车路径（需 AMAP_KEY）
+      "map"  → 地图服务距离矩阵 + 驾车路径（需 AMAP_KEY）
       "12306" → 12306 票价（需 RAIL_PROXY_URL 自建代理）
       "none"  → 不启用，原样返回
     返回 (transit, computed_bool)。computed 仅在地图服务/代理真正返回数据时置 True，
@@ -74,7 +74,7 @@ def enrich_transit(transit: dict, coord_lookup: dict | None = None,
         if fc and tc:
             frm_c, to_c = fc, tc
 
-    if compute_mode in ("amap", "12306") and frm_c and to_c:
+    if compute_mode in ("map", "12306") and frm_c and to_c:
         dm = amap_distance_matrix([frm_c], [to_c])
         if dm:
             out["distance_km"] = round(dm[0] / 1000)
@@ -87,7 +87,7 @@ def enrich_transit(transit: dict, coord_lookup: dict | None = None,
             out["distance_source"] = "地图服务"
             computed = True
 
-    if compute_mode in ("amap", "12306") and os.environ.get("RAIL_PROXY_URL"):
+    if compute_mode in ("map", "12306") and os.environ.get("RAIL_PROXY_URL"):
         rail = rail_12306(transit.get("from_station", ""), transit.get("to_station", ""),
                          transit.get("date", ""))
         if rail:

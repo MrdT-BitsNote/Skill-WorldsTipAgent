@@ -5,7 +5,7 @@
     "currency_code": "ISO 4217 货币代码（stable，不会变）",
     "tz_offset": "IANA Time Zone Database 时区数据库（stable）",
     "exchange_rate_approx": "仅量级参考；出行前以中国银行/央行中间价或权威行情当日为准（volatile）",
-    "payment_and_tipping": "以银联国际/发卡行/当地商户公告为准；换汇与境外交易开通属易变项，出发前确认"
+    "payment_and_tipping": "以发卡行/当地商户公告为准；换汇与境外交易开通属易变项，出发前确认"
   },
   "_note": "货币与时差基线。本地货币、汇率量级、时差属于高度稳定的结构信息，内置基线可直接输出；具体汇率数值是易变的，仅给量级参考并标注核验要求。",
   "_stability_split": "currency_code/symbol = stable；exchange_rate_approx = volatile（仅量级参考，出行前查当日）；tz_offset = stable",
@@ -430,7 +430,7 @@
     "日本": {
       "card": "通用，海外卡多数可用",
       "cash": "便利店与部分小店仍现金友好",
-      "ic_card": "Suica/PASMO 交通卡便利",
+      "ic_card": "当地交通 IC 卡便利",
       "mobile_pay": "多数需绑定国际卡，Apple Pay 便利",
       "tipping": "不收小费（给反而可能造成困扰）",
       "_tipping": "stable"
@@ -625,5 +625,5 @@
       "_tipping": "stable"
     }
   },
-  "triage_note": "换汇与支付能力属易变项，出发前请确认：当地 ATM 是否支持银联/境外卡取现、是否需提前开通境外交易、国际漫游或 eSIM 方案。"
+  "triage_note": "换汇与支付能力属易变项，出发前请确认：当地 ATM 是否支持境外卡取现、是否需提前开通境外交易、国际漫游或 eSIM 方案。"
 }

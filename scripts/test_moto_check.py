@@ -264,7 +264,7 @@ def t_routes() -> None:
         ck(bool(r.get("caution")), f"线路 {r.get('name')} 需有 caution")
         ck(bool(r.get("season")), f"线路 {r.get('name')} 需有季节窗口")
         # v0.1.13 里程来源纪律：每条须标 distance_source，绝不伪称实算
-        ck(r.get("distance_source") in ("editorial_estimate", "amap_measured"),
+        ck(r.get("distance_source") in ("editorial_estimate", "map_measured"),
            f"线路 {r.get('name')} 需有 distance_source（实算优先/估值标注）")
 
     # v0.1.13 里程纪律须写进 _meta（地图服务实算优先 / 估值标(估) / >150km评估拆天 / 路点校验）

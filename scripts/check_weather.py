@@ -123,7 +123,7 @@ THRESHOLDS = {
     "study":      {"max_precip_mm": 20, "max_pop": 80, "min_temp": 3, "max_wind": 45,
                    "note": "研学: 户外课时看天, 备室内备选与讲解视频"},
     "budget":     {"max_precip_mm": 20, "max_pop": 80, "min_temp": 0, "max_wind": 50,
-                   "note": "穷游: 户外比重大, 雨天优先室内展馆与夜市"},
+                   "note": "经济游: 户外比重大, 雨天优先室内展馆与夜市"},
     "rail":       {"max_precip_mm": 20, "max_pop": 80, "min_temp": 0, "max_wind": 50,
                    "note": "高铁周边: 室内外皆宜, 雨天转室内展馆与商圈"},
     # 非户外方式(仅作提示, 可走 indoor_rewrite 兜底)

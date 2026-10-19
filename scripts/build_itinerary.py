@@ -319,10 +319,10 @@ STYLE_PROFILES = {
         intensity=3,
     ),
     "budget": StyleProfile(
-        key="budget", label="穷游", spots_per_day=(5, 8),
+        key="budget", label="经济", spots_per_day=(5, 8),
         slot_hours=(4, 3.5, 3), stay_per_spot_h=1.0, day_span_h=(12, 15),
         budget_ratio={"交通": 0.35, "住宿": 0.18, "餐饮": 0.22, "门票": 0.08, "其他": 0.17},
-        tone=["穷游", "青旅", "性价比", "省钱", "夜班", "硬座"],
+        tone=["经济", "青旅", "性价比", "省钱", "夜班", "硬座"],
         gear_focus=["轻装", "锁", "洗漱包", "充电宝", "学生证"],
         intensity=4,
     ),
@@ -427,7 +427,7 @@ MODE_TO_STYLE = {
     # 扩展方式(国内全场景)
     "露营": "camping", "营地": "camping", "野营": "camping", "精致露营": "camping", "glamping": "camping",
     "房车": "rv", "房车游": "rv", "自驾房车": "rv",
-    "穷游": "budget", "背包": "budget", "背包客": "budget", "省钱游": "budget", "青旅": "budget",
+    "经济游": "budget", "背包": "budget", "背包客": "budget", "省钱游": "budget", "青旅": "budget",
     "摄影": "photo", "旅拍": "photo", "出片": "photo", "拍照打卡": "photo", "风光摄影": "photo",
     "研学": "study", "游学": "study", "科普": "study", "亲子研学": "study", "夏令营": "study", "冬令营": "study",
     "银发": "silver", "适老": "silver", "老人": "silver", "爸妈游": "silver", "长辈": "silver",

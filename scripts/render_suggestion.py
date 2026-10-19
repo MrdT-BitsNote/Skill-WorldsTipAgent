@@ -25,7 +25,7 @@ STYLE_LABEL = {
     "leisure": "休闲", "commando": "特种兵", "resort": "度假", "honeymoon": "蜜月",
     "roadtrip": "自驾", "cycling": "骑行", "hiking": "徒步", "moto": "摩旅",
     "family": "亲子", "couple": "情侣", "friends": "朋友", "camping": "露营",
-    "rv": "房车", "budget": "穷游", "photo": "摄影", "study": "研学",
+    "rv": "房车", "budget": "经济出行", "photo": "摄影", "study": "研学",
     "silver": "银发", "ski": "滑雪", "island": "海岛", "ancient": "古镇", "rail": "高铁周边",
 }
 

@@ -3,7 +3,7 @@
 """查询目的地实时天气与预报。
 
 数据源（v0.1.0 统一接入 live_api）：
-  - 天气服务 (QWeather)：优先，环境变量 QWEATHER_KEY 配置后启用（更准确的中文天气 + 国内覆盖）
+  - 天气服务：优先，环境变量 QWEATHER_KEY 配置后启用（更准确的中文天气 + 国内覆盖）
   - Open-Meteo：免 key 兜底（无 QWEATHER_KEY 时自动使用）
 
 用法:
