@@ -9,7 +9,7 @@ render_compact.py — 紧凑版小册子渲染器（仿赤峰 A5 卡片手册版
 """
 import sys, json, argparse, re
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date
 
 try:
     from rv_check import rv_html as _rv_html
@@ -21,6 +21,12 @@ try:
 except ImportError:
     _transit_links = None
     _transit_links_html = None
+
+try:
+    from guide_digest import CATEGORY_ZH as _GUIDE_CAT_ZH, VOLATILE_CATS as _GUIDE_VOLATILE
+except ImportError:
+    _GUIDE_CAT_ZH = None
+    _GUIDE_VOLATILE = None
 
 _MODE_KEYS = ('高铁', '普铁', '飞机', '客车', '轮船', '自驾')
 
@@ -296,6 +302,13 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 .toc a{{border:0;color:var(--ink)}}
 .toc a:hover{{color:var(--accent)}}
 @media(max-width:640px){{.row{{grid-template-columns:1fr}}.toc ul{{grid-template-columns:1fr}}.day{{grid-template-columns:32px 1fr}}.day .no{{font-size:18px}}.hero h1{{font-size:24px}}}}
+.g-supp{{margin:10px 0 2px;border-top:1px dashed var(--line2);padding-top:8px}}
+.g-supp h4{{font-size:13.5px;margin:0 0 2px}}
+.g-supp-note{{font-size:11.5px;color:var(--sub);margin:0 0 6px}}
+.g-group{{font-size:12px;font-weight:700;color:var(--accent);margin:7px 0 2px;letter-spacing:.02em}}
+.g-list{{margin:0;padding-left:16px}}
+.g-list li{{font-size:12.5px;line-height:1.55;margin:3px 0;list-style:disc}}
+.g-src{{font-size:11px;color:var(--sub)}}
 </style>
 </head>
 <body>
@@ -321,7 +334,64 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 </body>
 </html>'''
 
-def render(plan: dict, title: str, transit: dict = None) -> str:
+_GUIDE_CAT_ORDER = ['ticket', 'queue', 'transit', 'food', 'pitfall', 'photo', 'tip']
+_GUIDE_CAT_ZH_FALLBACK = {
+    'ticket': '票务与预约', 'transit': '交通衔接', 'queue': '排队与时段',
+    'food': '餐饮', 'pitfall': '避雷踩坑', 'photo': '机位与拍摄', 'tip': '实用贴士',
+}
+
+
+def _guide_stale_suffix(verified_on, category):
+    """超期后缀：volatile 类（票务/排队/衔接）>30 天、体验类 >90 天 → 需出行前复核。"""
+    try:
+        d = datetime.strptime(str(verified_on), '%Y-%m-%d').date()
+    except (ValueError, TypeError):
+        return ''
+    days = (date.today() - d).days
+    volatile = category in (_GUIDE_VOLATILE or set())
+    limit = 30 if volatile else 90
+    return ' ·需出行前复核' if days > limit else ''
+
+
+def _guide_supplement_html(research):
+    """§10 条件子块「攻略核验 · 数据补充」：渲染 research.json 的 ugc 键。
+    无有效条目返回 ''（无数据不渲染）。只呈现来源名称+核验日期+要点，不外露任何链接。"""
+    if not research or not isinstance(research, dict):
+        return ''
+    ugc = research.get('ugc') or []
+    items = [u for u in ugc
+             if isinstance(u, dict) and u.get('text') and u.get('source') and u.get('verified_on')]
+    if not items:
+        return ''
+    cat_zh = _GUIDE_CAT_ZH or _GUIDE_CAT_ZH_FALLBACK
+    groups = {}
+    for u in items:
+        groups.setdefault(u.get('category') or 'tip', []).append(u)
+    out = ['<div class="g-supp"><h4>· 攻略核验 · 数据补充</h4>',
+           '<p class="g-supp-note">以下为公开攻略的研读沉淀，已交叉核验并标注来源与核验日期；'
+           '价格 / 开放 / 排队类信息出行前请再复核。</p>']
+    for cat in sorted(groups, key=lambda c: _GUIDE_CAT_ORDER.index(c) if c in _GUIDE_CAT_ORDER else 99):
+        out.append(f'<div class="g-group">{esc(cat_zh.get(cat, cat))}</div><ul class="g-list">')
+        for u in groups[cat]:
+            src = u.get('src') or u.get('confidence') or '检索'
+            if src == '官方':
+                badge, cls = '官方', 'ok'
+            elif u.get('multi'):
+                badge, cls = '多源印证', 'accent'
+            else:
+                badge, cls = '检索', ''
+            where = u.get('where') or ''
+            text = f"【{where}】{u['text']}" if where and where != '全程' else u['text']
+            out.append(
+                f'<li><span class="tag {cls}">{badge}</span>{esc(text)}'
+                f'<span class="g-src">— {esc(u.get("source", ""))} · 核验于 '
+                f'{esc(u.get("verified_on", ""))}{_guide_stale_suffix(u.get("verified_on"), cat)}</span></li>')
+        out.append('</ul>')
+    out.append('</div>')
+    return ''.join(out)
+
+
+def render(plan: dict, title: str, transit: dict = None, research: dict = None) -> str:
     transit = _normalize_transit(transit) if transit else None
     origin = pick(plan, 'origin', 'from', default='出发地')
     dest = '、'.join(plan.get('destinations', []) or ['目的地'])
@@ -621,6 +691,9 @@ def render(plan: dict, title: str, transit: dict = None) -> str:
         cold_html.append('<h4>· 非热门线路也能打折</h4><p>部分普速与城际线路在淡季有折扣，最低可到 2 折左右。买票时点开"票价"旁的折扣提示，别只认全价。</p>')
         cold_html.append('<h4>· 区间限售会解除</h4><p>长途车常先限售起点到终点，中途站买不到；开车前 3-5 天限售解除。想买中间段，别太早放弃，临近再刷。</p>')
         cold_html.append('<h4>· 官方只认 12306</h4><p>第三方平台只是代购，退票、改签、候补都绕不开 12306。抢票软件容易被风控，关键票还是官方 App 最稳。</p>')
+    supp = _guide_supplement_html(research)
+    if supp:
+        cold_html.append(supp)
     cold_html.append('</section>')
 
     # === 散心模式（relax/resort）：跳过 §02/§03/§08/§09 ===
@@ -658,15 +731,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--plan', required=True)
     ap.add_argument('--transit', default=None)
+    ap.add_argument('--research', default=None, help='research.json（ugc 攻略研读沉淀，渲染进 §10 攻略核验子块）')
     ap.add_argument('--out', required=True)
     ap.add_argument('--title', required=True)
     args = ap.parse_args()
     plan = json.load(open(args.plan, encoding='utf-8'))
     transit = json.load(open(args.transit, encoding='utf-8')) if args.transit else None
-    html = render(plan, args.title, transit)
+    research = json.load(open(args.research, encoding='utf-8')) if args.research else None
+    html = render(plan, args.title, transit, research)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(html, encoding='utf-8')
-    sections = ['hero','toc','路线总览','怎么去','逐日动线','季节','拍摄','住宿','预算','清单','安全','冷知识']
+    sections = ['hero', 'toc', '路线总览', '怎么去', '逐日动线', '季节', '拍摄', '住宿', '预算', '清单', '安全', '冷知识']
+    if research and (research.get('ugc') or []):
+        sections.append('攻略核验')
     print(f'✅ 已生成: {args.out}  (板块 {len(sections)} 个, {len(html.encode())//1024} KB)')
 
 if __name__ == '__main__':

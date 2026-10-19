@@ -1,6 +1,4 @@
-# 只忽略仓库根目录的 zip；releases/ 下的发布包必须入库
-/*.zip
-!releases/
+*.zip
 _user_meta.json
 __pycache__/
 *.pyc

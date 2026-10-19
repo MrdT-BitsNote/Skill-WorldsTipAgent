@@ -3,12 +3,12 @@
   "_note": "零依赖可行性体检规则库。thresholds 用于通用自检；destinations 为已知目的地 P0/P1 强制关卡。所有时间/价格均为经验值，出行前 1-3 天请以官方实时为准。",
   "thresholds": {
     "max_spots_per_day": 6,
-    "city_max_spots_per_day": 4,
     "max_drive_hours": 9,
     "late_hour": 21,
     "altitude_min_days": 3,
     "long_trip_days": 7,
     "transfer_max_spots": 3,
+    "city_max_spots_per_day": 4,
     "max_transfer_ratio": 0.3
   },
   "tips": {
