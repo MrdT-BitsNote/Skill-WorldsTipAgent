@@ -74,7 +74,7 @@ check("relative url rejected", G.validate_entry(entry(url="/guide/abc"), 1))
 check("ftp url rejected", G.validate_entry(entry(url="ftp://x.com/a"), 1))
 
 # --- 5) 合规红线：票务/交易链接 --------------------------------------------
-ok1, why1 = G.check_url("https://www.damai.cn/item.html?id=1")
+ok1, why1 = G.check_url("https://www.ticket.example.cn/item.html?id=1")
 check("ticket domain blocked", not ok1 and "票务" in why1)
 ok2, why2 = G.check_url("https://travel.example.com/checkout/step1")
 check("checkout path blocked", not ok2 and "交易" in why2)
@@ -125,7 +125,7 @@ check("empty input renders empty", G.render_md([]) == "")
 # --- 10) CLI 端到端 --------------------------------------------------------
 tmp = os.path.join(HERE, "_gl_test_tmp.json")
 with open(tmp, "w", encoding="utf-8") as f:
-    json.dump([entry(), entry(url="https://damai.cn/x")], f)
+    json.dump([entry(), entry(url="https://ticket.example.cn/x")], f)
 r1 = subprocess.run([sys.executable, os.path.join(HERE, "guide_list.py"), tmp],
                     capture_output=True, text=True, encoding="utf-8")
 check("cli outputs valid row only", "zhangjiajie-hike" in r1.stdout

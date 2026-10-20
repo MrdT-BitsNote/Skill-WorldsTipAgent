@@ -8,13 +8,13 @@
 - 所有对外函数返回 (data, source) 二元组，source 用于渲染端「实算✓·来源」徽章，杜绝假徽章。
 
 三个真实数据源：
-  1. 地图服务 Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 AMAP_KEY）
-  2. 天气服务 API —— 7 天预报（环境变量 QWEATHER_KEY）
+  1. 地图服务 Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 MAP_SERVICE_KEY）
+  2. 天气服务 API —— 7 天预报（环境变量 WEATHER_SERVICE_KEY）
   3. Open-Meteo            —— 天气（免 key，作为天气服务的 keyless 兜底）
 
 环境变量：
-  AMAP_KEY       地图服务 Web 服务 Key
-  QWEATHER_KEY   天气服务 Key（开发者免费版即可；location 直接用 "经度,纬度"）
+  MAP_SERVICE_KEY       地图服务 Web 服务 Key
+  WEATHER_SERVICE_KEY   天气服务 Key（开发者免费版即可；location 直接用 "经度,纬度"）
 """
 from __future__ import annotations
 
@@ -58,9 +58,9 @@ def _http_json(url: str, retries: int = 2) -> dict | None:
 # ───────────────────────────────────────────────────────────────
 # 地图服务
 # ───────────────────────────────────────────────────────────────
-def amap_distance_matrix(origins: list, destinations: list, mode: str = "driving") -> list | None:
+def map_distance_matrix(origins: list, destinations: list, mode: str = "driving") -> list | None:
     """地图服务距离矩阵 v3。origins/destinations: [(lat, lon), ...]。返回 [米]。"""
-    key = os.environ.get("AMAP_KEY")
+    key = os.environ.get("MAP_SERVICE_KEY")
     if not key or not origins or not destinations:
         return None
     o = "|".join(f"{lat},{lon}" for lat, lon in origins)
@@ -75,9 +75,9 @@ def amap_distance_matrix(origins: list, destinations: list, mode: str = "driving
     return None
 
 
-def amap_driving(origin: tuple, destination: tuple) -> dict | None:
+def map_driving(origin: tuple, destination: tuple) -> dict | None:
     """地图服务驾车路径规划 v3，返回 {"distance_km":float, "duration_h":float}。"""
-    key = os.environ.get("AMAP_KEY")
+    key = os.environ.get("MAP_SERVICE_KEY")
     if not key or not origin or not destination:
         return None
     q = urllib.parse.urlencode({
@@ -99,14 +99,14 @@ def amap_driving(origin: tuple, destination: tuple) -> dict | None:
     return None
 
 
-def amap_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
+def map_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
     """地图服务实算城际里程。返回 (distance_km, duration_h, source) 或 (None, None, None)。"""
-    if not (from_coord and to_coord and os.environ.get("AMAP_KEY")):
+    if not (from_coord and to_coord and os.environ.get("MAP_SERVICE_KEY")):
         return None, None, None
-    drv = amap_driving(from_coord, to_coord)
+    drv = map_driving(from_coord, to_coord)
     if drv:
         return drv["distance_km"], drv["duration_h"], "地图服务"
-    dm = amap_distance_matrix([from_coord], [to_coord])
+    dm = map_distance_matrix([from_coord], [to_coord])
     if dm:
         return round(dm[0] / 1000, 1), None, "地图服务"
     return None, None, None
@@ -115,13 +115,13 @@ def amap_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
 # ───────────────────────────────────────────────────────────────
 # 天气服务
 # ───────────────────────────────────────────────────────────────
-def qweather(lat: float, lon: float, days: int = 7) -> dict | None:
+def weather_service(lat: float, lon: float, days: int = 7) -> dict | None:
     """天气服务 7 天预报。返回归一化 dict（同 open_meteo 输出结构）或 None。
 
     免费开发者版 location 直接用 "经度,纬度" 即可；precip_prob 在免费 7d 接口
     不返回，置 None 并如实标注。
     """
-    key = os.environ.get("QWEATHER_KEY")
+    key = os.environ.get("WEATHER_SERVICE_KEY")
     if not key:
         return None
     days = max(1, min(7, days))
@@ -152,7 +152,7 @@ def qweather(lat: float, lon: float, days: int = 7) -> dict | None:
 # Open-Meteo（免 key 兜底）
 # ───────────────────────────────────────────────────────────────
 def open_meteo(lat: float, lon: float, days: int = 7) -> dict | None:
-    """Open-Meteo 实况+预报（无需 API key）。返回与 qweather 同构的归一化 dict。"""
+    """Open-Meteo 实况+预报（无需 API key）。返回与 weather_service 同构的归一化 dict。"""
     days = max(1, min(16, days))
     params = {
         "latitude": lat, "longitude": lon,
@@ -191,7 +191,7 @@ def weather_unified(lat: float, lon: float, days: int = 7) -> tuple:
     返回 (days_list, source) 或 (None, None)。
     """
     # 天气服务优先
-    qw = qweather(lat, lon, days)
+    qw = weather_service(lat, lon, days)
     if qw:
         return qw["days"], "天气服务"
     om = open_meteo(lat, lon, days)

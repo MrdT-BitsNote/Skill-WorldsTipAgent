@@ -25,10 +25,8 @@ from urllib.parse import urlsplit, parse_qsl, urlencode, urlunsplit
 
 # --- 合规黑名单（内部逻辑，不面向用户点名品牌） -------------------------------
 # 纯票务 / 售票域名子串（命中即拒：这类站点主用途就是交易）
-BLOCKED_DOMAIN_SUBSTR = (
-    "damai", "maoyan", "taopiaopiao", "showstart", "stubhub", "seatgeek",
-    "ticketmaster", "12306", "tickets", "piaowu", "youpiao",
-)
+# 售票站点域名通用标识（不点名任何具体平台）：命中即拒
+BLOCKED_DOMAIN_SUBSTR = ("ticket", "piao", "12306")
 # 交易 / 预订路径段（命中即拒：攻略可以是信息页，但不能是下单流）
 BLOCKED_PATH_SEG = (
     "checkout", "order", "pay", "payment", "cart", "booking", "booknow",
