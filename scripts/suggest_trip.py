@@ -18,6 +18,7 @@
 import argparse
 import json
 import random
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -160,7 +161,7 @@ def main() -> int:
         try:
             today = date.fromisoformat(args.date)
         except ValueError:
-            print("日期格式错误, 用今天", file=__import__("sys").stderr)
+            print("日期格式错误, 用今天", file=sys.stderr)
 
     r = build(today, args.region, args.season, args.top, args.seed)
     if args.json:

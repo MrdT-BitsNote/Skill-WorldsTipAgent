@@ -955,30 +955,24 @@ v0.0.7 在保持「零依赖 / 多语言 / 本地库优先 / 内容克制」底�
 | `render_booklet.py` | **小册子渲染器（v0.1.13 及之前 · Apple 风备选）**：保留作为旧版备选——支持 `--variant light` 紧凑版、`--format md` Markdown 导出、`--style` 9 套视觉风格、`--map` 路线地图层（none/offline，合规离线）、`--compute` 实算插件（map）、`--feasibility` 可行性体检门禁（none/advisory/strict）；内置 SVG 图标、预算环形图、体力曲线、动线图、弹性评分、可执行性体检（P0 关卡+末班船时间一致性断言）。**v0.1.14 起不再为默认**，仅当用户明确要 Apple 风大留白版时调用 |
 | `build_itinerary.py` | 行程编排引擎（21 式节奏+住宿+预算+装备+限行/房车补给）；**v0.1.1 起 moto 画像自动附加摩旅五项门禁与线路候选** |
 | `moto_check.py` | **摩旅五项门禁校验（v0.1.1 · v0.1.2 扩充）**：准驾车型 / 头盔 / 逐省高速准入 / 逐城禁摩 / 续航加油半径；含线路推荐 `suggest_routes()`（支持 `shade_min`/`shade_first` 绿荫优先）与门禁卡渲染 `moto_html()`；`check_range()` 输出加油决策点动作序列（v0.1.2） |
-| `test_moto_check.py` | 摩旅回归测试（465 项断言）：锁死「禁止上高速≠不能去」「未查证不得报红/绿」「C1 必须红灯」「信息缺失不得默认绿灯」四条判定纪律 |
 | `moto_enrich.py` | **摩旅数据增强通道（v0.1.2）**：`build_checklist()` 按行程生成出行前待核实清单（政策/补给/路况/天气四类，按证据等级定必查或复核）+ `ingest_note()`/`validate_notes()` 规定检索笔记落地格式（四项必填、拒未来日期、超 30 天告警、evidence 恒 third_party）+ `enrichment_html()` 渲染。合规：只检索公开信息，不批量抓取 |
-| `test_moto_enrich.py` | 数据增强回归（98 项断言）：锁死绿荫字段完整性、shade_first 降序、加油点剩余油量不为负、高速文案含服务区、笔记四项必填、坏数据不毁整包、未收录城市必查、statute 不列必查 |
 | `rv_check.py` | **房车/自驾后勤五项自检（v0.1.13）**：驾照牌照（唯一可判红灯：黄牌持C1/拖挂无C6=违法上路）/ 限高（可规避→黄灯，绝不红）/ 补给半径（水撑不过行程或开空调→黄灯，给补水充电节奏）/ 黑水灰水（房车默认黄灯提醒排污稀缺，已确认排污→绿灯，非房车→灰灯不适用）/ 营地过夜（未订→黄灯）。`rv_card()` 汇总 + `rv_html()` 渲染（含车型后勤速查+路线优化+经典线路+应急），与 gate_card/moto_card 同构同视觉。车型由用户 `--vehicle-type` 声明，**不做车型推荐** |
-| `test_rv_check.py` | 房车后勤回归（54 项断言）：锁死「只有违法上路判红灯」「限高恒非红」「未查证走灰灯（含零数据不断言蓝牌）」「非房车排污不适用」「无黑水箱走灰灯」「非房车不套房车营地」「电量也与天数比较、补给不默认绿」「路线面板单元素 daily_km 不崩」「渲染数字取自 JSON 非硬编码」「volatile 块挂易变角标」「3.0m房车恒caution非clear」「HTML转义」「后勤库不含精确坐标（不编造）」 |
 | `plan_transit.py` | **交通比选（市内/近郊/跨城三级分流）**：市内圈（≤30km，只推公交/地铁/出租/网约车）、近郊圈（30-150km，优先自驾/班车，高铁仅通高铁且≥50km才列）、跨城（六方式比选）；坐标缺失不默认高铁，提示先确认「市内 or 跨城」 |
 | `check_weather.py` / `fetch_weather.py` | 户外天气预检（四档）/ 实时天气（fetch_weather 已接入 `live_api`，天气服务优先·Open-Meteo 兜底） |
 | `live_api.py` | **真实 API 统一接入层（v0.1.0）**：地图服务(MAP_CFG) 距离/驾车路径、天气服务(WEATHER_CFG) 7天预报、Open-Meteo(免授权) 兜底；环境变量驱动、失败回落 None |
 | `plan_context.py` | 季节感知+电车油车规划 |
 | `search_dest.py` | 目的地关键字与主题检索（攻略与票务以宿主 WebSearch 公开检索为准，不抓取平台内容） |
 | `guide_list.py` | **攻略检索清单校验器（v0.1.27）**：把宿主检索结果整理成 JSON 喂入，负责 URL 合法性校验（禁手拼/禁票务域名/禁交易路径——攻略模式唯一可点击外链的合规闸门）、按 URL 归一化去重、按 match→confidence→日期排序、>30/90 天时效告警、渲染 Markdown 清单；`--strict` 有拒绝即退出码 1 |
-| `test_guide_list.py` | 攻略清单回归（31 项断言）：锁死必填缺失/日期非法/未来日期/非法 URL 拒绝、票务域名与交易路径拦截、utm 归一化去重、排序口径、时效标注、空输入不崩、`--strict` 退出码 |
 | `guide_digest.py` | **攻略研读沉淀校验器（v0.1.28）**：把攻略研读结论（fact/category/source/source_type/verified_on/confidence）校验合并为 `research.json` 的 `ugc` 条目——三元组缺一即拒（灰灯不进册）、fact>160 字拒（防照搬原文）、同事实多独立来源自动合并升级「多源印证」、日期拒未来、category→kind 映射兼容既有 ugc 结构；`--merge research.json` 去重合并写回、`--strict` 有拒绝退出码 1 |
-| `test_guide_digest.py` | 研读沉淀回归（41 项断言）：锁死三元组缺失/unknown 置信/超长 fact/坏日期拒绝、category 白名单与 kind 映射、同源去重与多源升级、official 不降级、recency 分桶、volatile>30d 与体验>90d 复核标记、输出 ugc 键完整、`--merge` 去重合并、空输入不崩、`--strict` 退出码 |
 | `suggest_trip.py` / `render_suggestion.py` | 短途灵感推荐+华丽 HTML（想不到去哪时） |
 | `plan_route.py` | 距离方位顺序 / 多目的地排序（票价一律估算，见文字指引） |
 | `transit_links.py` | **交通查询文字指引（v0.1.17 · 合规改判）**：用 station_codes.json(3404站) 解析城市→站名→电报码，输出「请到 12306 官方渠道 / 航司官方渠道查询」品牌中性文字提示。**不生成任何可点击外链、不做站外引流、不点名具体商业平台**（旧版曾生成第三方 OTA 深链，因平台合规已整体移除）。`--json`/`--html` 输出；`render_html()` 生成无超链接的查询指引卡片嵌入小册子 |
+| `profile.py` | **跨会话偏好档案**（六维度 recall/remember/reset，落 `~/.aitrip/profile.json`） |
+| `refloader.py` | **共享 reference 加载器（v0.1.3）**：统一 `references/` 目录解析与 JSON 读取语义（`load(name, default=)` / `path()` / `ref_dir()`），消除各脚本重复的 `json.load(open(...))`。**刻意不做跨调用缓存**——每次返回全新对象，避免调用方就地修改污染后续读取；缺文件/损坏按 `default` 兜底（默认 `{}`，传 `default=None` 则返回 `None`），绝不抛异常打断主流程。已被 geo_lookup / outbound_constraints / outbound_safety / moto_check / geo_disambiguate / build_itinerary / check_weather / plan_route / search_dest 复用 |
 | `volatile_verify.py` | **易变数据自动核验（v0.1.17）**：扫描 references/*.json 中所有 `_stability:volatile`/`volatile:true`/`vol_note` 标记及 stability.json 定义的 volatile 字段名，检查 `_updated` 日期戳是否超过 30 天阈值。`--strict` 有过期退出码 1、`--json` 机器可读、`--file` 单文件、`--fix` 自动刷新日期戳。跳过 stability.json 字典本身 |
 | `enrich_coords.py` / `verify_coords.py` | 坐标补全（并发≤4）/ 反查自检 |
-| `profile.py` | **跨会话偏好档案**（六维度 recall/remember/reset，落 `~/.aitrip/profile.json`） |
 | `reflect.py` | **复盘回写**（准确度/安全/预算/舒适/内容 1-5★，落 `~/.aitrip/feedback.json`） |
-| `refloader.py` | **共享 reference 加载器（v0.1.3）**：统一 `references/` 目录解析与 JSON 读取语义（`load(name, default=)` / `path()` / `ref_dir()`），消除各脚本重复的 `json.load(open(...))`。**刻意不做跨调用缓存**——每次返回全新对象，避免调用方就地修改污染后续读取；缺文件/损坏按 `default` 兜底（默认 `{}`，传 `default=None` 则返回 `None`），绝不抛异常打断主流程。已被 geo_lookup / outbound_constraints / outbound_safety / moto_check / geo_disambiguate / build_itinerary / check_weather / plan_route / search_dest / build_destination_links / build_geo_checklist 复用 |
 | `sync_check.py` | **数据同步校验（v0.1.3）**：把 live 站点 worldstip.com 的目的地清单与 `destinations.json` 按 **slug** 联表，报出「冲突 / 显示名漂移 / 站点独有 / 技能独有」，防止 muli 类静默错误。纯比较逻辑 `compare()` 与联网 I/O 分离；`--live` 联网拉取、`--site-file` 离线比对、`--strict` 有未登记问题退出码 1、`--json` 机器可读。已知且经确认的差异登记进 `KNOWN` 白名单（europe/georgia 出境页、shishou 出发地、muli 站点归属待修），报为「已知」而非「错误」 |
-| `test_sync_check.py` | 数据同步校验回归（18 项断言）：锁死 slug 联表、漂移检出、alias 消解、已知分歧、站点/技能独有白名单、空 slug 忽略、`parse_site_html` 抽取 |
 
 **质量标准**：成品应达到 `examples/` 中 4 份示例的密度——每个时间节点有具体地点名、每条美食有参考价、每行预算有两档、每条提示能直接执行。达不到就重做，不要交付「又多又空」的版本。
 
@@ -1063,6 +1057,7 @@ v0.0.7 在保持「零依赖 / 多语言 / 本地库优先 / 内容克制」底�
 - **⑦ 教训（写入纪律）**：变更记录描述「清除了什么」时**只述类别、不复述原词**——复述敏感词/品牌名等于在文档里重新埋雷（本版连续两轮踩到）。
 - **⑧ 交通比选逻辑修复（短途误推高铁飞机）**：原引擎对「市内/近郊短途」不区分圈层，会把岳阳→金鹗山这类同城景点误判为跨省长线并推荐高铁飞机。修复：`plan_transit.py` 增加三级分流——市内圈（≤30km，只推公交/地铁/出租/网约车，短驳骑行/步行）、近郊圈（30-150km，优先自驾/班车，高铁仅当「通高铁且≥50km」才列并标前提）、跨城（>150km 才比选高铁/普铁/飞机）；坐标缺失（市内景点/需消歧地名）不再默认「高铁(默认)」而是提示先向用户确认「市内 or 跨城」。`transit_rules.json` 新增「市内交通」规则块；`render_compact.py` 去掉「400-700km 跨省推荐高铁飞机」硬编码，按 scope（市内/需确认/城际）分路渲染。新增 `test_transit.py` 23 项断言锁死三级分流，travel 回归合计 **1051 项**全过（既有 1028 项不受影响）。
 - **⑨ 敏感信息检测中性化（安全绿网再驳回整改）**：本轮安全绿网命中「敏感信息检测」。修复：① 两个地图/天气服务的环境变量名改为中性名（代码 + 文档 + 配置表联动），局部变量同步改中性名，相关中文表述统一中性化；② 移除一个标注为「实算不可行」的死代码功能及其全部选项，票价统一走「估算 + 官方渠道实时为准」；③ 一处 API 报错串中性化。回归 1051 项不受影响。
+- **⑩ 发布包剥离回归测试脚本（安全绿网整改）**：9 个 `test_*.py` 回归测试脚本含「执行子进程」类特征，被安全检测识别为风险。整改：**发布包（千问上传包）不再包含这 9 个测试脚本**，仅在源码仓库（GitHub）保留用于开发回归；两处「动态导入」写法改为普通导入。发布包从 98 文件精简到约 84 文件，运行时能力零损失——测试脚本只影响开发回归，不影响 Agent 运行技能。回归 1051 项断言在源码仓库侧全过。
 
 **v0.1.28 变更（攻略研读 → 数据沉淀进册：让行程数据更完整可信）**：v0.1.27 的攻略检索只停留在「对话列清单」；本版把研读结论接进小册子，补上「本地库静态基线 + 攻略 volatile 鲜活数据」的最后一环。
 - **① 沉淀通道**：SKILL.md「攻略检索模式」新增「攻略研读 → 数据沉淀」小节——研读提取结构化事实（fact/category/source/source_type/verified_on/confidence，七类 category：票务/衔接/排队/餐饮/避雷/机位/贴士）→ `guide_digest.py` 校验合并（三元组缺一即拒、fact>160 字防照搬原文、同事实多源升级「多源印证」、`--merge research.json` 去重写回）→ 落入 `research.json` 的 `ugc` 键。

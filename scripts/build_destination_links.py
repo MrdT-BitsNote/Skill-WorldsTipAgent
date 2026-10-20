@@ -31,6 +31,7 @@ import argparse
 import json
 import os
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF_DIR = os.path.join(os.path.dirname(HERE), "references")
@@ -442,7 +443,7 @@ def main() -> None:
             "name": "景点 × 能力库相关性挂载表",
             "purpose": "让渲染与规划阶段能直接回答：这个景点归属哪个省市、属什么气候区、"
                        "有哪些必吃/票务/车站数据、触发哪些风险 playbook。全部由程序按现有 references 规则复算，不手工编。",
-            "built_at": __import__("time").strftime("%Y-%m-%d"),
+            "built_at": time.strftime("%Y-%m-%d"),
             "rules": [
                 "省市归属：geo_admin.json 精确 → 去通名后缀 → 分隔符切分 → 逐步砍尾，逐级降级。",
                 "气候区：seasons_climate.json 自带 match_rules 复算，顺序 plateau→tropical→northwest→southwest→大区。",
