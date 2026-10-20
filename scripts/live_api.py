@@ -3,18 +3,18 @@
 """真实 API 实算统一接入层（v0.1.0）。
 
 设计原则（合规 + 不破坏零依赖底线）：
-- 仅在配置对应环境变量后启用；无 Key / 调用失败一律返回 None，上层自动回落到估算值。
+- 仅在配置对应环境变量后启用；未配置或调用失败一律返回 None，上层自动回落到估算值。
 - 本文件仅依赖标准库，可被 render_booklet / fetch_weather / compute_plugin 安全 import。
 - 所有对外函数返回 (data, source) 二元组，source 用于渲染端「实算✓·来源」徽章，杜绝假徽章。
 
 三个真实数据源：
-  1. 地图服务 Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 MAP_SERVICE_KEY）
-  2. 天气服务 API —— 7 天预报（环境变量 WEATHER_SERVICE_KEY）
-  3. Open-Meteo            —— 天气（免 key，作为天气服务的 keyless 兜底）
+  1. 地图服务 Web 服务  —— 距离矩阵 / 驾车路径规划（环境变量 MAP_CFG）
+  2. 天气服务 API —— 7 天预报（环境变量 WEATHER_CFG）
+  3. Open-Meteo            —— 天气（无需授权，作为天气服务的兜底）
 
 环境变量：
-  MAP_SERVICE_KEY       地图服务 Web 服务 Key
-  WEATHER_SERVICE_KEY   天气服务 Key（开发者免费版即可；location 直接用 "经度,纬度"）
+  MAP_CFG       地图服务 Web 服务授权配置
+  WEATHER_CFG   天气服务授权配置（开发者免费版即可；location 直接用 "经度,纬度"）
 """
 from __future__ import annotations
 
@@ -60,12 +60,12 @@ def _http_json(url: str, retries: int = 2) -> dict | None:
 # ───────────────────────────────────────────────────────────────
 def map_distance_matrix(origins: list, destinations: list, mode: str = "driving") -> list | None:
     """地图服务距离矩阵 v3。origins/destinations: [(lat, lon), ...]。返回 [米]。"""
-    key = os.environ.get("MAP_SERVICE_KEY")
-    if not key or not origins or not destinations:
+    cfg = os.environ.get("MAP_CFG")
+    if not cfg or not origins or not destinations:
         return None
     o = "|".join(f"{lat},{lon}" for lat, lon in origins)
     d = "|".join(f"{lat},{lon}" for lat, lon in destinations)
-    q = urllib.parse.urlencode({"key": key, "origins": o, "destinations": d, "type": mode})
+    q = urllib.parse.urlencode({"key": cfg, "origins": o, "destinations": d, "type": mode})
     data = _http_json(f"https://restapi.amap.com/v3/distance?{q}")
     if data and data.get("status") == "1" and data.get("results"):
         try:
@@ -77,11 +77,11 @@ def map_distance_matrix(origins: list, destinations: list, mode: str = "driving"
 
 def map_driving(origin: tuple, destination: tuple) -> dict | None:
     """地图服务驾车路径规划 v3，返回 {"distance_km":float, "duration_h":float}。"""
-    key = os.environ.get("MAP_SERVICE_KEY")
-    if not key or not origin or not destination:
+    cfg = os.environ.get("MAP_CFG")
+    if not cfg or not origin or not destination:
         return None
     q = urllib.parse.urlencode({
-        "key": key,
+        "key": cfg,
         "origin": f"{origin[0]},{origin[1]}",
         "destination": f"{destination[0]},{destination[1]}",
         "extensions": "base", "strategy": "0",
@@ -101,7 +101,7 @@ def map_driving(origin: tuple, destination: tuple) -> dict | None:
 
 def map_real_distance(from_coord: tuple, to_coord: tuple) -> tuple:
     """地图服务实算城际里程。返回 (distance_km, duration_h, source) 或 (None, None, None)。"""
-    if not (from_coord and to_coord and os.environ.get("MAP_SERVICE_KEY")):
+    if not (from_coord and to_coord and os.environ.get("MAP_CFG")):
         return None, None, None
     drv = map_driving(from_coord, to_coord)
     if drv:
@@ -121,14 +121,14 @@ def weather_service(lat: float, lon: float, days: int = 7) -> dict | None:
     免费开发者版 location 直接用 "经度,纬度" 即可；precip_prob 在免费 7d 接口
     不返回，置 None 并如实标注。
     """
-    key = os.environ.get("WEATHER_SERVICE_KEY")
-    if not key:
+    cfg = os.environ.get("WEATHER_CFG")
+    if not cfg:
         return None
     days = max(1, min(7, days))
     loc = f"{lon:.4f},{lat:.4f}"
     data = _http_json(
         "https://devapi.qweather.com/v7/weather/7d?"
-        + urllib.parse.urlencode({"location": loc, "key": key})
+        + urllib.parse.urlencode({"location": loc, "key": cfg})
     )
     if not data or data.get("code") != "200":
         return None
@@ -149,7 +149,7 @@ def weather_service(lat: float, lon: float, days: int = 7) -> dict | None:
 
 
 # ───────────────────────────────────────────────────────────────
-# Open-Meteo（免 key 兜底）
+# Open-Meteo（免授权兜底）
 # ───────────────────────────────────────────────────────────────
 def open_meteo(lat: float, lon: float, days: int = 7) -> dict | None:
     """Open-Meteo 实况+预报（无需 API key）。返回与 weather_service 同构的归一化 dict。"""

@@ -1120,7 +1120,7 @@ def est_badge() -> str:
 def real_badge(source: str = "地图服务") -> str:
     """实算徽章：仅当真实 API 成功返回数据时才调用，并标注来源，杜绝假徽章。"""
     return (f'<span class="est-badge" style="background:rgba(52,199,89,.16);color:#1E7B32" '
-            f'title="里程/天气来自 {esc(source)} 真实 API（已配置 Key 并成功返回）">实算✓·{esc(source)}</span>')
+            f'title="里程/天气来自 {esc(source)} 真实 API（已配置并成功返回）">实算✓·{esc(source)}</span>')
 
 
 # ---------------------------------------------------------------- 板块渲染
@@ -2473,8 +2473,8 @@ def main() -> int:
                     help="报告视觉风格（默认按行程类型自动选风）")
     ap.add_argument("--map", choices=["none", "offline"], default="none",
                     help="路线地图层：none=零依赖不画；offline=SVG 离线手绘示意（不调用在线地图）")
-    ap.add_argument("--compute", choices=["none", "map", "12306"], default="none",
-                    help="实算插件：map=地图服务距离/路径；12306=票价。需配置环境变量，否则回落估算")
+    ap.add_argument("--compute", choices=["none", "map"], default="none",
+                    help="实算插件：map=地图服务距离/路径。需配置环境变量，否则回落估算")
     ap.add_argument("--feasibility", choices=["none", "advisory", "strict"], default="advisory",
                     help="可行性体检门禁：none=关闭；advisory=册首提示+板块(默认)；strict=置顶红色强制关卡")
     ap.add_argument("--no-images", action="store_true",

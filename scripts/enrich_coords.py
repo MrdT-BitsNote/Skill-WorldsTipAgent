@@ -7,7 +7,7 @@
   python enrich_coords.py --force    # 全部重新抓取
   python enrich_coords.py --limit 20 # 试跑前20 条
 
-坐标来源: Open-Meteo Geocoding API (免 key)
+坐标来源: Open-Meteo Geocoding API (免授权)
 天气查询必须有经纬度, 而 234 个目的地的攻略页均不含坐标, 故需离线预置。
 坐标会缓存进 destinations.json, 之后查天气无需再联网定位。
 """
