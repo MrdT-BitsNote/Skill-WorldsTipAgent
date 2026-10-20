@@ -7,11 +7,13 @@
   python plan_transit.py --from 岳阳 --to 张家界 --json
 
 设计原则 (小册子版, 侧重短途近程):
-  - ≤150km 近程圈: 当天来回为主, 客运班车/自驾最常用; 通高铁则高铁优先。
+  - ≤30km 市内圈: 同城/市内出行, 只推公交/地铁/出租/网约车(短驳骑行/步行), 不推城际高铁/飞机/普铁。
+  - 30-150km 近程圈: 近郊/周边县市, 当天来回为主; 优先自驾/班车, 高铁仅当「通高铁且≥50km」才值得, 不默认推高铁飞机。
   - ≤300km 短途圈: 1-3 天行程, 高铁 1.5h 圈首选。
   - 客车覆盖县域/乡镇/景区「最后一公里」; 轮船适用跨海岛与观光水域。
   - 自驾自由度最高, 成本=油费+过路费+停车。
   - 机票仅 1200km+ 或无地面直达时纳入比选。
+  - 坐标缺失(通常是同城/市内地点)时, 不默认推荐高铁/飞机, 而是提示先向用户确认「市内 or 跨城」。
 
 注意: 所有票价/时长均为「基于距离的估算」, 非实时数据。
 实时余票、票价、折扣请查 12306 App/官网、当地客运站/港口官方公众号。
@@ -143,10 +145,33 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
 
     result: dict = {"from": frm, "to": to, "distance_km": round(dist) if dist else None}
     if not dist:
-        result["note"] = ("未能从目的地库获取两地坐标，无法估算距离；"
-                          "请改用已知目的地，或自行查地图距离后换算。")
-        result["recommend"] = "高铁(默认)"
-        result["reason"] = "无距离无法比选，按惯例默认高铁；请补充两地后重算。"
+        # 坐标缺失通常是「同城/市内地点」（景点、街区、门店等不在城际目的地库中）。
+        # 绝不能默认推荐高铁/飞机——那会把「市内逛个公园」误判成「跨省出行」。
+        # 正确做法：先向用户确认是「市内交通」还是「跨城交通」，再决定判断逻辑。
+        result["note"] = ("未能从目的地库获取两地坐标，无法估算距离。"
+                          "这通常是同城/市内地点（景点、街区、门店不在城际目的地库中），"
+                          "也可能是地名需消歧。")
+        result["recommend"] = "需确认交通方式"
+        result["reason"] = ("距离未知，不能默认推荐高铁/飞机。请先向用户确认："
+                            "① 若为同城/市内出行——推荐公交/地铁/出租车/网约车，"
+                            "而非城际铁路或航班；② 若确为跨城出行——再补两地后按城际六方式比选。")
+        result["disclaimer"] = rules["核实声明"]
+        return result
+
+    # ── 同城/市内短途分支：市内出行不走城际高铁/飞机/普铁 ──
+    # 判据：距离 ≤ 市内阈值（默认 30km）→ 视为同城/市内，只出市内交通方式。
+    # 这修正了「近郊/市内短途被误判成跨省并推荐高铁飞机」的逻辑错误。
+    city_rules = rules.get("市内交通")
+    if city_rules and dist <= city_rules.get("city_distance_km", 30):
+        result["scope"] = "市内"
+        result["recommend"] = "市内交通"
+        result["reason"] = (f"两地直线距离仅约 {round(dist)} km，属同城/市内出行，"
+                            f"不应推荐城际高铁/飞机/普铁。按市内交通推荐："
+                            f"地铁/公交/出租车/网约车，短驳可骑行、超短可步行。")
+        result["options"] = [
+            {"name": name, "fit": "市内出行", "how": desc}
+            for name, desc in city_rules.get("modes", {}).items()
+        ]
         result["disclaimer"] = rules["核实声明"]
         return result
 
@@ -217,7 +242,17 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
     # 推荐逻辑
     min_disc_price = min(disc.values())
     min_disc_factor = min(disc, key=disc.get)
-    if (min_disc_price <= g_price * 1.05) and (fl_total <= g_hours * 1.3):
+    if dist <= 150:
+        # 近程圈(30-150km)：近郊/周边县市，当天来回为主。
+        # 不应按「高铁 vs 机票」的城际默认对比来推荐——近郊坐高铁是否划算，
+        # 取决于「是否真的通高铁」与「距离是否够远」，必须先向用户确认出行方式。
+        recommend = "近郊出行（优先自驾/班车）"
+        reason = (f"两地约 {round(dist)} km，属近郊/周边短途，"
+                  f"不建议默认推荐高铁或飞机。近郊出行优先自驾（最灵活，约 {result['自驾']['hours']}h）"
+                  f"或客运班车（最便宜）；若确已通高铁且单程 ≥50km、班次合适，"
+                  f"再考虑高铁往返（约 {result['高铁']['hours']}h / ¥{result['高铁']['price_est']}/人），"
+                  f"并核对末班车时间。请先向用户确认出行方式后再定。")
+    elif (min_disc_price <= g_price * 1.05) and (fl_total <= g_hours * 1.3):
         recommend = "机票参考"
         reason = (f"机票折扣估算低至 ¥{min_disc_price}（约 {min_disc_factor*10:.0f} 折），"
                   f"不超过高铁估算 ¥{round(g_price)} 的 1.05 倍，且总耗时（{round(fl_total,1)}h）"
@@ -244,8 +279,8 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
             options.append({"name": "方案A · 自驾直达", "fit": "最灵活",
                             "how": f"约 {dr['hours']}h / ¥{dr['cost_est']}油费过路费, 时间完全自主, 适合带装备(徒步/骑行)与多人出行"})
         if gh:
-            options.append({"name": "方案B · 高铁往返", "fit": "最省心",
-                            "how": f"约 {gh['hours']}h / ¥{gh['price_est']}/人, 注意核对末班车时间——当天来回必须留返程余量, 查不到合适返程就改住一晚"})
+            options.append({"name": "方案B · 高铁往返（若通高铁）", "fit": "通高铁才值得",
+                            "how": f"约 {gh['hours']}h / ¥{gh['price_est']}/人，仅当两端确已通高铁且单程≥50km 才值得坐；先确认是否通高铁，再核对末班车时间——当天来回必须留返程余量, 查不到合适返程就改住一晚或改自驾/班车"})
         if bs:
             options.append({"name": "方案C · 客运班车", "fit": "最便宜",
                             "how": f"约 {bs['hours']}h / ¥{bs['price_est']}, 适合不通高铁的县域/景区; 班次少务必提前查当地客运站公众号, 错过末班只能包车"})

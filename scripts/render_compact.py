@@ -32,9 +32,21 @@ _MODE_KEYS = ('高铁', '普铁', '飞机', '客车', '轮船', '自驾')
 
 def _normalize_transit(transit: dict) -> dict:
     """把 plan_transit.py 的顶层中文 key 格式转为 render_compact 期望的 modes 列表。
-    如果已有 modes 列表则原样返回（幂等）。"""
-    if not transit or transit.get('modes'):
-        return transit or {}
+    如果已有 modes 列表则原样返回（幂等）。
+    特殊分支：scope='市内' 时，把 options（市内方式）转成 modes。"""
+    if not transit:
+        return {}
+    if transit.get('modes'):
+        return transit
+    # 市内交通分支：options 是 [{"name":"地铁","how":"..."}...]，转成 modes
+    if transit.get('scope') == '市内':
+        modes = []
+        for o in transit.get('options', []):
+            modes.append({'mode': o.get('name', '?'), 'duration': '—',
+                          'cost': '—', 'desc': o.get('how', '')})
+        out = dict(transit)
+        out['modes'] = modes
+        return out
     modes = []
     for mk in _MODE_KEYS:
         m = transit.get(mk)
@@ -480,8 +492,30 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
         transit_html = [_single_mode_transit_html(plan, transit or {}, explicit)]
     else:
         transit_html = ['<section class="sec" id="sec2">', section_no(2), '<h2>怎么去<span class="en">Getting There</span></h2>']
-        transit_html.append('<p class="sub-en">未指定通行方式 · 公共交通比选，票价时长均为估算</p>')
-        if transit and transit.get('modes'):
+        scope = (transit or {}).get('scope', '')
+        need_confirm = (transit or {}).get('recommend') == '需确认交通方式'
+        if scope == '市内':
+            # 同城/市内出行：只推市内交通，不推城际高铁/飞机
+            transit_html.append('<p class="sub-en">同城/市内出行 · 按市内交通推荐</p>')
+            if transit and transit.get('modes'):
+                transit_html.append('<table class="tbl"><thead><tr><th>方式</th><th>说明</th></tr></thead><tbody>')
+                for m in transit['modes']:
+                    desc = m.get('desc', '')
+                    transit_html.append(f'<tr><td>{esc(m.get("mode",""))}</td><td>{esc(desc)}</td></tr>')
+                transit_html.append('</tbody></table>')
+            if transit and transit.get('reason'):
+                transit_html.append(f'<em class="tip">💡 {esc(transit["reason"])}</em>')
+            if transit and transit.get('distance_km'):
+                transit_html.append(f'<p>直线距离 <b>{transit["distance_km"]} km</b>（属市内，无需城际交通）</p>')
+        elif need_confirm:
+            # 坐标缺失/距离未知：不默认推高铁飞机，先向用户确认市内 or 跨城
+            transit_html.append('<p class="sub-en">通行方式待确认 · 距离未知，不默认推荐高铁飞机</p>')
+            if transit and transit.get('reason'):
+                transit_html.append(f'<em class="tip">💡 {esc(transit["reason"])}</em>')
+            if transit and transit.get('note'):
+                transit_html.append(f'<em class="note">⚠️ {esc(transit["note"])}</em>')
+        elif transit and transit.get('modes'):
+            transit_html.append('<p class="sub-en">未指定通行方式 · 公共交通比选，票价时长均为估算</p>')
             modes = transit['modes'][:6]
             rec = transit.get('recommend', '')
             transit_html.append('<table class="tbl"><thead><tr><th>方式</th><th>时长</th><th>票价</th><th>推荐度</th></tr></thead><tbody>')
@@ -494,7 +528,8 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
             if transit.get('distance_km'):
                 transit_html.append(f'<p>直线距离 <b>{transit["distance_km"]} km</b></p>')
         else:
-            transit_html.append('<p>估算 <b>400–700 km</b> · 跨省行程推荐高铁或飞机（实际余票查 12306 / 航司官网）</p>')
+            # 无 transit 数据：不硬推高铁飞机，提示确认交通方式
+            transit_html.append('<p>通行方式待确认 · 距离与交通信息缺失，请先确认目的地是市内/近郊还是跨城，再决定推荐公交地铁还是高铁飞机。</p>')
         # 12306/航司实时查询深链
         if _transit_links and _transit_links_html and origin != '出发地':
             dest_first = (plan.get('destinations') or [''])[0]
