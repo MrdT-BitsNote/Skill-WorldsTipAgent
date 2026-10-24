@@ -231,7 +231,7 @@ STYLE_PROFILES = {
     ),
     "relax": StyleProfile(
         key="relax", label="散心", spots_per_day=(1, 1),
-        slot_hours=(2, 2), stay_per_spot_h=4.0, day_span_h=(5, 7),
+        slot_hours=(2, 2, 1), stay_per_spot_h=4.0, day_span_h=(5, 7),
         budget_ratio={"交通": 0.15, "住宿": 0.45, "餐饮": 0.25, "门票": 0.03, "其他": 0.12},
         tone=["治愈", "放空", "慢", "不赶路", "对自己好一点"],
         gear_focus=["书", "耳机", "舒适鞋", "保温杯"],
@@ -576,7 +576,9 @@ def build_slots(profile: StyleProfile, spots: int) -> list[dict]:
     时段长度随实际景点数缩放: 景点多则压缩单点停留、延长总时长;
     景点少则缩短总时长, 留白才是度假/休闲该有的样子。
     """
-    am_h, pm_h, night_h = profile.slot_hours
+    # 防御: slot_hours 必须是 (上午, 下午, 晚上) 三元组；不足则补 0，避免解包崩溃
+    _sh = tuple(profile.slot_hours) + (0, 0, 0)
+    am_h, pm_h, night_h = _sh[:3]
     lo, hi = profile.spots_per_day
     span_lo, span_hi = profile.day_span_h
 
@@ -855,7 +857,9 @@ def stay_plan(people: int, profile: StyleProfile, composition: str = "",
         rooms = max(1, (people + 1) // 2)
         types = ["双床房" if rooms > 1 else "大床房"]
         why = f"{people} 人约需 {rooms} 间"
-        tips = ["单人出行订大床房即可"]
+        # 旧文案无条件写「单人出行」，2 人也显示，与实际人数矛盾
+        tips = (["单人出行订大床房即可"] if people == 1
+                else [f"{people} 人 1 间：偏好各自床位可改双床房"])
 
     if solo_oriented and rooms == 1:
         tips.append("户外/摩旅出行装备较多，确认房间有无衣架与晾衣空间，必要时选带行李间的房型")
@@ -864,9 +868,57 @@ def stay_plan(people: int, profile: StyleProfile, composition: str = "",
                     per_room_night=(lo, hi), tips=tips)
 
 
+VEHICLE_PROFILES = ("roadtrip", "moto", "rv", "camping")
+
+
+def route_km(origin: dict | None, targets: list) -> float | None:
+    """出发地→首站 + 各站之间的球面直线距离合计(km)。坐标缺失返回 None。"""
+    try:
+        import plan_route
+    except Exception:
+        return None
+    pts = []
+    if origin and origin.get("lat") is not None and origin.get("lon") is not None:
+        pts.append((float(origin["lat"]), float(origin["lon"])))
+    for t in targets or []:
+        if t.get("lat") is not None and t.get("lon") is not None:
+            pts.append((float(t["lat"]), float(t["lon"])))
+    if len(pts) < 2:
+        return None
+    total = 0.0
+    for a, b in zip(pts, pts[1:]):
+        total += plan_route.haversine(a[0], a[1], b[0], b[1])
+    return total
+
+
+def estimate_transport(profile_key: str, people: int, days: int,
+                       km: float | None) -> tuple[float, str]:
+    """交通费估算。
+
+    有距离 → 按里程实估（公共交通按人·高铁二等座基准 0.5 元/km；
+    自驾/摩旅/房车按车·油费+通行费 1.05 元/km）；无距离 → 沿用画像常量并标「（估）」。
+    旧实现恒定 800×人数，成都→重庆 与 北京→广州 同价，预算失真。
+    """
+    if km is None or km <= 0:
+        base = {
+            "commando": 800, "leisure": 1200, "resort": 1800, "honeymoon": 2500,
+            "roadtrip": 900, "cycling": 400, "hiking": 500, "moto": 600,
+            "family": 1100, "couple": 1500, "friends": 1000,
+            "rv": 900, "camping": 500, "relax": 1500,
+        }.get(profile_key, 900)
+        return base * people, "按画像常量估算（缺里程），实际以购票为准"
+    rt = km * 2.0  # 往返
+    if profile_key in VEHICLE_PROFILES:
+        # 按车计：油费约 0.6 元/km + 高速通行费约 0.45 元/km
+        return rt * 1.05 + 200, f"按车计·往返约 {rt:.0f} km（油费+通行费）"
+    # 公共交通按人计：高铁二等座基准 0.5 元/km + 当地交通 40 元/人·天
+    return (rt * 0.5 * people + 40 * people * days,
+            f"按人计·往返约 {rt:.0f} km（高铁二等座基准）")
+
+
 def budget_for(profile: StyleProfile, days: int, people: int,
                lodging: str, food: str, transport_note: str = "",
-               stay: StayPlan | None = None) -> dict:
+               stay: StayPlan | None = None, km: float | None = None) -> dict:
     """预算计算。**住宿按房间数计, 不按人数计** —— 这是合理性关键。
 
     三口之家 1 间家庭房住 3 人, 若按 3 人×每晚房价 会高估近 2 倍。
@@ -888,17 +940,8 @@ def budget_for(profile: StyleProfile, days: int, people: int,
     child_factor = 0.8 if profile.key == "family" else 1.0
     ticket_total = 60 * people * days * (profile.intensity / 3) * child_factor
 
-    # 交通: 按人数, 但自驾/摩旅按车计更合理
-    if profile.key in ("roadtrip", "moto", "rv", "camping"):
-        base_transport = {  # 每人机票/火车 + 车辆/营地分摊
-            "commando": 800, "leisure": 1200, "resort": 1800, "honeymoon": 2500,
-            "roadtrip": 900, "cycling": 400, "hiking": 500, "moto": 600,
-            "family": 1100, "couple": 1500, "friends": 1000,
-            "rv": 900, "camping": 500, "relax": 1500,
-        }.get(profile.key, 900)
-    else:
-        base_transport = 800
-    transport_total = base_transport * people
+    # 交通: 有里程按里程实估；无里程走画像常量（并标注为估算）
+    transport_total, _km_note = estimate_transport(profile.key, people, days, km)
 
     other_total = (lodging_total + food_total) * profile.budget_ratio["其他"] / max(
         profile.budget_ratio["住宿"] + profile.budget_ratio["餐饮"], 0.1)
@@ -1125,7 +1168,9 @@ def build(args) -> dict:
             "label": (("演出日" if i == show_day_idx else "抵达日") if i == 0
                       else ("演出日" if i == show_day_idx
                             else ("返程日" if i == days - 1 and days > 1 else "游玩日"))),
-            "city": targets[min(i, len(targets) - 1)]["name"] if targets else "",
+            # 多城市按天数均分（旧逻辑 min(i,len-1) 会让末城吞掉所有剩余天数：7天3城→1/1/5）
+            "city": targets[min((i * len(targets)) // max(days, 1),
+                                len(targets) - 1)]["name"] if targets else "",
             "spots": spots,
             "total_hours": round(sum(s["hours"] for s in slots), 1),
             "slots": slots,
@@ -1308,7 +1353,12 @@ def build(args) -> dict:
         rv_block["total_km"] = auto_total
 
     stay = stay_plan(args.people, profile, args.composition, args.lodging)
-    _budget = budget_for(profile, days, args.people, args.lodging, args.food, stay=stay)
+    # 交通费按真实里程估算（旧实现恒定 800×人数，远近同价）
+    _origin = find(args.origin, dests) if getattr(args, "origin", "") else None
+    _km = route_km(_origin, targets)
+    _budget = budget_for(profile, days, args.people, args.lodging, args.food,
+                         stay=stay, km=_km)
+    _budget["km"] = round(_km) if _km else None
     # 预算分摊口径由 party 决定（不改动金额计算，只标注口径）
     _budget["split_mode"] = party.get("budget_mode", "")
     _budget["split_note"] = party.get("budget_note", "")
@@ -1513,11 +1563,15 @@ def main() -> int:
         print(f"   💡 {d['note']}\n")
     b = p["budget"]
     s = p["stay"]
-    print("── 住宿安排 ──")
-    print(f"   房间数: {s['rooms']} 间  |  建议: {'、'.join(s['room_types'])}")
-    print(f"   理由: {s['rationale']}")
-    for t in s["tips"]:
-        print(f"   · {t}")
+    if b.get("nights", 0) > 0:
+        print("── 住宿安排 ──")
+        print(f"   房间数: {s['rooms']} 间  |  建议: {'、'.join(s['room_types'])}")
+        print(f"   理由: {s['rationale']}")
+        for t in s["tips"]:
+            print(f"   · {t}")
+    else:
+        print("── 住宿安排 ──")
+        print("   当天来回，无需住宿（0 晚）")
     print()
     print("── 预算估算 ──")
     print(f"   住宿按 {b['lodging_basis']}")
