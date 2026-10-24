@@ -9,6 +9,10 @@
 - `party_playbooks.json` — **出行陪伴结构玩法库（v0.1.24）**：6 类 Party Type（solo/couple/friends-small/friends-large/family/group），各含 `detect`(关键词) / `room_default`(分房口径) / `budget_mode`(分摊口径) / `safety_focus` / `pacing_focus` / `pitfalls`，加 `resolution_rule`(优先级 group>family>couple>friends>solo) 与 `orthogonality`(与 audience/style/theme 正交)。`build_itinerary.resolve_party_type()` 据此判定、`party_block()` 组装，驱动 stay_plan 分房、预算整团/人均两档口径、安全节奏叠加；`--party` 可显式覆盖。术语与边界裁定见 `CONTEXT.md`。
 - `CONTEXT.md` — **领域术语表（v0.1.24）**：四轴正交模型（Party Type/Audience/Style/Theme Playbook）+ 6 类陪伴结构的规范术语、边界判据与消歧裁定（纯词汇表，不含实现）。
 - `destinations.json` — **393 个国内目的地**（v0.1.17 从 moto 摩旅线路库城市 center 回灌真实 GCJ-02 坐标，**300 个含经纬度坐标**，其余靠名称检索 + 天气地理编码兜底；覆盖 31 省级行政区与港澳台地区，回灌条目带 `coord_source=moto_route_center` 溯源，绝不编造坐标）。**v0.1.3 起每条可带 `aliases`**（登记 worldstip.com 站点的 SEO 显示名，如「北海 · 涠洲岛」→ 涠洲岛），`search_dest.py` 关键字与主题检索均命中 alias；安徽木梨硔以 `slug=mulihong` 独立入库，与四川木里（`slug=muli`）区分。
+- `moto_places.json`（**可选扩展数据包 `moto-places`，主包不内置**）— **景点级地点库（v0.1.41：2514 条 / 32 省级单位 / 41 类）**。每条含 `n`(名称) `admin`(省·市·区县) `t`(类型) `lat/lng`(坐标，**100% 有坐标**) `hi`(亮点，均 79 字) `his`(历史，均 53 字) `src`(来源线路) `st`/`fl`(质量标签)。来源：moto-site-astro 31 省线路途经点归并 + 高德 POI/regeo 核验。与 `destinations.json`（393 城）交集仅 30 条，**独有 2296+ 个城市库没有的景点级地点**。**v0.1.41 修复湖南省 443 点全量丢失**（`is_primary` 陈旧计算，0 → 384 条）。
+  - **使用纪律（硬）**：必须经 `scripts/places_query.py` 检索，**严禁全文读入上下文**（1.3MB ≈ 40 万 token）。默认排除 `fl` 非空条目（1996 clean / 518 suspect），需 `--include-suspect` 放行。
+  - **降级契约**：文件不存在时脚本退出码 `2` → 退回 `destinations.json` 城市级建议 + 输出挂灰灯，不得静默降级。
+  - **安装**：解压 `worldstip-travel-planner-ext-motoplaces-v*.zip` 覆盖到技能根目录（与 `SKILL.md` 同级）。
 - `seasons_climate.json` — **六气候区×四季方案**（气温/穿衣/当季看点/风险）— 小册子特色板块数据源
 - `safety_playbook.json` — **全交通方式+全场景安全手册**+应急预案模板
 - `extreme_sports.json` — **极限玩法库（8 类）+ 自然美景专线（3 族线路+补给应急）**
@@ -73,6 +77,7 @@
 | `volatile_verify.py` | **易变数据自动核验（v0.1.17）**：扫描 references/*.json 中所有 `_stability:volatile`/`volatile:true`/`vol_note` 标记及 stability.json 定义的 volatile 字段名，检查 `_updated` 日期戳是否超过 30 天阈值。`--strict` 有过期退出码 1、`--json` 机器可读、`--file` 单文件、`--fix` 自动刷新日期戳。跳过 stability.json 字典本身 |
 | `enrich_coords.py` / `verify_coords.py` | 坐标补全（并发≤4）/ 反查自检 |
 | `reflect.py` | **复盘回写**（准确度/安全/预算/舒适/内容 1-5★，落 `~/.aitrip/feedback.json`） |
+| `places_query.py` | **景点级地点检索（v0.1.41 · 配套可选扩展包 `moto-places`）**：按 `--province / --admin / --type / --kw` 过滤 `references/moto_places.json`，默认回 8 条、`hi` 截断 120 字——**数据不进上下文，只进结果**。默认排除质量问题条目（`fl` 非空），`--include-suspect` 放行；`--list-provinces` / `--list-types` / `--json` / `--full-hi` / `--with-his`。退出码契约：`0` 有结果 / `1` 无匹配 / **`2` 扩展数据未安装**（上层退回城市级建议并挂灰灯）。须先 `cd` 到技能根目录（相对路径取数） |
 | `sync_check.py` | **数据同步校验（v0.1.3）**：把 live 站点 worldstip.com 的目的地清单与 `destinations.json` 按 **slug** 联表，报出「冲突 / 显示名漂移 / 站点独有 / 技能独有」，防止 muli 类静默错误。纯比较逻辑 `compare()` 与联网 I/O 分离；`--live` 联网拉取、`--site-file` 离线比对、`--strict` 有未登记问题退出码 1、`--json` 机器可读。已知且经确认的差异登记进 `KNOWN` 白名单（europe/georgia 出境页、shishou 出发地、muli 站点归属待修），报为「已知」而非「错误」 |
 
 
