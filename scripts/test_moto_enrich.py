@@ -2,7 +2,7 @@
 
 纪律锁死：
   1. 加油动作序列不得出现「剩余油量为负」这类算术错误（v0.1.2 修过的坑）
-  2. 绿荫字段 18 条线路必须齐全；shade_first 必须让高荫排前
+  2. 绿荫字段 25 条线路必须齐全；shade_first 必须让高荫排前
   3. ingest_note 四项必填、拒绝未来日期、evidence 恒 third_party
   4. 未收录城市（县级市等）必须进「必须查」，不得默认安全
   5. 一条坏笔记不得毁掉整包（errors 单列，不抛异常外泄）
@@ -34,7 +34,7 @@ def ck(cond: bool, msg: str) -> None:
 
 # ── 一、绿荫字段完整性 ────────────────────────────────────────────────
 rt = mc.all_routes()
-ck(len(rt) == 18, f"线路库应有 18 条，实得 {len(rt)}")
+ck(len(rt) == 25, f"线路库应有 25 条，实得 {len(rt)}")
 for r in rt:
     name = r.get("name", "?")
     ck(r.get("shade") in ("高", "中", "低"), f"{name} 的 shade 需为 高/中/低")
