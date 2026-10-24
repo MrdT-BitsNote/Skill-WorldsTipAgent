@@ -253,7 +253,7 @@ def t_card() -> None:
 # ══ 8. 线路库 ════════════════════════════════════════════════════════════
 def t_routes() -> None:
     rs = all_routes()
-    ck(len(rs) == 18, f"线路库 18 条（实得 {len(rs)}）")
+    ck(len(rs) == 25, f"线路库 25 条（实得 {len(rs)}）")
     for r in rs:
         ck(bool(r.get("name")), f"线路需有名称：{r.get('name')}")
         ck(isinstance(r.get("km"), int) and r["km"] > 0, f"线路 {r.get('name')} 需有正里程")
