@@ -2,6 +2,17 @@
 
 > 本文件由 `SKILL.md` 分层拆分而来（v0.1.35），原始内容未删减。
 
+**v0.1.41 变更（moto_places 清洗 + 接线 + 独立扩展包 · 修复湖南全省数据丢失）**
+
+本轮把此前沉睡的 `references/moto_places.json` 从「打包但不被消费」变成可用的景点级候选能力，并修复一处严重数据缺口：
+
+- **① 修复湖南省 443 个地点全量丢失（重大）**：站点源 `src/data/places.json` 有 3302 条地点，其中**湖南省 443 条（全国最多）**，但 `is_primary` 判定结果为**陈旧计算**——湖南线路后来补挂了 `destination` 文本（抽样 119/119 全部含 destination）却未重跑 `enrich_is_primary.mjs`，导致湖南 443 条 `is_primary` 全为 `false`，经 `sync_skill_places.mjs` 过滤后**整个省从技能侧消失**。症状：`places_query.py --province 湖南` 返回 0 条（用户所在地湖南岳阳完全无景点数据）。修复：备份 `src/data/places.json` 后重跑 `enrich_is_primary.mjs --write`（主目的地 2371 → 2514，湖南 0 → 384，其中 383 条带真实文案），再重跑 `sync_skill_places.mjs`。技能侧 `moto_places.json` 由 **2371 条增至 2514 条，湖南省 384 条居首**。`moto_coverage.json` 复核未受影响（仍为 31 省 / 1658 线 / 4747 途经点 / 360 市 / 15931 rvSpots）。副作用披露：重算为双向，浙江 272→205、四川 222→184、广东 206→185（部分点因 destination 文本变更被降级为沿途点），判定规则一致、属同一客观标准的最新结果。
+- **② 数据清洗（不删条目，只标注）**：新增 `fl` 质量标签与 `st=suspect`。规则写进 `_meta.quality_rule`：`text_mismatch` = 名称无任何 ≥3 字公共子串命中文案（名称 <3 字时要求全名命中），抓出「安澜镇→文案讲南温泉公园」「昂昂溪遗址→文案讲扎龙」这类真错配，同时放过「安陆白兆山↔白兆山」这类前缀差异的真匹配；`admin_coarse` = 行政区粒度不足（空 / 仅国家级 / 仅省级）；`type_unknown` = 类别未识别。结果：**2514 条中 1996 条 clean / 518 条 suspect**（text_mismatch 296、type_unknown 233、admin_coarse 16）。`places_query.py` 默认排除 suspect，需 `--include-suspect` 显式放行。
+- **③ 新增 `scripts/places_query.py` 检索脚本**：数据不进上下文、只进结果——按 `--province / --admin / --type / --kw` 过滤，默认回 8 条、`hi` 截断 120 字。退出码契约：`0` 有结果 / `1` 无匹配 / **`2` 扩展数据未安装**（上层据此降级）。配套 `--list-provinces` / `--list-types` / `--json` / `--full-hi` / `--with-his`。
+- **④ SKILL.md 接线与降级契约**：「运行提速」新增第 2 条「景点级候选」，明确**严禁全文读入 `moto_places.json`**（1.3MB ≈ 40 万 token）；退出码 `2` 时**退回 `destinations.json` 城市级建议并挂灰灯**（不得静默降级）。资源清单段补扩展数据说明。
+- **⑤ 独立扩展包（主包瘦身）**：`moto_places.json`（压缩后约 0.49MB）移出主包，改由 `worldstip-travel-planner-ext-motoplaces-v0.1.41.zip` 独立发布（含数据 + 检索脚本 + `EXT-MANIFEST.json` 带 sha256 与 `requires_skill_version` + `INSTALL-EXT.md`）。主包约 1.10MB → 约 0.6xMB。
+- **⑥ 版本单一真源补完**：两份 plugin manifest（`.codebuddy-plugin` / `.qoder-plugin`）的 `version` 改由 `VERSION` 派生，与 AGENT_MD、7 个输出文件名、扩展包文件名统一，彻底消除此前 6 处散落错位。
+
 **v0.1.35 变更（探索类型本地全量复现 · 缺陷修复 + 分层瘦身 + 版本单一真源）**
 
 本轮对技能支持的全部探索类型做本地实跑复现（28 个模拟用户提问，覆盖 15 类旅程画像、4 类主题剧本、6 类同行构成、3 套门禁、交通比选、目的地发现、攻略检索、地名消歧、可信度内核），暴露并修复 5 项实质缺陷：
