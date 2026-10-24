@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "purpose": "「必吃美食」板块的省份级延伸阅读外链。food_guide.json 提供按城市的必吃清单（结构化、供行程生成）；本文件提供同品牌美食电子书站 food.worldstip.com 的省份级整本电子书链接，作为「想在家复刻这道菜？」的延伸阅读。",
+    "note": "food.worldstip.com 为电子书阅读站，地理信号仅在书名，无按城市/菜品查询的 API，故关联粒度限定为省份级整本电子书，不做字段级数据融合。",
+    "usage": "渲染「必吃美食」板块时：按城市取 city_to_province → 命中 province_book 则附 1 条精准省书链接；无论是否命中，始终附 fallback 通用全国书（最多 2 条），保证 12 城 100% 有链接。",
+    "source_site": "https://food.worldstip.com/",
+    "generated": "2026-10-24",
+    "coverage": "food_guide 现有 12 城 → 8 省；其中 4 省有精准省书（湖北/湖南/浙江/陕西），4 省（海南/黑龙江/甘肃/新疆）暂无省书，统一走通用兜底。"
+  },
+  "by_province": {
+    "湖北": { "province_book": { "title": "湖北名点与小吃", "url": "https://food.worldstip.com/reader.html?id=b95adfa3722" } },
+    "湖南": { "province_book": { "title": "湖南名点与小吃", "url": "https://food.worldstip.com/reader.html?id=ba3dc8659f4" } },
+    "浙江": { "province_book": { "title": "一生不得不做的300种浙菜", "url": "https://food.worldstip.com/reader.html?id=ba0c6a835fb" } },
+    "陕西": { "province_book": { "title": "陕西名点与小吃", "url": "https://food.worldstip.com/reader.html?id=ba77ddcadf5" } },
+    "海南": { "province_book": null },
+    "黑龙江": { "province_book": null },
+    "甘肃": { "province_book": null },
+    "新疆": { "province_book": null }
+  },
+  "fallback": [
+    { "title": "食遍中国 全15册", "url": "https://food.worldstip.com/reader.html?id=b628b0921de" },
+    { "title": "中华名特风味小吃", "url": "https://food.worldstip.com/reader.html?id=b1237782273" }
+  ],
+  "city_to_province": {
+    "wuhan": "湖北",
+    "changsha": "湖南",
+    "sanya": "海南",
+    "harbin": "黑龙江",
+    "urumqi": "新疆",
+    "xian": "陕西",
+    "lanzhou": "甘肃",
+    "jiayuguan": "甘肃",
+    "turpan": "新疆",
+    "yining": "新疆",
+    "burqin": "新疆",
+    "hangzhou": "浙江"
+  }
+}
