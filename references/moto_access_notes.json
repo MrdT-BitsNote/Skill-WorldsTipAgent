@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "name": "线路准入注记（真实性/可操作性核验结果）",
+    "purpose": "记录经公开资料核验的目的地准入政策与骑行可行性结论，供路线 warnings 与技能摩旅模式引用。",
+    "verified_at": "2026-10-24",
+    "verification_method": "WebSearch 公开渠道比对（马蜂窝问答/骑行纪实/摩旅笔记/OTA票务页），与高德POI存在性交叉核验",
+    "status_legend": {
+      "verified": "多源一致，可直接引用",
+      "conflict": "来源相互矛盾，出行前需现场确认",
+      "pending": "未核验，仅模板事实"
+    }
+  },
+  "notes": [
+    {
+      "place": "黄河石林国家地质公园",
+      "adcode": "620423",
+      "route_refs": ["gansu/baiyin#baiyin-r1", "gansu/baiyin#黄河石林"],
+      "status": "conflict",
+      "finding": "2025-03-04 起恢复区间车摆渡，私家车禁入；有摩旅笔记称摩托车也被拒入（走摆渡/电瓶车/驴车），但马蜂窝有回答称'摩托车可以开进去，小轿车不可以'；另有骑行纪实记录自行车需协调后由工作人员带行进入22拐。历史上淡季（11-01至次年03-31）购票后可自驾进村。结论：核心谷地禁入风险高，应按'车辆停景区外、乘区间车'规划，入场政策出行前电询。",
+      "sources": [
+        "https://www.17qunar.com/shaoson/2433.html（景区交通规定）",
+        "https://m.mafengwo.cn/wenda/list/poi_list?poi_id=690106（摩友问答，两种说法并存）",
+        "https://m.meipian.cn/5dhu3b6t（2025-05 骑行纪实：自行车入园需协调）",
+        "https://m.58moto.com/news/9632168（2023 摩旅笔记：摩托车被拒入）"
+      ]
+    },
+    {
+      "place": "天山托木尔大峡谷（温宿大峡谷）",
+      "adcode": "652922",
+      "route_refs": ["xinjiang/akesu#温宿大峡谷"],
+      "status": "verified",
+      "finding": "自驾入园限四驱越野/高底盘车（离地间隙≥23~30cm 各来源口径略异），峡谷内为河床软沙路面、限速40，陷车救援费450/次；门票36/人、区间车60/人、自驾车100~200/车（分时段调价）。所有来源均未列摩托车为可自驾入园车型——按摩托车不能自驾进谷、需停游客中心乘区间车规划。汛期/降雨有泥石流塌方禁入风险。",
+      "sources": [
+        "https://touch.piao.qunar.com/touch/detail_39852.html（官方票务页自驾车须知，2026-04~09 有效期）",
+        "https://www.bilibili.com/video/BV1kFx4ztEPz（2025-10 自驾实测：四驱要求+签协议+陷车费）",
+        "https://m.meipian.cn/5gwvmkzn（2025-09 自驾记录：底盘≥23cm、门票36/自驾200）",
+        "https://mbd.baidu.com/newspage/data/dtlandingsuper?nid=dt_4789531307763815315（区间车/自驾规则）"
+      ]
+    }
+  ]
+}
