@@ -452,6 +452,8 @@ MODE_TO_STYLE = {
 # 住宿档次 -> 每人每晚住宿预算(元)
 LODGING = {
     "青旅": (40, 90), "经济": (80, 150), "舒适": (200, 400),
+    # v0.1.42: 补「民宿」档 —— SKILL.md 住宿偏好话术早已承诺该档, 此前 CLI choices 会拒绝 --lodging 民宿
+    "民宿": (100, 300),
     "高档": (500, 1000), "奢华": (1200, 3000),
 }
 # 餐饮档位 -> 每人每天(元)
@@ -724,6 +726,22 @@ def stay_plan(people: int, profile: StyleProfile, composition: str = "",
     # 户外/骑行/摩旅人群通常装备多, 倾向单间; 休闲度假多人常合住别墅
     solo_oriented = profile.key in ("moto", "cycling", "hiking", "commando", "roadtrip")
 
+    # ── 房车：住宿=营地营位, 不按酒店房间/床型计（v0.1.42「用户明确即遵从」+ 营地为节点纪律）──
+    # 营位费源: references/rv_logistics.json campground.types（房车营地 100-300/晚）
+    if profile.key == "rv":
+        return StayPlan(
+            rooms=1,
+            room_types=["房车营地营位 ×1（水电桩+排污接入；服务区/乡村驿站过夜口径见 rv_logistics.json）"],
+            rationale="房车出行以营地为住宿节点（先定营地再排日间路线），按营位计费而非酒店房间；"
+                      "用户已明确房车方式，不再输出酒店住宿推荐",
+            per_room_night=(100, 300),
+            tips=[
+                "营地档位参考 rv_logistics：房车营地 100-300/晚、自驾/景区营地 20-100、乡村驿站 0-50、高速服务区 0-30",
+                "旺季（五一/十一）营地爆满，须提前电话确认营位/水电/排污/过夜政策",
+                "拖挂占 1.5-2 车位常差异化加价；景区/五星营地旺季可达 300-600+/晚",
+            ],
+        )
+
     # ── 团体（有组织方：团建/研学/夕阳红/俱乐部/定制团）→ 组织者统订标准间按性别拼 ──
     if any(k in comp for k in _GROUP_KW):
         rooms = max(1, (people + 1) // 2)
@@ -923,7 +941,11 @@ def budget_for(profile: StyleProfile, days: int, people: int,
 
     三口之家 1 间家庭房住 3 人, 若按 3 人×每晚房价 会高估近 2 倍。
     """
-    lo_l, hi_l = LODGING.get(lodging, LODGING["舒适"])
+    if stay:
+        # v0.1.42: 以 stay_plan 口径为单一事实源（房车=营地营位费, 其余=档位房价）
+        lo_l, hi_l = stay.per_room_night
+    else:
+        lo_l, hi_l = LODGING.get(lodging, LODGING["舒适"])
     lo_f, hi_f = FOOD.get(food, FOOD["舒适"])
     rooms = stay.rooms if stay else max(1, (people + 1) // 2)
 
@@ -964,7 +986,9 @@ def budget_for(profile: StyleProfile, days: int, people: int,
         "rooms": rooms,
         "nights": nights,
         "note": transport_note,
-        "lodging_basis": (f"{rooms} 间 × {nights} 晚（按房间计, 非按人数）"
+        "lodging_basis": ((f"房车按营地营位计 × {nights} 晚（估 100-300/晚, 以预约实价为准）"
+                           if profile.key == "rv" else
+                           f"{rooms} 间 × {nights} 晚（按房间计, 非按人数）")
                           if nights > 0 else "当天来回无住宿（0 晚）"),
     }
 

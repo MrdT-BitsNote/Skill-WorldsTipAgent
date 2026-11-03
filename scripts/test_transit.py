@@ -66,5 +66,35 @@ check("坐标缺失 reason 提示市内或跨城", "市内" in r_unknown.get("re
 check("坐标缺失 提示公交地铁网约车", any(k in r_unknown.get("reason", "") for k in ("公交", "地铁", "网约车")))
 check("坐标缺失 无飞机 key", "飞机" not in r_unknown)
 
+# ── v0.1.42 用户明确出行方式 → 只按该方式, 不输出其他推荐 ──
+r_md = P.build("武汉", "广州", mode="自驾")
+check("mode=自驾 无高铁 key", "高铁" not in r_md)
+check("mode=自驾 无飞机 key", "飞机" not in r_md)
+check("mode=自驾 recommend=自驾", r_md.get("recommend") == "自驾")
+check("mode=自驾 方案全为自驾", bool(r_md.get("options")) and all("自驾" in o["name"] for o in r_md["options"]))
+
+r_mm = P.build("武汉", "广州", mode="摩旅")
+check("mode=摩旅 无任何公共交通 key", all(k not in r_mm for k in ("高铁", "普铁", "飞机", "客车", "轮船", "自驾")))
+check("mode=摩旅 recommend=摩旅", r_mm.get("recommend") == "摩旅")
+check("mode=摩旅 reason 指向专项引擎", "moto_check" in r_mm.get("reason", ""))
+
+r_mr = P.build("北京", "上海", mode="高铁")
+check("mode=高铁 无飞机 key", "飞机" not in r_mr)
+check("mode=高铁 无自驾 key", "自驾" not in r_mr)
+check("mode=高铁 recommend=高铁", r_mr.get("recommend") == "高铁")
+check("mode=高铁 方案只含高铁", bool(r_mr.get("options")) and all("高铁" in o["name"] for o in r_mr["options"]))
+
+r_mpub = P.build("北京", "上海", mode="公共交通")
+check("mode=公共交通 等同默认比选(含飞机)", "飞机" in r_mpub)
+
+r_mcity = P.build("广州", "佛山", mode="自驾")
+check("市内 mode=自驾 只剩出租/网约车",
+      bool(r_mcity.get("options")) and all(o["name"] in ("出租车", "网约车") for o in r_mcity["options"]))
+
+# ── v0.1.42 修复: 「机票参考」补 ≥800km 闸门, 与方案飞机纳入口径一致 ──
+r_mid = P.build("成都", "西安")  # ~606km
+check("中程 606km recommend 非 机票参考", r_mid.get("recommend") != "机票参考")
+check("中程 606km 方案无飞机", not any("飞机" in o["name"] for o in r_mid.get("options", [])))
+
 print(f"\ntest_transit: {ok} passed, {fail} failed")
 sys.exit(1 if fail else 0)

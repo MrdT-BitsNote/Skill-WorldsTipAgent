@@ -134,7 +134,51 @@ def _same_waterway(a: str, b: str) -> bool:
     return False
 
 
-def build(frm: str, to: str, force_water: bool = False) -> dict:
+# ── 用户明确出行方式 → 只按该方式估算, 不做六方式比选（「用户明确即遵从」v0.1.42）──
+# mode=None / "公共交通" → 默认六方式比选; 其余取值只保留对应方式, 不输出其他推荐。
+_MODE_KEYS = {
+    "自驾": ("自驾",), "开车": ("自驾",),
+    "高铁": ("高铁",), "动车": ("高铁",),
+    "普铁": ("普铁",), "火车": ("高铁", "普铁"),
+    "客车": ("客车",), "大巴": ("客车",), "长途汽车": ("客车",),
+    "飞机": ("飞机",),
+    "轮船": ("轮船",), "船": ("轮船",),
+}
+_SELF_DRIVEN = ("摩旅", "骑行", "徒步", "房车")
+_SELF_ENGINE = {
+    "摩旅": "moto_check.py 五项门禁 + moto_routes.json 线路库",
+    "骑行": "build_itinerary.py ACTIVE_ADDON（骑行 25-45km/天）",
+    "徒步": "build_itinerary.py ACTIVE_ADDON（徒步 12-22km/天）",
+    "房车": "rv_check.py 五项后勤自检 + rv_logistics.json 营地口径",
+}
+# 市内圈（≤30km）方式过滤：明确方式时市内方式族也只留对应项，不输出其他推荐
+_CITY_MODE_FILTER = {
+    "自驾": ("出租车", "网约车"), "开车": ("出租车", "网约车"),
+    "摩旅": ("出租车", "网约车"), "房车": ("出租车", "网约车"),
+    "骑行": ("骑行",), "徒步": ("步行",),
+}
+_TRANSIT_KEYS = ("高铁", "普铁", "飞机", "客车", "轮船", "自驾")
+_HOW = {
+    "高铁": lambda d: f"约 {d['hours']}h / ¥{d['price_est']}/人；无直达需中转时留 ≥40min",
+    "普铁": lambda d: f"约 {d['hours']}h / 硬座 ¥{d['price_hard_seat_est']}、夜班硬卧 ¥{d['price_hard_sleeper_est']}",
+    "飞机": lambda d: (f"飞行 {d['hours_flight']}h、含接驳约 {d['hours_total_est']}h / "
+                       f"折扣估 ¥{min(d['price_discount_est'].values())} 起；大风大雾易延误需留余量"),
+    "客车": lambda d: f"约 {d['hours']}h / ¥{d['price_est']}；班次少务必提前查客运站公众号，错过末班只能包车",
+    "轮船": lambda d: f"约 {d['hours']}h / ¥{d['price_est']}；大风大雾停航常见，出行前查港口公告",
+    "自驾": lambda d: f"约 {d['hours']}h / 油费+过路费 ¥{d['cost_est']}；时间自主，适合多点位与带装备出行",
+}
+
+
+def build(frm: str, to: str, mode: str | None = None, force_water: bool = False) -> dict:
+    """城际交通比选。
+
+    mode: 用户明确出行方式。None / "公共交通" → 六方式全比选（默认）；
+    其余取值只保留该方式（不输出其他推荐）；摩旅/骑行/徒步/房车交由对应专项引擎。
+    """
+    if mode in ("公共交通", "公交"):
+        mode = None
+    if mode in ("轮船", "船"):
+        force_water = True  # 用户明确水路 → 视同强制包含轮船并核验航线真实性
     rules = json.load(open(RULES, encoding="utf-8"))
     dests = load_dest()
     ca, cb = coords_of(frm, dests), coords_of(to, dests)
@@ -164,14 +208,24 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
     city_rules = rules.get("市内交通")
     if city_rules and dist <= city_rules.get("city_distance_km", 30):
         result["scope"] = "市内"
-        result["recommend"] = "市内交通"
-        result["reason"] = (f"两地直线距离仅约 {round(dist)} km，属同城/市内出行，"
-                            f"不应推荐城际高铁/飞机/普铁。按市内交通推荐："
-                            f"地铁/公交/出租车/网约车，短驳可骑行、超短可步行。")
-        result["options"] = [
+        city_opts = [
             {"name": name, "fit": "市内出行", "how": desc}
             for name, desc in city_rules.get("modes", {}).items()
         ]
+        if mode in _CITY_MODE_FILTER:
+            allow = _CITY_MODE_FILTER[mode]
+            city_opts = [o for o in city_opts if o["name"] in allow]
+            result["recommend"] = f"市内交通（按用户明确方式：{mode}）"
+            result["reason"] = (f"两地直线距离仅约 {round(dist)} km，属市内出行；"
+                                f"用户已明确「{mode}」，市内方式只保留 {'/'.join(allow)}，不输出其他推荐。")
+        else:
+            result["recommend"] = "市内交通"
+            result["reason"] = (f"两地直线距离仅约 {round(dist)} km，属同城/市内出行，"
+                                f"不应推荐城际高铁/飞机/普铁。按市内交通推荐："
+                                f"地铁/公交/出租车/网约车，短驳可骑行、超短可步行。")
+        result["options"] = city_opts
+        if mode:
+            result["user_mode"] = mode
         result["disclaimer"] = rules["核实声明"]
         return result
 
@@ -252,7 +306,9 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
                   f"或客运班车（最便宜）；若确已通高铁且单程 ≥50km、班次合适，"
                   f"再考虑高铁往返（约 {result['高铁']['hours']}h / ¥{result['高铁']['price_est']}/人），"
                   f"并核对末班车时间。请先向用户确认出行方式后再定。")
-    elif (min_disc_price <= g_price * 1.05) and (fl_total <= g_hours * 1.3):
+    # v0.1.42 修复: 补 dist >= 800 闸门 —— 与方案组装的飞机纳入口径一致,
+    # 消除「606km 推荐"机票参考"但 A/B/C 方案里没有飞机」的自相矛盾。
+    elif dist >= 800 and (min_disc_price <= g_price * 1.05) and (fl_total <= g_hours * 1.3):
         recommend = "机票参考"
         reason = (f"机票折扣估算低至 ¥{min_disc_price}（约 {min_disc_factor*10:.0f} 折），"
                   f"不超过高铁估算 ¥{round(g_price)} 的 1.05 倍，且总耗时（{round(fl_total,1)}h）"
@@ -310,6 +366,44 @@ def build(frm: str, to: str, force_water: bool = False) -> dict:
                         "how": f"约 {sh['hours']}h / ¥{sh['price_est']}, 跨海岛/长江干线适用; 大风大雾停航常见, 出行前查港口公众号公告"})
     result["options"] = options
 
+    # ── 用户明确出行方式 → 只保留该方式, 不输出其他推荐（v0.1.42「用户明确即遵从」）──
+    if mode:
+        if mode in _SELF_DRIVEN:
+            for k in _TRANSIT_KEYS:
+                result.pop(k, None)
+            result["recommend"] = mode
+            result["reason"] = (f"用户已明确「{mode}」出行，按用户方式执行，不输出公共交通比选。"
+                                f"路径与日行程由对应引擎承载：{_SELF_ENGINE[mode]}。"
+                                f"两地直线距离约 {round(dist)}km，实际路程通常为其 1.1-1.4 倍。")
+            result["options"] = []
+            result["user_mode"] = mode
+            return result
+        keep = _MODE_KEYS.get(mode)
+        if not keep:
+            raise ValueError(
+                "未知出行方式: " + mode +
+                "；支持: 公共交通/自驾/开车/摩旅/骑行/徒步/房车/高铁/动车/普铁/火车/"
+                "客车/大巴/长途汽车/飞机/轮船/船")
+        for k in _TRANSIT_KEYS:
+            if k not in keep:
+                result.pop(k, None)
+        kept_opts = [o for o in options if any(k in o["name"] for k in keep)]
+        if not kept_opts:
+            # 该距离圈的 A/B/C 本不列此方式（如 ≤800km 不列飞机）→ 仍按用户明确方式给出单方案
+            kept_opts = [
+                {"name": f"方案 · {k}（用户明确）", "fit": "用户指定", "how": _HOW[k](result[k])}
+                for k in keep if k in result
+            ]
+        result["options"] = kept_opts
+        extra = ""
+        if "飞机" in keep and dist < 800:
+            extra = (f"注意：两地约 {round(dist)}km，该距离下飞机通常不如高铁"
+                     f"（比选方案仅 >800km 才列飞机），已按用户明确方式保留，请以实时票价为准。")
+        result["recommend"] = mode
+        result["reason"] = f"用户已明确「{mode}」出行，仅按该方式估算，不输出其他方式比选。{extra}"
+        result["user_mode"] = mode
+        return result
+
     return result
 
 
@@ -319,9 +413,14 @@ def main() -> int:
     ap.add_argument("--to", required=True, help="目的地")
     ap.add_argument("--json", action="store_true", help="输出原始 JSON")
     ap.add_argument("--water", action="store_true", help="强制包含轮船/渡轮方案(即便非已知水路, 需自行核实航线)")
+    ap.add_argument("--mode", default=None,
+                    choices=["公共交通", "自驾", "开车", "摩旅", "骑行", "徒步", "房车",
+                             "高铁", "动车", "普铁", "火车", "客车", "大巴", "长途汽车",
+                             "飞机", "轮船", "船"],
+                    help="用户明确出行方式: 只按该方式估算、不输出其他推荐(默认=公共交通全比选)")
     args = ap.parse_args()
 
-    r = build(args.frm, args.to, force_water=args.water)
+    r = build(args.frm, args.to, mode=args.mode, force_water=args.water)
     if args.json:
         print(json.dumps(r, ensure_ascii=False, indent=2))
         return 0
@@ -354,6 +453,8 @@ def main() -> int:
         print(f"  飞机: 飞行 {fl['hours_flight']}h+接驳≈{fl['hours_total_est']}h | 全价估 ¥{fl['price_full_est']} "
               f"折扣估 ¥{lo}-¥{hi}（约 {lo_f:.0f}-{hi_f:.0f} 折）")
     print(f"\n  推荐: {r['recommend']}")
+    if r.get("user_mode"):
+        print(f"  （已按用户明确方式「{r['user_mode']}」执行，不输出其他方式比选）")
     print(f"  理由: {r['reason']}")
     for opt in r.get("options", []):
         print(f"\n  {opt['name']} [{opt['fit']}]\n    {opt['how']}")
