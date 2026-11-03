@@ -965,8 +965,14 @@ def budget_for(profile: StyleProfile, days: int, people: int,
     # 交通: 有里程按里程实估；无里程走画像常量（并标注为估算）
     transport_total, _km_note = estimate_transport(profile.key, people, days, km)
 
-    other_total = (lodging_total + food_total) * profile.budget_ratio["其他"] / max(
+    # v0.1.43：兑现渲染器「最低 / 常规」双列。交通与门票只有点估计，低/中值一致；
+    # 住宿、餐饮及其联动的其他费用按档位下限与中值分别计算，旧字段保持兼容。
+    lodging_low = lo_l * rooms * nights
+    food_low = lo_f * people * days
+    other_ratio = profile.budget_ratio["其他"] / max(
         profile.budget_ratio["住宿"] + profile.budget_ratio["餐饮"], 0.1)
+    other_total = (lodging_total + food_total) * other_ratio
+    other_low = (lodging_low + food_low) * other_ratio
 
     breakdown = {
         "交通": round(transport_total),
@@ -975,12 +981,25 @@ def budget_for(profile: StyleProfile, days: int, people: int,
         "门票": round(ticket_total),
         "其他": round(other_total),
     }
+    breakdown_low = {
+        "交通": round(transport_total),
+        "住宿": round(lodging_low),
+        "餐饮": round(food_low),
+        "门票": round(ticket_total),
+        "其他": round(other_low),
+    }
     total = sum(breakdown.values())
+    total_low = sum(breakdown_low.values())
     return {
         "group": breakdown,
+        "group_low": breakdown_low,
         "per_person": {k: round(v / people) for k, v in breakdown.items()},
-        "per_person_total": round(total / people),
+        "per_person_low": {k: round(v / people) for k, v in breakdown_low.items()},
+        # 合计直接求和展示后的分项，避免逐项取整与总额取整产生 1 元自相矛盾。
+        "per_person_total": sum(round(v / people) for v in breakdown.values()),
+        "per_person_total_low": sum(round(v / people) for v in breakdown_low.values()),
         "group_total": round(total),
+        "group_total_low": round(total_low),
         "lodging_level": lodging,
         "food_level": food,
         "rooms": rooms,

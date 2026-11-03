@@ -114,7 +114,7 @@ def _explicit_mode(plan: dict, transit: dict = None):
         return style
     # 编排层显式标注（transit.explicit 或 plan.transport_explicit）
     for src in (transit or {}, plan):
-        ex = src.get('explicit') or src.get('transport_explicit')
+        ex = src.get('explicit') or src.get('transport_explicit') or src.get('user_mode')
         if ex:
             ex = str(ex).lower()
             if ex in ('moto', '摩旅', '摩托', '摩托车'):
@@ -326,9 +326,11 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 <body>
 <div class="wrap">
 {HERO}
+{FEAS_BANNER}
 {TOC}
 {ROUTE_OVERVIEW}
 {TRANSIT}
+{FEASIBILITY}
 {DAY_BY_DAY}
 {SEASON}
 {PHOTO}
@@ -403,7 +405,64 @@ def _guide_supplement_html(research):
     return ''.join(out)
 
 
-def render(plan: dict, title: str, transit: dict = None, research: dict = None) -> str:
+def _feasibility_block(plan: dict, mode: str):
+    """可执行性体检（v0.1.43 起并入默认渲染器，此前仅旧版 render_booklet 有）。
+
+    复用 render_booklet 的零依赖体检引擎（阈值自检 + 目的地 P0 关卡覆盖 + 末班船断言），
+    视觉用本模板既有 .gate/.tag 类。返回 (册首横幅, 独立板块) 两段 HTML。
+    """
+    if mode == 'none':
+        return '', ''
+    from render_booklet import run_feasibility
+    feas = run_feasibility(plan)
+    p0_hard = [i for i in feas['p0'] if i['level'] == 'P0'] + feas['assert']
+    p0_soft = [i for i in feas['p0'] if i['level'] != 'P0']
+    n_all = len(feas['threshold']) + len(feas['p0']) + len(feas['assert'])
+
+    # ── 册首横幅：strict 红色强制 / advisory 黄色提示 / 全过绿色 ──
+    if p0_hard:
+        items = ''.join(f'<li>{esc(i.get("text", i.get("place", "")))}</li>' for i in p0_hard[:6])
+        if mode == 'strict':
+            banner = (f'<section class="sec" style="border:2px solid var(--red)">'
+                      f'<span class="tag red">🛑 可执行性体检未通过</span>'
+                      f'<p style="margin:6px 0 4px">存在 <b>{len(p0_hard)}</b> 项 P0 硬错，出行前必须复核：</p>'
+                      f'<ul style="margin:0;padding-left:18px">{items}</ul></section>')
+        else:
+            banner = (f'<section class="sec" style="border:1px solid var(--warn)">'
+                      f'<span class="tag warn">⚠ 可执行性体检提示</span>'
+                      f'<p style="margin:6px 0 4px">发现 {len(p0_hard)} 项 P0 硬错建议关注（详见 §2b，--feasibility strict 可置顶强制）：</p>'
+                      f'<ul style="margin:0;padding-left:18px">{items}</ul></section>')
+    elif n_all:
+        banner = (f'<section class="sec"><span class="tag ok">ℹ 可执行性体检</span>'
+                  f'<p style="margin:6px 0 0">无 P0 硬错；{n_all} 项提示已列入 §2b 板块。</p></section>')
+    else:
+        banner = '<section class="sec"><span class="tag ok">✅ 可执行性体检通过：未发现 P0 硬错（零依赖关卡库校验）。</span></section>'
+
+    # ── 独立板块 §2b ──
+    S = ['<section class="sec" id="sec2b">',
+         '<h2><span style="color:var(--sub);font-size:14px;margin-right:6px">§2b</span>'
+         '可执行性体检<span class="en">Feasibility</span></h2>']
+    for t in feas['threshold']:
+        S.append(f'<div class="gate"><span class="l warn"></span><div class="t"><b>节奏/体力阈值</b>'
+                 f'<div class="d">{esc(t)}</div></div></div>')
+    for i in feas['p0']:
+        cls = 'red' if i['level'] == 'P0' else 'warn'
+        S.append(f'<div class="gate"><span class="l {cls}"></span><div class="t">'
+                 f'<b>[{esc(i["level"])}] {esc(i["place"])} · 关卡未覆盖</b>'
+                 f'<div class="d">{esc(i["text"])}</div></div></div>')
+    for i in feas['assert']:
+        S.append(f'<div class="gate"><span class="l red"></span><div class="t"><b>[P0] 数据一致性冲突</b>'
+                 f'<div class="d">{esc(i["text"])}</div></div></div>')
+    if n_all == 0:
+        S.append('<p>✅ 各项指标均在经验安全阈值内，行程节奏与体力分配合理。</p>')
+    S.append('<em class="warn">体检基于经验阈值与本地关卡库（不含实时交通/票务/天气）；'
+             'P0 为出行前必须复核的硬项，出行前 1–3 天请以官方实时信息为准。</em>')
+    S.append('</section>')
+    return banner, '\n'.join(S)
+
+
+def render(plan: dict, title: str, transit: dict = None, research: dict = None,
+           feasibility: str = 'advisory') -> str:
     transit = _normalize_transit(transit) if transit else None
     origin = pick(plan, 'origin', 'from', default='出发地')
     dest = '、'.join(plan.get('destinations', []) or ['目的地'])
@@ -423,6 +482,7 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
     cold = plan.get('cold', []) or []
     day_plan = plan.get('plan', []) or []
     special = plan.get('special')
+    feas_banner, feas_sec = _feasibility_block(plan, feasibility)
 
     # === HERO ===
     total_pp = budget.get('per_person_total') or budget.get('group_total') or 0
@@ -451,6 +511,8 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
         ('7', '预算速查'), ('8', '行前清单'),
         ('9', '安全与应急'), ('10', '出发前多知道一点'),
     ]
+    if feas_sec:
+        toc_items.insert(2, ('2b', '可执行性体检'))
     toc = '<div class="toc"><h4>CONTENTS</h4><ul>' + ''.join(f'<li><a href="#sec{n}">§{n} {esc(t)}</a></li>' for n, t in toc_items) + '</ul></div>'
 
     # === 路线总览 ===
@@ -626,15 +688,18 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
     budget_html = ['<section class="sec" id="sec7">', section_no(7), '<h2>预算速查<span class="en">Budget</span></h2>']
     budget_html.append(f'<p class="sub-en">基于距离的估算 · 实时票价查 12306 / 航司</p>')
     pp = budget.get('per_person', {}) or {}
+    pp_low = budget.get('per_person_low', pp) or pp
     grp = budget.get('group', {}) or {}
     if pp or grp:
-        budget_html.append('<table class="tbl"><thead><tr><th>分项</th><th class="r">最低/人</th><th class="r">常规/人</th><th class="r">占合计</th></tr></thead><tbody>')
+        budget_html.append('<table class="tbl"><thead><tr><th>分项</th><th class="r">最低/人</th><th class="r">常规/人</th><th class="r">占常规合计</th></tr></thead><tbody>')
         total_pp = sum((pp or grp).values()) or 1
         for k in (pp or grp):
-            mn = (pp or grp).get(k, 0)
-            pct = round(mn / total_pp * 100)
-            budget_html.append(f'<tr><td>{esc(k)}</td><td class="r">¥{mn}</td><td class="r">¥{mn}</td><td class="r">{pct}%</td></tr>')
-        budget_html.append(f'<tr><td><b>人均合计</b></td><td class="r" colspan="2"><b>¥{budget.get("per_person_total",0):,}</b></td><td class="r">100%</td></tr>')
+            regular = (pp or grp).get(k, 0)
+            low = pp_low.get(k, regular)
+            pct = round(regular / total_pp * 100)
+            budget_html.append(f'<tr><td>{esc(k)}</td><td class="r">¥{low}</td><td class="r">¥{regular}</td><td class="r">{pct}%</td></tr>')
+        low_total = budget.get('per_person_total_low', budget.get('per_person_total', 0))
+        budget_html.append(f'<tr><td><b>人均合计</b></td><td class="r"><b>¥{low_total:,}</b></td><td class="r"><b>¥{budget.get("per_person_total",0):,}</b></td><td class="r">100%</td></tr>')
         budget_html.append('</tbody></table>')
     budget_html.append('<h4>💡 节省口诀</h4><ul><li>住宿按<b>房间</b>而非按人数 · 单人订大床房最划算</li><li>餐饮：早餐住宿含 / 午晚餐本地老店更地道</li><li>门票：学生证/老年证/军官证带好可省；多日票通常比单日票划算</li><li>机票：周中+提前 14 天是常见低洼；关注临近退票高峰</li></ul>')
     if budget.get('split_mode'):
@@ -738,6 +803,7 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
         day_html = ['']
         pack_html = ['']
         safe_html = ['']
+        feas_banner, feas_sec = '', ''
         toc_items = [
             ('1', '路线总览'), ('4', '季节与气候'),
             ('5', '美景拍摄'), ('6', '住宿'),
@@ -748,9 +814,11 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None) 
     return HTML_TPL.format(
         title=esc(title),
         HERO=''.join(hero),
+        FEAS_BANNER=feas_banner,
         TOC=''.join(toc),
         ROUTE_OVERVIEW=''.join(overview),
         TRANSIT=''.join(transit_html),
+        FEASIBILITY=feas_sec,
         DAY_BY_DAY=''.join(day_html),
         SEASON=''.join(season_html),
         PHOTO=''.join(photo_html),
@@ -767,16 +835,20 @@ def main():
     ap.add_argument('--plan', required=True)
     ap.add_argument('--transit', default=None)
     ap.add_argument('--research', default=None, help='research.json（ugc 攻略研读沉淀，渲染进 §10 攻略核验子块）')
+    ap.add_argument('--feasibility', choices=['none', 'advisory', 'strict'], default='advisory',
+                    help='可执行性体检：advisory 默认提示 / strict P0 红条强制 / none 关闭（v0.1.43 起并入默认渲染器）')
     ap.add_argument('--out', required=True)
     ap.add_argument('--title', required=True)
     args = ap.parse_args()
     plan = json.load(open(args.plan, encoding='utf-8'))
     transit = json.load(open(args.transit, encoding='utf-8')) if args.transit else None
     research = json.load(open(args.research, encoding='utf-8')) if args.research else None
-    html = render(plan, args.title, transit, research)
+    html = render(plan, args.title, transit, research, feasibility=args.feasibility)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(html, encoding='utf-8')
     sections = ['hero', 'toc', '路线总览', '怎么去', '逐日动线', '季节', '拍摄', '住宿', '预算', '清单', '安全', '冷知识']
+    if args.feasibility != 'none':
+        sections.append('可执行性体检')
     if research and (research.get('ugc') or []):
         sections.append('攻略核验')
     print(f'✅ 已生成: {args.out}  (板块 {len(sections)} 个, {len(html.encode())//1024} KB)')

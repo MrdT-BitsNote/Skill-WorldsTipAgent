@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "updated": "2026-11-04",
+  "coordinate_system": "GCJ-02",
+  "coordinate_note": "两站坐标均为 GCJ-02（高德体系），与 references/destinations.json 同系；配 OSM/Google 等 WGS-84 底图必须先转系，禁止直接混用。",
+  "common_policy": {
+    "auth": "免鉴权、纯静态 JSON、CDN 可缓存",
+    "cache_ttl_hours": 24,
+    "timeout_seconds": 15,
+    "retries": 2,
+    "wall_clock_seconds": 45,
+    "max_response_bytes": 67108864,
+    "degrade": "网络失败→读本地缓存→无缓存则明确报『数据不可用』并降级宿主 WebSearch/WebFetch，禁止编造条目"
+  },
+  "moto": {
+    "name": "摩托行 · 市区周边短途行",
+    "review_after_days": 180,
+    "home": "https://moto.worldstip.com",
+    "use_for": "摩旅/骑行路线规划：路线名称、类型、里程、建议天数、亮点、轨迹 polyline、途经点、详情页直链",
+    "endpoints": {
+      "index": "https://moto.worldstip.com/map-data/index.json",
+      "province": "https://moto.worldstip.com/map-data/provinces/{code}.json"
+    },
+    "index_fields": ["generated", "totalRoutes", "totalWaypoints", "totalCities", "provinces[]{name,code,file,routes,cities,sizeKB}"],
+    "route_fields": {
+      "id": "路线唯一 ID",
+      "n": "路线名称",
+      "t": "类型：攻山压弯/山林湖泊/文化漫游/咖啡驿站/近郊休闲/长途环线/休闲骑游/弯道路段/人文古迹/休闲骑行",
+      "d": "里程 km",
+      "days": "建议天数（每 200km 记 1 天，市区周边线恒为 1）",
+      "h": "亮点标签（最多 4 条）",
+      "p": "轨迹 polyline [[lat,lng]...]（GCJ-02，每 3 点取 1 抽稀）",
+      "w": "关键途经点 [[lat,lng]...]（GCJ-02）",
+      "wn": "途经点名称，与 w 一一对应；w[0] 恒为集合点/市政府",
+      "city/citySlug": "所属城市；长途环线 city=省名、citySlug=loops",
+      "url": "详情页相对路径（湖南 /routes/{id}/，其余 /{code}/routes/{id}/）",
+      "cs": "文案状态：verified=人工撰写并经高德 POI 核验 / reviewed=改写自公开资料且附来源 / computed=算法生成（全部长途环线）",
+      "srcs": "引用来源条数；cs=reviewed 时 >0 才可核验"
+    },
+    "discipline": [
+      "cs=computed 的长途环线是跨市聚合条目，不称『实测』、不标『来源已核验』，引用时必须与市区周边短途（verified/reviewed）分开口径",
+      "里程 d 为路线自带值；跨市环线道路里程为分段实算，市区周边为实测线",
+      "详情页直链取 url 字段拼接 home，禁止手拼其余形态链接"
+    ]
+  },
+  "fun": {
+    "name": "FUN · 全国美食×商圈×娱乐探索站",
+    "review_after_days": 90,
+    "home": "https://fun.worldstip.com",
+    "use_for": "城市游的美食/商圈/休闲/亲子/商场/特产/酒店数据支撑；商圈 S/A/B/C 评级与真实轮廓",
+    "endpoints": {
+      "data": "https://fun.worldstip.com/data.json",
+      "data_md": "https://fun.worldstip.com/data.md",
+      "api_doc": "https://fun.worldstip.com/api.html"
+    },
+    "size_note": "data.json 全量约 40MB（gzip 约 10MB）；只要概览用 Range: bytes=0-8191 取头部 stats",
+    "top_fields": ["meta{name,version,generated,home}", "stats{provinces,cities,poi_total,districts_total,grades}", "provinces[]", "cities[]", "food_top[800]", "districts_top[1000]"],
+    "city_fields": {
+      "city/province/adcode": "城市名/省/高德区划代码",
+      "poi_total/district_count": "去重 POI 总数/商圈档案数",
+      "updated": "采集时间（评分为高德快照，时效以此为准）",
+      "credibility": "可信度：rated_ratio/warnings/dims",
+      "districts[]": "商圈：name/grade(S·A·B·C)/carrier/rating/poi/total/food/leisure/kids/hotel/center/radius/ring（凸包，GCJ-02）",
+      "grades": "{S,A,B,C} 计数",
+      "food/xiaocan": "美食/小店候选 POI 数组",
+      "leisure/kids": "{subcats:[{name,count}], list:[POI]}",
+      "malls/specialties/hotels": "综合体/特产/酒店数组",
+      "assoc": "商圈内美食关联 {district,grade,count,items[]}"
+    },
+    "poi_fields": ["mark(✅优质/⚠️待核/❌不推荐)", "name", "sub", "type(高德多段类型串)", "rating(0-5 或 null)", "avg(人均元或 null)", "addr", "img"],
+    "discipline": [
+      "评分/人均为高德快照，引用必须带该城 updated 采集日期；超 90 天标『待复核』",
+      "商圈评级口径：密度40%+丰度25%+口碑25%+结构10%；S≥72 且均分≥4.0，A 62-72，B 48-62，C<48；单店不构成商圈",
+      "样本边界：每城约 1200 条 POI 采集，未覆盖的街区不等于不存在，禁止把『站内无数据』说成『该城没有』",
+      "美食榜已剔除住宿业主导 POI；酒店数据在 hotels 字段，推荐仍守『区域+标准层』纪律，不点店名作住宿推荐（数据可作区域商业配套佐证）",
+      "许可：正当使用、保留来源标注（高德/美团/大众点评），不得整库转售"
+    ]
+  }
+}

@@ -23,6 +23,18 @@ import refloader
 
 DATA = Path(__file__).resolve().parent.parent / "references" / "destinations.json"
 
+
+def city_distance_km() -> int:
+    """同城/市内阈值单一事实源 = transit_rules.json 市内交通.city_distance_km。
+
+    v0.1.43 前此处硬编码 50 而 plan_transit.py 用 30，40km 的点在两工具结论分裂。
+    """
+    try:
+        rules = json.load(open(DATA.parent / "transit_rules.json", encoding="utf-8"))
+        return int(rules.get("市内交通", {}).get("city_distance_km", 30))
+    except Exception:
+        return 30
+
 DIRECTIONS = {
     "北": 0, "东北": 45, "东": 90, "东南": 135,
     "南": 180, "西南": 225, "西": 270, "西北": 315,
@@ -127,8 +139,9 @@ def main() -> int:
         b = bearing(origin["lat"], origin["lon"], t["lat"], t["lon"])
         rows.append((km, b, t))
     rows.sort()
+    city_km = city_distance_km()
     for km, b, t in rows:
-        scope = "市内/同城" if km < 50 else ("省内" if km < 300 else "跨省")
+        scope = "市内/同城" if km < city_km else ("省内" if km < 300 else "跨省")
         print(f"  {t['name']:<10} {fmt_dist(km):>10}  {b}向  [{scope}]  {t.get('admin1','')}")
 
     if len(ready) > 1:

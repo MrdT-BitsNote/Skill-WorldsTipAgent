@@ -122,6 +122,15 @@ b_rv = budget_for(rv_prof, 3, 2, "舒适", "舒适", stay=rv_stay)
 check("房车预算按营位中值计(200×2晚=400)", b_rv["group"]["住宿"] == 400)
 check("房车预算 basis 标注营地口径", "营地" in b_rv.get("lodging_basis", ""))
 
+# ── 10. v0.1.43 预算最低/常规双档：低档使用住宿餐饮下限，常规保持原中值 ──
+check("预算含 per_person_low / group_low", bool(b_group.get("per_person_low")) and bool(b_group.get("group_low")))
+check("团体住宿低档=200×15间×2晚=6000", b_group["group_low"]["住宿"] == 6000)
+check("团体住宿常规=300×15间×2晚=9000", b_group["group"]["住宿"] == 9000)
+check("双档人均合计不同且低档更低", b_group["per_person_total_low"] < b_group["per_person_total"])
+check("常规人均合计=展示分项之和", b_group["per_person_total"] == sum(b_group["per_person"].values()))
+check("最低人均合计=展示分项之和", b_group["per_person_total_low"] == sum(b_group["per_person_low"].values()))
+check("房车营位低档=100×2晚=200", b_rv["group_low"]["住宿"] == 200)
+
 print(f"\n{'='*56}")
 if FAIL == 0:
     print(f"test_party: ALL PASSED ({PASS} 断言)")

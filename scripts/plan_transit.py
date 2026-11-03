@@ -186,6 +186,8 @@ def build(frm: str, to: str, mode: str | None = None, force_water: bool = False)
 
     g = rules["高铁"]; p = rules["普铁"]; fl = rules["飞机"]
     rec = rules["机票参考条件"]
+    price_ratio_max = float(rec.get("price_ratio_max", 1.05))
+    time_ratio_max = float(rec.get("total_time_ratio_max", 1.3))
 
     result: dict = {"from": frm, "to": to, "distance_km": round(dist) if dist else None}
     if not dist:
@@ -308,11 +310,11 @@ def build(frm: str, to: str, mode: str | None = None, force_water: bool = False)
                   f"并核对末班车时间。请先向用户确认出行方式后再定。")
     # v0.1.42 修复: 补 dist >= 800 闸门 —— 与方案组装的飞机纳入口径一致,
     # 消除「606km 推荐"机票参考"但 A/B/C 方案里没有飞机」的自相矛盾。
-    elif dist >= 800 and (min_disc_price <= g_price * 1.05) and (fl_total <= g_hours * 1.3):
+    elif dist > 800 and (min_disc_price <= g_price * price_ratio_max) and (fl_total <= g_hours * time_ratio_max):
         recommend = "机票参考"
         reason = (f"机票折扣估算低至 ¥{min_disc_price}（约 {min_disc_factor*10:.0f} 折），"
-                  f"不超过高铁估算 ¥{round(g_price)} 的 1.05 倍，且总耗时（{round(fl_total,1)}h）"
-                  f"未超过高铁（{round(g_hours,1)}h）的 1.3 倍；可优先考虑机票，但请以实时票价为准。")
+                  f"不超过高铁估算 ¥{round(g_price)} 的 {price_ratio_max:g} 倍，且总耗时（{round(fl_total,1)}h）"
+                  f"未超过高铁（{round(g_hours,1)}h）的 {time_ratio_max:g} 倍；可优先考虑机票，但请以实时票价为准。")
     else:
         recommend = "高铁(默认)"
         reason = (f"高铁估算 ¥{round(g_price)} / {round(g_hours,1)}h，"
@@ -396,13 +398,21 @@ def build(frm: str, to: str, mode: str | None = None, force_water: bool = False)
             ]
         result["options"] = kept_opts
         extra = ""
-        if "飞机" in keep and dist < 800:
+        if "飞机" in keep and dist <= 800:
             extra = (f"注意：两地约 {round(dist)}km，该距离下飞机通常不如高铁"
                      f"（比选方案仅 >800km 才列飞机），已按用户明确方式保留，请以实时票价为准。")
         result["recommend"] = mode
         result["reason"] = f"用户已明确「{mode}」出行，仅按该方式估算，不输出其他方式比选。{extra}"
         result["user_mode"] = mode
         return result
+
+    # v0.1.43：消费 short_distance_km（此前为死配置）。仅在默认公共交通比选时补充门到门提示；
+    # 用户明确方式时已提前返回，不会借提示引入其他推荐。
+    short_km = rules.get("短途判定", {}).get("short_distance_km", 300)
+    if 150 < dist <= short_km:
+        result["coach_hint"] = (f"两地约 {round(dist)}km，属短途（≤{short_km}km）。"
+                                "请把车站接驳、候车与末班时间计入门到门总耗时，再比较高铁与客运班车；"
+                                "票价、班次与余票以 12306/客运站官方实时信息为准。")
 
     return result
 

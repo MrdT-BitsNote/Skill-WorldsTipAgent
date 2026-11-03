@@ -11,6 +11,7 @@ Windows 控制台友好：只用 ASCII 打印。
 """
 import os
 import sys
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -95,6 +96,28 @@ check("市内 mode=自驾 只剩出租/网约车",
 r_mid = P.build("成都", "西安")  # ~606km
 check("中程 606km recommend 非 机票参考", r_mid.get("recommend") != "机票参考")
 check("中程 606km 方案无飞机", not any("飞机" in o["name"] for o in r_mid.get("options", [])))
+
+# ── v0.1.43 阈值同源与边界 ──
+import json  # noqa: E402
+import plan_route  # noqa: E402
+
+with open(os.path.join(HERE, "..", "references", "transit_rules.json"), encoding="utf-8") as f:
+    _rules = json.load(f)
+check("同城阈值与 plan_route 同源", plan_route.city_distance_km() == _rules["市内交通"]["city_distance_km"])
+check("机票价格/耗时阈值由配置消费", _rules["机票参考条件"]["price_ratio_max"] == 1.05
+      and _rules["机票参考条件"]["total_time_ratio_max"] == 1.3)
+with patch.object(P, "coords_of", return_value=(0.0, 0.0)), patch.object(P, "haversine", return_value=800.0):
+    r_800 = P.build("测试甲", "测试乙")
+check("恰好 800km 推荐与方案均无飞机", r_800.get("recommend") != "机票参考"
+      and not any("飞机" in o["name"] for o in r_800.get("options", [])))
+with patch.object(P, "coords_of", return_value=(0.0, 0.0)), patch.object(P, "haversine", return_value=800.0):
+    r_800_air = P.build("测试甲", "测试乙", mode="飞机")
+check("恰好 800km 明示飞机仍保留但有提示", r_800_air.get("recommend") == "飞机"
+      and "通常不如高铁" in r_800_air.get("reason", ""))
+r_short = P.build("武汉", "长沙")  # ~294km
+check("150-300km 默认比选带门到门提示", "门到门" in r_short.get("coach_hint", ""))
+r_short_mode = P.build("武汉", "长沙", mode="高铁")
+check("明确方式不附带其他方式提示", "coach_hint" not in r_short_mode)
 
 print(f"\ntest_transit: {ok} passed, {fail} failed")
 sys.exit(1 if fail else 0)
