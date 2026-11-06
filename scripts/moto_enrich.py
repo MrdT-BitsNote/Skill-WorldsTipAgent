@@ -345,6 +345,6 @@ if __name__ == "__main__":
     except ValueError as e:
         print("未来日期被拦截:", e)
     n = ingest_note("康定 禁摩", "未查到禁摩区", "社交平台", "2026-09-20",
-                    "https://example.com/x")
+                    "（来源占位示例）")
     print("落地记录:", json.dumps(n, ensure_ascii=False))
     print("HTML 长度:", len(enrichment_html(cl, [n])))

@@ -1,0 +1,11 @@
+{
+  "generated": "2026-11-04",
+  "totalRoutes": 5,
+  "totalWaypoints": 9,
+  "totalCities": 4,
+  "provinces": [
+    { "name": "湖南省", "code": "hunan", "file": "provinces/hunan.json", "routes": 3, "cities": 2, "sizeKB": 2 },
+    { "name": "重庆市", "code": "chongqing", "file": "provinces/chongqing.json", "routes": 1, "cities": 1, "sizeKB": 1 },
+    { "name": "甘肃省", "code": "gansu", "file": "provinces/gansu.json", "routes": 1, "cities": 1, "sizeKB": 1 }
+  ]
+}

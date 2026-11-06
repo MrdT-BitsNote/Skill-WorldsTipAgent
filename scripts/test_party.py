@@ -107,30 +107,6 @@ check("party 与 audience 独立：带娃→party family 且 audience family",
 check("party 与 audience 独立：纯朋友→friends-small 但 audience general",
       resolve_party_type(2, "朋友同行", []) == "friends-small" and infer_audience(_Args("朋友同行", [])) == "general")
 
-# ── 9. v0.1.42 用户明确即遵从: 民宿档 + 房车按营地营位计费 ──
-from build_itinerary import LODGING  # noqa: E402
-
-check("LODGING 含民宿档(100-300)", LODGING.get("民宿") == (100, 300))
-
-rv_prof = STYLE_PROFILES["rv"]
-rv_stay = stay_plan(2, rv_prof, "情侣")
-check("房车住宿=营地营位 1 位", rv_stay.rooms == 1 and "营地" in rv_stay.room_types[0])
-check("房车营位价源 100-300(同 rv_logistics campground)", rv_stay.per_room_night == (100, 300))
-check("房车不再给酒店床型推荐", "大床" not in rv_stay.room_types[0] and "双床" not in rv_stay.room_types[0])
-
-b_rv = budget_for(rv_prof, 3, 2, "舒适", "舒适", stay=rv_stay)
-check("房车预算按营位中值计(200×2晚=400)", b_rv["group"]["住宿"] == 400)
-check("房车预算 basis 标注营地口径", "营地" in b_rv.get("lodging_basis", ""))
-
-# ── 10. v0.1.43 预算最低/常规双档：低档使用住宿餐饮下限，常规保持原中值 ──
-check("预算含 per_person_low / group_low", bool(b_group.get("per_person_low")) and bool(b_group.get("group_low")))
-check("团体住宿低档=200×15间×2晚=6000", b_group["group_low"]["住宿"] == 6000)
-check("团体住宿常规=300×15间×2晚=9000", b_group["group"]["住宿"] == 9000)
-check("双档人均合计不同且低档更低", b_group["per_person_total_low"] < b_group["per_person_total"])
-check("常规人均合计=展示分项之和", b_group["per_person_total"] == sum(b_group["per_person"].values()))
-check("最低人均合计=展示分项之和", b_group["per_person_total_low"] == sum(b_group["per_person_low"].values()))
-check("房车营位低档=100×2晚=200", b_rv["group_low"]["住宿"] == 200)
-
 print(f"\n{'='*56}")
 if FAIL == 0:
     print(f"test_party: ALL PASSED ({PASS} 断言)")

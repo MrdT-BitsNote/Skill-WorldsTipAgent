@@ -54,16 +54,38 @@ def _check_passport(g: dict) -> dict:
 
 
 def _check_visa(g: dict) -> dict:
-    """签证：need 判定三态 —— required / none(免签) / unknown(待查)。"""
+    """签证：need 判定三态 —— required / none(免签) / unknown(待查)。
+
+    ★ 绿灯硬门槛（v0.1.47 起强制）：免签绿灯必须绑定「本次联网核验成功」。
+    仅凭本地 visa_rules.json 基线时一律降为灰灯——本地基线是历史快照，
+    签证政策会因国籍、入境口岸、日期而变，未经官方原文核验不得放行。
+    核验通过时调用方须同时传入 visa_verified=True 与 visa_source（官方页面链接）。
+    """
     need = g.get("visa_required")
+    verified = bool(g.get("visa_verified"))
+    source = g.get("visa_source") or ""
+    verified_on = g.get("visa_verified_on") or ""
+
     if need is None:
         return {"light": GREY, "title": "签证 / 免签",
                 "detail": "未提供目的国签证政策，本次未核验，不作猜测。",
                 "action": "请查中国领事服务网 cs.mfa.gov.cn 或目的国驻华使领馆官网，确认签证类型、材料与办理时长。"}
+
     if need == "none":
+        if not verified:
+            # 本地基线直出绿灯 = 幻觉路径，已封堵。
+            return {"light": GREY, "title": "签证 / 免签",
+                    "detail": ("内置基线显示为免签/落地签，但本次未完成官方原文核验，"
+                               "不能据此放行。签证政策会因证件类型、常住地、入境口岸与日期而变。"),
+                    "action": ("请到中国领事服务网 cs.mfa.gov.cn 或目的国驻华使领馆官网，"
+                               "按「证件类型 × 常住地 × 旅行目的 × 目的地 × 停留期限 × 入境次数 × 入境口岸」"
+                               "逐项核对，确认官方原文后再放行。")}
         return {"light": GREEN, "title": "签证 / 免签",
-                "detail": "按内置基线为免签或落地签，仍需满足护照与入境材料要求。",
-                "action": "确认停留期上限、入境卡与返程机票/住宿凭证等可能被查验证件。"}
+                "detail": ("本次已核验官方原文，确认为免签或落地签"
+                           + (f"（来源：{source}）" if source else "")
+                           + (f"（核验日期：{verified_on}）" if verified_on else "")
+                           + "，仍需满足护照与入境材料要求。"),
+                "action": "确认停留期上限、入境卡与返程机票/住宿凭证等可能被查验证件；出行前再次复核官方口径。"}
     days = g.get("visa_lead_days")
     left = g.get("days_to_depart")
     if days and left is not None and int(left) < int(days):
@@ -74,8 +96,21 @@ def _check_visa(g: dict) -> dict:
         return {"light": YELLOW, "title": "签证 / 免签",
                 "detail": f"需签证，约需 {days} 天，距出发 {left} 天，仅剩 {int(left)-int(days)} 天余量。",
                 "action": "材料一次性备齐递交，务必留出补件时间，否则极易赶不上。"}
-    return {"light": YELLOW if need != "unknown" else GREY, "title": "签证 / 免签",
-            "detail": f"按内置基线需要签证{'（办理约需 ' + str(days) + ' 天）' if days else ''}。",
+    if need == "unknown":
+        return {"light": GREY, "title": "签证 / 免签",
+                "detail": "内置基线未覆盖该目的国的签证政策，本次不作判断。",
+                "action": "查目的国移民/边检主管部门官网或中国领事服务网 cs.mfa.gov.cn，确认是否需签证。"}
+    if not verified:
+        return {"light": GREY, "title": "签证 / 免签",
+                "detail": ("内置基线显示需要签证，但本次未完成官方原文核验，"
+                           "办理时长与材料要求暂按待确认处理。"),
+                "action": ("递交前必须复核官方材料清单与受理时长；"
+                           "如需赶时间，请以官方当日公布的受理时效为准，不以本地基线估算。")}
+    return {"light": YELLOW, "title": "签证 / 免签",
+            "detail": (f"本次已核验官方原文，需要签证"
+                       f"{'（办理约需 ' + str(days) + ' 天）' if days else ''}"
+                       + (f"（来源：{source}）" if source else "")
+                       + (f"（核验日期：{verified_on}）" if verified_on else "") + "。"),
             "action": "递交前复核材料清单与受理时长；签证政策属易变信息，请以官网当日为准。"}
 
 

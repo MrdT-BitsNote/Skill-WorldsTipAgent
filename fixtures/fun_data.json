@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "name": "FUN 规范夹具（手写，非真实数据）",
+    "version": "fixture-v0.1.2",
+    "generated": "2026-11-04 00:00",
+    "home": "https://fun.worldstip.com",
+    "source": "手写规范样本，复刻真实字段结构（list 型与 dict 型维度），不含真实 POI 采集结果"
+  },
+  "stats": {
+    "provinces": 4,
+    "cities": 7,
+    "poi_total": 21,
+    "districts_total": 46,
+    "grades": { "S": 3, "A": 5, "B": 20, "C": 18 }
+  },
+  "provinces": [
+    { "province": "湖南省", "cities": 3, "poi": 3200, "districts": 40, "grades": { "S": 2, "A": 4, "B": 20, "C": 14 }, "page": "provinces/hunan.html" },
+    { "province": "重庆市", "cities": 1, "poi": 1179, "districts": 11, "grades": { "S": 1, "A": 1, "B": 5, "C": 4 }, "page": "provinces/chongqing.html" },
+    { "province": "甘肃省", "cities": 1, "poi": 968, "districts": 17, "grades": { "S": 0, "A": 0, "B": 9, "C": 8 }, "page": "provinces/gansu.html" },
+    { "province": "贵州省", "cities": 1, "poi": 800, "districts": 12, "grades": { "S": 0, "A": 0, "B": 6, "C": 6 }, "page": "provinces/guizhou.html" }
+  ],
+  "cities": [
+    {
+      "city": "常德市", "province": "湖南省", "adcode": "430700",
+      "poi_total": 1015, "district_count": 20,
+      "grades": { "S": 1, "A": 3, "B": 5, "C": 11 },
+      "page": "cities/430700.html",
+      "overview": {
+        "admin": { "所属": "示例省 · 地级市", "下级区县": "9 个" },
+        "district_poi": [ { "district": "示例区", "poi": 495, "ratio": "49%" } ]
+      },
+      "credibility": { "poi_total": 1015, "rated_ratio": "99%", "dims": { "美食": 313 }, "warnings": 0 },
+      "districts": [
+        { "name": "示例商圈", "grade": "S", "poi": 103, "total": 74.0 },
+        { "name": "次级商圈", "grade": "B", "poi": 40, "total": 40.0 }
+      ],
+      "food": [
+        { "mark": "✅A-", "name": "瑞高酒店", "sub": "", "type": "住宿服务;宾馆酒店;五星级宾馆/餐饮服务;中餐厅;中餐厅", "rating": 4.9, "avg": 388.0, "addr": "武陵大道88号" },
+        { "name": "金丹酱板鸭营业厅", "sub": "老字号", "type": "购物服务;购物相关场所;购物相关场所", "rating": 4.8, "avg": 60.0, "addr": "紫缘路12号" },
+        { "name": "家和食尚小馆", "sub": "湘菜", "type": "餐饮服务;中餐厅;湖南菜(湘菜)", "rating": 4.7, "avg": 66.0, "addr": "兴民街3号" },
+        { "name": "柒匠小院·家常菜馆", "sub": "家常菜", "type": "餐饮服务;中餐厅;中餐厅", "rating": 4.6, "avg": 52.0, "addr": "朝阳路7号" },
+        { "name": "杨永胜粉馆", "sub": "米粉", "type": "餐饮服务;餐饮相关场所;餐饮相关", "rating": 4.5, "avg": 18.0, "addr": "人民路1号" },
+        { "name": "家和食尚小馆", "sub": "湘菜", "type": "餐饮服务;中餐厅;湖南菜(湘菜)", "rating": 4.7, "avg": 66.0, "addr": "兴民街3号" }
+      ],
+      "xiaocan": [
+        { "name": "示例平价大排档", "sub": "店名小店语义", "type": "", "rating": 4.6, "avg": 40.0, "addr": "示例街1号" },
+        { "name": "示例土菜馆", "sub": "店名小店语义", "type": "", "rating": 4.4, "avg": 35.0, "addr": "示例街2号" },
+        { "name": "不推荐苍蝇馆", "sub": "评分 4.9 超出苍蝇馆常见区间，仅登记不推荐", "type": "", "rating": 4.9, "avg": 20.0, "addr": "示例街3号" }
+      ],
+      "hotels": [
+        { "name": "澧州宾馆", "type": "住宿服务;宾馆酒店", "rating": 4.5, "avg": null, "addr": "示例大道1号" },
+        { "name": "云鼎大酒店", "type": "住宿服务;宾馆酒店", "rating": 4.4, "avg": null, "addr": "示例大道2号" },
+        { "name": "混入的餐饮店", "type": "餐饮服务;中餐厅;中餐厅", "rating": 5.0, "avg": 88.0, "addr": "示例大道3号" },
+        { "name": "澧州宾馆", "type": "住宿服务;宾馆酒店", "rating": 4.5, "avg": null, "addr": "示例大道1号" }
+      ],
+      "leisure": {
+        "subcats": [ { "name": "酒吧/清吧", "count": 3 } ],
+        "list": [
+          { "name": "示例民谣酒馆", "type": "体育休闲服务;娱乐场所", "rating": 4.6, "avg": 80.0, "addr": "示例路5号" },
+          { "name": "示例影城", "type": "体育休闲服务;电影院", "rating": 4.3, "avg": 45.0, "addr": "示例路6号" }
+        ]
+      },
+      "kids": {
+        "subcats": [ { "name": "亲子乐园", "count": 1 } ],
+        "list": [ { "name": "示例亲子乐园", "type": "", "rating": 4.7, "avg": null, "addr": "示例路7号" } ]
+      },
+      "malls": [ { "name": "万达广场", "type": "", "rating": 4.8, "avg": null, "addr": "示例路8号" } ],
+      "specialties": [ { "name": "常德酱板鸭", "type": "购物服务;特产", "rating": 4.2, "avg": null, "addr": "示例路9号" } ]
+    },
+    {
+      "city": "长沙市", "province": "湖南省", "adcode": "430100",
+      "poi_total": 1138, "district_count": 26,
+      "grades": { "S": 1, "A": 1, "B": 9, "C": 15 },
+      "page": "cities/430100.html",
+      "food": [ { "name": "火宫殿", "type": "餐饮服务;中餐厅;湖南菜(湘菜)", "rating": 4.6, "avg": 85.0, "addr": "坡子街127号" } ],
+      "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    },
+    {
+      "city": "岳阳市", "province": "湖南省", "adcode": "430600",
+      "poi_total": 1018, "district_count": 18,
+      "grades": { "S": 1, "A": 1, "B": 9, "C": 7 },
+      "page": "cities/430600.html",
+      "food": [
+        { "name": "蟹仙楼(鹤龙湖总店) 🍜 東京ラーメン Ｈ２Ｏ", "type": "餐饮服务;中餐厅;海鲜酒楼", "rating": 4.7, "avg": 99.0, "addr": "滨江路３１号" },
+        { "name": "毛哥呷虾烧烤馆", "type": "餐饮服务;中餐厅;烧烤", "rating": 4.7, "avg": 80.0, "addr": "旭园路352号" }
+      ],
+      "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    },
+    {
+      "city": "重庆市", "province": "重庆市", "adcode": "500100",
+      "poi_total": 1179, "district_count": 11,
+      "grades": { "S": 1, "A": 1, "B": 5, "C": 4 },
+      "page": "cities/500100.html",
+      "food": [ { "name": "洞子火锅", "type": "餐饮服务;中餐厅;火锅", "rating": 4.8, "avg": 92.0, "addr": "较场口8号" } ],
+      "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    },
+    {
+      "city": "酒泉市", "province": "甘肃省", "adcode": "620900",
+      "poi_total": 968, "district_count": 17,
+      "grades": { "S": 0, "A": 0, "B": 9, "C": 8 },
+      "page": "cities/620900.html",
+      "food": [ { "name": "肃州驴肉黄面馆", "type": "餐饮服务;中餐厅;面馆", "rating": 4.5, "avg": 42.0, "addr": "阳关路5号" } ],
+      "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    },
+    {
+      "city": "黔南布依族苗族自治州", "province": "贵州省", "adcode": "522700",
+      "poi_total": 800, "district_count": 12,
+      "grades": { "S": 0, "A": 0, "B": 6, "C": 6 },
+      "page": "cities/522700.html",
+      "food": [ { "name": "都匀酸汤鱼", "type": "餐饮服务;中餐厅;贵州菜", "rating": 4.4, "avg": 68.0, "addr": "剑江中路1号" } ],
+      "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    },
+    {
+      "city": "某空档案城", "province": "湖南省", "adcode": "439999",
+      "poi_total": 0, "district_count": 0,
+      "grades": { "S": 0, "A": 0, "B": 0, "C": 0 },
+      "page": "cities/439999.html",
+      "food": [], "xiaocan": [], "hotels": [], "malls": [], "specialties": [],
+      "leisure": { "subcats": [], "list": [] }, "kids": { "subcats": [], "list": [] }
+    }
+  ],
+  "food_top": [
+    { "name": "示例上榜餐馆甲", "rating": 4.9, "city": "岳阳市", "province": "湖南省", "type": "餐饮服务;中餐厅;海鲜酒楼", "address": "示例路11号", "city_page": "cities/430600.html", "mark": "✅A-" },
+    { "name": "示例上榜餐馆乙", "rating": 4.7, "city": "长沙市", "province": "湖南省", "type": "餐饮服务;中餐厅;湘菜", "address": "示例路12号", "city_page": "cities/430100.html", "mark": "✅A-" },
+    { "name": "示例混入购物店", "rating": 5.0, "city": "长沙市", "province": "湖南省", "type": "购物服务;购物相关场所", "address": "示例路13号", "city_page": "cities/430100.html", "mark": "" }
+  ],
+  "districts_top": [
+    { "name": "示例顶级商圈", "grade": "S", "total": 86.1, "city": "长沙市", "province": "湖南省", "poi": 193, "rating": 4.53, "food": 53, "leisure": 78, "kids": 0, "hotel": 3, "city_page": "cities/430100.html" },
+    { "name": "示例次级商圈", "grade": "A", "total": 70.2, "city": "常德市", "province": "湖南省", "poi": 103, "rating": 4.07, "food": 15, "leisure": 64, "kids": 0, "hotel": 4, "city_page": "cities/430700.html" }
+  ]
+}

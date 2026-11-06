@@ -594,11 +594,14 @@ def build_slots(profile: StyleProfile, spots: int) -> list[dict]:
     # 上午/下午按比例分配景点
     ratio_am = am_h / (am_h + pm_h)
     am_s = max(1, round(spots * ratio_am))
-    pm_s = max(1, spots - am_s)
+    # 上午不得超过当日总数：spots=1 时银行家舍入得 0 会被抬到 1，
+    # 若 pm_s 再用 max(1, …) 兜底，会出现「上午 1 + 下午 1」却只有 1 个景点。
+    am_s = min(am_s, spots)
+    pm_s = max(0, spots - am_s)
     night_s = 0
     if profile.key not in ("resort", "relax", "leisure") and spots >= 4:
         night_s = 1
-        pm_s = max(1, spots - am_s - 1)
+        pm_s = max(0, spots - am_s - night_s)
 
     def seg(n: int, base_h: float) -> float:
         if n <= 0:
@@ -1413,6 +1416,10 @@ def build(args) -> dict:
         "days": days,
         "people": args.people,
         "composition": args.composition or "",
+        # v0.2.1：海拔显式透传。本地无权威海拔库，绝不猜目的地海拔；
+        # 上层（模型/用户）确认了海拔才传 --altitude，feasibility 据此判高反天数。
+        "max_altitude_m": getattr(args, "altitude", None),
+        "high_altitude": bool(getattr(args, "high_altitude", False)),
         "party": party,
         "style": profile.key,
         "style_label": profile.label,
@@ -1501,6 +1508,10 @@ def main() -> int:
     ap.add_argument("--people", type=int, default=2, help="总人数")
     ap.add_argument("--composition", default="",
                     help="人员构成, 如 三口/二大一小/两大两小/情侣/朋友4人。影响房间分配")
+    ap.add_argument("--altitude", type=int, default=None,
+                    help="行程最高海拔（米）。仅在已确认时传；不传则不做高反判定，绝不猜")
+    ap.add_argument("--high-altitude", dest="high_altitude", action="store_true",
+                    help="显式标记高海拔行程（等价于 --altitude 传 >=3000）")
     ap.add_argument("--party", default="",
                     help="出行陪伴结构(显式指定优先): solo/couple/friends-small/friends-large/family/group；未给则自动推断")
     ap.add_argument("--style", help="节奏画像 key")

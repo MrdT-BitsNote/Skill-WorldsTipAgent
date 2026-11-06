@@ -7,6 +7,10 @@ places_query.py —— 摩旅地点层检索（景点级候选）
      **禁止全文读入**；本脚本按条件过滤后最多回 --limit 条（默认 8），hi 默认截断 120 字。
   2. 默认排除质量问题条目（fl 非空 / st=suspect），需 --include-suspect 显式放行。
      数据质量见 moto_places.json 的 _meta.quality_rule。
+  2b. 默认排除非景点条目（kind=non_scenic：政府机关/服务中心/停车场等路书途经点），
+     需 --include-nonscenic 显式放行。避免把「XX市人民政府」当景点推荐出去。
+  2c. 名称一律输出全称 fn（政区限定+专名）；n 为路书常用名，alt 为别名。
+     引用景点时以 fn 为准，不得只写简称。
   3. 退出码契约（上层据此降级）：
        0 = 有结果
        1 = 已安装但无匹配
@@ -61,11 +65,18 @@ def match(p, province, admin, ptype, kw):
             return False
     if kw:
         k = norm(kw)
-        hay = "%s %s %s %s" % (p.get("n", ""), p.get("admin", ""),
-                               p.get("hi", ""), p.get("his", ""))
+        # 检索面同时覆盖：全称 fn / 路书名 n / 别名 alt / 政区 / 介绍
+        hay = "%s %s %s %s %s %s" % (
+            p.get("fn", ""), p.get("n", ""), p.get("alt", ""),
+            p.get("admin", ""), p.get("hi", ""), p.get("his", ""))
         if k not in hay:
             return False
     return True
+
+
+def display_name(p):
+    """展示名一律用全称 fn（无 fn 时退回 n）。"""
+    return p.get("fn") or p.get("n") or ""
 
 
 def trim(p, full_hi, with_his):
@@ -73,7 +84,8 @@ def trim(p, full_hi, with_his):
     if not full_hi and len(hi) > HI_TRUNC:
         hi = hi[:HI_TRUNC] + "…"
     out = {
-        "n": p.get("n"),
+        "fn": p.get("fn"),          # 全称（对外展示与引用一律用这个）
+        "n": p.get("n"),            # 路书常用名
         "admin": p.get("admin"),
         "t": p.get("t"),
         "lat": p.get("lat"),
@@ -81,8 +93,13 @@ def trim(p, full_hi, with_his):
         "hi": hi,
         "src": p.get("src"),
     }
+    if p.get("alt"):
+        out["alt"] = p["alt"]
     if with_his:
         out["his"] = p.get("his", "")
+    if p.get("kind") == "non_scenic":
+        out["kind"] = "non_scenic"
+        out["kind_reason"] = p.get("kind_reason", "")
     if p.get("fl"):
         out["fl"] = p["fl"]
         out["st"] = p.get("st", "suspect")
@@ -100,6 +117,8 @@ def main():
     ap.add_argument("--json", action="store_true", help="输出 JSON（默认人类可读）")
     ap.add_argument("--include-suspect", action="store_true",
                     help="包含质量问题条目（默认排除）")
+    ap.add_argument("--include-nonscenic", action="store_true",
+                    help="包含非景点条目（政府/服务中心/停车场等途经点，默认排除）")
     ap.add_argument("--full-hi", action="store_true", help="不截断 hi（默认截断 120 字）")
     ap.add_argument("--with-his", action="store_true", help="附带 his 历史背景")
     ap.add_argument("--list-provinces", action="store_true", help="列出省份及条目数")
@@ -150,13 +169,17 @@ def main():
     for p in places:
         if not args.include_suspect and (p.get("fl") or p.get("st") == "suspect"):
             continue
+        # 非景点（政府机关/服务中心/停车场等途经点）默认不作为景点候选输出
+        if not args.include_nonscenic and p.get("kind") == "non_scenic":
+            continue
         if match(p, args.province, args.admin, args.ptype, args.kw):
             res.append(p)
         if len(res) >= args.limit:
             break
 
     if not res:
-        print("[NO-MATCH] 无匹配条目。可放宽条件或加 --include-suspect。", file=sys.stderr)
+        print("[NO-MATCH] 无匹配条目。可放宽条件，或加 --include-suspect / "
+              "--include-nonscenic。", file=sys.stderr)
         if args.json:
             print(json.dumps({"results": [], "count": 0}, ensure_ascii=False))
         sys.exit(EXIT_NO_MATCH)
@@ -166,9 +189,15 @@ def main():
         print(json.dumps({"results": out, "count": len(out)}, ensure_ascii=False))
     else:
         for i, x in enumerate(out, 1):
-            print("%d. %s（%s · %s）" % (i, x["n"], x["admin"], x["t"]))
-            print("   坐标 %s, %s" % (x["lat"], x["lng"]))
+            nm = x.get("fn") or x["n"]
+            if x.get("alt") and x["alt"] != nm:
+                print("%d. %s（常用名 %s）" % (i, nm, x["alt"]))
+            else:
+                print("%d. %s" % (i, nm))
+            print("   %s · %s | 坐标 %s, %s" % (x["admin"], x["t"], x["lat"], x["lng"]))
             print("   %s" % x["hi"])
+            if x.get("kind") == "non_scenic":
+                print("   [非景点·途经点] %s" % x.get("kind_reason", ""))
             if x.get("fl"):
                 print("   [质量问题] %s" % ",".join(x["fl"]))
         print("\n共 %d 条（数据版本 %s）" % (len(out), meta.get("cleaned_at") or meta.get("built_at")))

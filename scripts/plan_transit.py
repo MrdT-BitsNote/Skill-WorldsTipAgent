@@ -189,8 +189,8 @@ def build(frm: str, to: str, mode: str | None = None, force_water: bool = False)
     price_ratio_max = float(rec.get("price_ratio_max", 1.05))
     time_ratio_max = float(rec.get("total_time_ratio_max", 1.3))
 
-    result: dict = {"from": frm, "to": to, "distance_km": round(dist) if dist else None}
-    if not dist:
+    result: dict = {"from": frm, "to": to, "distance_km": round(dist) if dist is not None else None}
+    if dist is None:
         # 坐标缺失通常是「同城/市内地点」（景点、街区、门店等不在城际目的地库中）。
         # 绝不能默认推荐高铁/飞机——那会把「市内逛个公园」误判成「跨省出行」。
         # 正确做法：先向用户确认是「市内交通」还是「跨城交通」，再决定判断逻辑。

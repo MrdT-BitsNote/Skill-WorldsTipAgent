@@ -413,7 +413,7 @@ def _feasibility_block(plan: dict, mode: str):
     """
     if mode == 'none':
         return '', ''
-    from render_booklet import run_feasibility
+    from feasibility import run_feasibility
     feas = run_feasibility(plan)
     p0_hard = [i for i in feas['p0'] if i['level'] == 'P0'] + feas['assert']
     p0_soft = [i for i in feas['p0'] if i['level'] != 'P0']
