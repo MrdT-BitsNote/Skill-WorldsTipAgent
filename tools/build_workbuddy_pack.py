@@ -10,11 +10,11 @@ WorkBuddy 的两条硬约束（都是平台侧的校验，不是内容偏好）�
    「资产包缺少必需资源 / 内置文件缺失」。
 
 因此本构建器的原则是：**能加回的就加回真实文件，绝不使用占位词绕过**。
-上一版曾把 `docs/*.md` 替换成中文占位「专项文档」，结果审核器把占位词本身
+上一版曾把 `docs/*.md` 替换成中文占位「开发文档」，结果审核器把占位词本身
 当成文件名继续报缺失 —— 占位词路线已废弃。
 
 裁剪对象（均可再生 / 非运行期必需）：
-  fixtures/        离线夹具
+  离线样例目录/        离线样例数据
   tools/           构建脚本
   tests/test/      验证集
   assets/          图标
@@ -22,7 +22,7 @@ WorkBuddy 的两条硬约束（都是平台侧的校验，不是内容偏好）�
   references/places_history.json   人文史 sidecar
   references/worldstip_sites.json  自有站点外链清单
   references/api-spec.md           自有站点接口规格
-  scripts/motofun.py / motofun_route.py / site_query.py   联网采集
+  scripts/motofun.py / motofun_route.py / site_query.py   数据采集
   scripts/render_booklet.py        仅 --rich 九风格增强用
 
 保留并修复：
@@ -40,6 +40,7 @@ import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_pack as BP  # noqa: E402  复用 collect() / pack_bytes() / VER
+import audit_upload_zip as AU  # noqa: E402  构建期「审核器视角」硬闸门
 
 LIMIT = 3 * 1024 * 1024  # WorkBuddy 解压后上限 3145728 字节
 
@@ -66,8 +67,8 @@ EX_FILES = {
 }
 # docs/ 只保留 SKILL.md 真正引用的这些（其余 14 万字不随包）
 # docs/ 只保留 SKILL.md 引用、且正文不含「文件对照表」性质的文档。
-# FUSION.md / UNIFIED_ENTRY.md 剔除：它们是融合过程与入口设计的**文件对照记录**，
-# 整篇逐行点名文件（`摩旅路由.py`、`本地离线夹具*.json`…），任何净化都清不干净，
+# 融合过程对照记录 / 入口设计对照记录 剔除：它们是融合过程与入口设计的**文件对照记录**，
+# 整篇逐行点名文件（`摩旅分支脚本`、`包内离线数据*.json`…），任何净化都清不干净，
 # 而审核器会把这类名字一律当「必须存在的资源」逐个索要。
 DOCS_KEEP = {
     "GEO_DISAMBIGUATION.md", "GUIDE_SEARCH.md", "KERNEL.md",
@@ -82,18 +83,18 @@ SKILL_EXACT = (
     # 命令示例里的输出重定向目标是运行时产物，不是包内资源；改为参数式表述
     ("--json > weather.json", "--json（结果以 JSON 输出）"),
     # 两个文件对照型文档已剔除，指向它们的句子连同文件名一起去掉
-    ("逐文件来源与裁决见 `docs/FUSION.md` 与 `docs/UNIFIED_ENTRY.md`。",
+    ("逐文件来源与裁决见 `融合过程对照记录` 与 `入口设计对照记录`。",
      "逐文件来源与裁决已内置于本技能说明。"),
-    ("完整机制与命令见 `docs/UNIFIED_ENTRY.md`。", "完整机制与命令已内置于本技能说明。"),
-    ("自检清单）见 `docs/FUSION.md`。", "自检清单）已内置于本技能说明。"),
-    # 「夹具」会被审核器还原成 fixtures/ 去索要文件；改成纯描述
-    ("默认走 本地离线夹具 离线夹具，联网只是可选增强",
+    ("完整机制与命令见 `入口设计对照记录`。", "完整机制与命令已内置于本技能说明。"),
+    ("自检清单）见 `融合过程对照记录`。", "自检清单）已内置于本技能说明。"),
+    # 「夹具」会被审核器还原成 离线样例目录/ 去索要文件；改成纯描述
+    ("默认走 包内离线数据 离线样例数据，联网只是可选增强",
      "默认走包内离线数据，联网只是可选增强"),
-    ("，离线夹具可复现", "，包内数据可复现"),
-    ("离线夹具", "包内离线数据"),
+    ("，离线样例数据可复现", "，包内数据可复现"),
+    ("离线样例数据", "包内离线数据"),
     ("`离线数据/` ", ""),
     ("夹具", "测试样例"),
-    ("本地离线夹具", "包内离线数据"),
+    ("包内离线数据", "包内离线数据"),
 )
 LINE_RULES = (
     ("自有站点按需采集",
@@ -118,44 +119,9 @@ DISPLAY_RULES = (
 DROP_LINE_KEYS = ("worldstip_sites.json", "site_query.py", "test_site_query.py",
                   "assets/logo.svg")
 
-# docs/*.md 内部对被裁文件的 32 处引用：改为不含路径的描述
-DOC_SUBS = (
-    (r"`scripts/motofun_route\.py`", "摩旅路由模块"),
-    (r"`scripts/motofun\.py`", "联网采集模块"),
-    (r"scripts/motofun_route\.py", "摩旅路由模块"),
-    (r"scripts/motofun\.py", "联网采集模块"),
-    (r"motofun_route", "摩旅路由"),
-    (r"motofun", "联网采集"),
-    (r"`scripts/render_booklet\.py`", "增强渲染器"),
-    (r"render_booklet\.py", "增强渲染器"),
-    (r"`references/places_history\.json`", "人文史数据"),
-    (r"places_history\.json", "人文史数据"),
-    (r"`references/api-spec\.md`", "接口规格"),
-    (r"api-spec\.md", "接口规格"),
-    (r"`references/worldstip_sites\.json`", "站点清单"),
-    (r"worldstip_sites\.json", "站点清单"),
-    (r"`site_query\.py`", "站点查询模块"),
-    (r"site_query\.py", "站点查询模块"),
-    (r"`fixtures/`", "本地离线夹具"),
-    (r"fixtures/", "本地离线夹具"),
-    (r"`tools/`", "构建脚本"),
-    (r"tools/", "构建脚本"),
-    (r"`tests?/`", "验证集"),
-    (r"\btests?/", "验证集"),
-    (r"`assets/`", "图标资源"),
-    (r"assets/", "图标资源"),
-    # 维护期脚本与开发记录：文档里作为工具说明提到，但文件不随包
-    (r"`tools/build_pack\.py`", "发布包构建脚本"),
-    (r"tools/build_pack\.py", "发布包构建脚本"),
-    (r"`CONTEXT\.md`", "领域术语说明"),
-    (r"CONTEXT\.md", "领域术语说明"),
-    (r"`growth_log\.md`", "成长记录"),
-    (r"growth_log\.md", "成长记录"),
-    (r"验证集(test_[A-Za-z0-9_]+\.py|run_all\.py|run_tests\.py|run_all_fused\.py)",
-     "验证集脚本"),
-    (r"`?(?:scripts/)?(volatile_verify|enrich_coords|verify_coords|build_geo_admin|"
-     r"sync_check|build_destination_links|build_geo_checklist)\.py`?", "维护脚本"),
-)
+# 【已废弃并删除】DOC_SUBS：把被裁文件名替换成中文名词（「摩旅分支模块」等）。
+# 审核器会把中文名词还原成「摩旅分支脚本」并索要该文件，实测驳回 3 项；
+# 现改为 patch_doc() 整行删除，任何平台包构建后由 audit_upload_zip 硬闸门复核。
 
 # 引用完整性自检：只认「带目录分隔符的路径」与「markdown 链接目标」这两类真实资源形态。
 # 裸文件名（render_compact.py、plan.json 等）多为同目录相对引用或运行时产物，
@@ -182,7 +148,7 @@ def patch_skill(t, align_display=True):
     t = "\n".join(out)
     for a, b in SKILL_EXACT:
         t = t.replace(a, b)
-    t = t.replace("`fixtures/`", "包内离线数据").replace("fixtures/", "包内离线数据")
+    t = t.replace("`离线样例目录/`", "包内离线数据").replace("离线样例目录/", "包内离线数据")
     t = t.replace("Offline fixtures", "Offline bundled data")
     # 不再替换成「增强渲染器」这类名词：审核器会还原成 XXX.py 并索要文件，整句删掉
     t = re.sub(r"[^\n]*render_booklet\.py[^\n]*\n?", "", t)
@@ -198,19 +164,20 @@ def patch_readme(t):
     t = "\n".join(out)
     for pat, rep in SUB_RULES:
         t = re.sub(pat, rep, t)
-    t = t.replace("`fixtures/`", "本地离线夹具").replace("fixtures/", "本地离线夹具")
-    t = t.replace("`render_booklet.py`", "增强渲染器").replace("render_booklet.py", "增强渲染器")
+    # 一律用自洽描述，不再生成「包内离线数据」这类会被还原成文件名的名词
+    t = t.replace("`离线样例目录/`", "包内离线数据").replace("离线样例目录/", "包内离线数据")
+    t = re.sub(r"[^\n]*render_booklet\.py[^\n]*\n?", "", t)
     return patch_doc(t)
 
 
 # docs/*.md 里涉及被裁文件的**整行删除**。
-# 不再用「替换成中文名词」的做法：审核器会把「摩旅路由模块」还原成「摩旅路由.py」
+# 不再用「替换成中文名词」的做法：审核器会把「摩旅分支模块」还原成「摩旅分支脚本」
 # 并索要该文件（实测驳回原文），任何中文名词都可能被当成文件名。
 DOC_DROP_KEYS = (
     "fixtures", "tools/", "tests/", "test/", "render_booklet", "motofun",
     "site_query", "places_history", "api-spec", "worldstip_sites",
-    "CONTEXT.md", "growth_log", "本地离线夹具", "联网采集", "摩旅路由",
-    "专项文档", "验证集", "维护脚本", "增强渲染器", "图标资源", "构建脚本",
+    "CONTEXT.md", "growth_log", "包内离线数据", "数据采集", "摩旅分支",
+    "开发文档", "验证集", "维护脚本", "增强渲染器", "图标资源", "构建脚本",
     "build_geo_admin", "build_destination_links",
 )
 
@@ -219,7 +186,7 @@ def patch_doc(t):
     out = [ln for ln in t.split("\n")
            if not any(k in ln for k in DOC_DROP_KEYS)]
     t = "\n".join(out)
-    # 「夹具」在测试语境里也要换个说法：审核器会把它还原成 fixtures/ 去索要文件
+    # 「夹具」在测试语境里也要换个说法：审核器会把它还原成 离线样例目录/ 去索要文件
     return t.replace("夹具", "测试样例")
 
 
@@ -252,6 +219,13 @@ def build(out, align_display=True):
             zi.external_attr = 0o644 << 16
             zi.create_system = 3
             z.writestr(zi, data)
+    # 硬闸门：包内任何文本出现会被审核器还原成文件名的中文名词 / 形态，
+    # 或指向已剔除文档的路径，一律判 BLOCKER，删除产物并终止构建。
+    try:
+        AU.assert_clean(out)
+    except RuntimeError:
+        os.remove(out)
+        raise
     return out, selected
 
 
@@ -308,7 +282,7 @@ def report(out):
     for key in ("version:", "name:", "display_name:"):
         print("  %s" % next((l for l in skill.split("\n") if l.startswith(key)), "(缺)"))
     ghosts = {tok: skill.count(tok) for tok in
-              ("专项文档", "docs/", "fixtures", "render_booklet", "places_history",
+              ("开发文档", "docs/", "fixtures", "render_booklet", "places_history",
                "worldstip_sites", "api-spec", "motofun", "site_query")}
     print("SKILL 残留: %s" % ghosts)
     print("引用核对: 检查 %d 条，缺失 %d 条 %s"

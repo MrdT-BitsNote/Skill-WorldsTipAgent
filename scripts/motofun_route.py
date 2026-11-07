@@ -42,7 +42,7 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="motofun_route.py", description="意图路由入口")
     p.add_argument("text", nargs="?", default="", help="用户原话")
     p.add_argument("--json", action="store_true")
-    p.add_argument("--data-dir", help="离线夹具目录")
+    p.add_argument("--data-dir", help="离线样例数据目录")
     p.add_argument("--offline", action="store_true")
     p.add_argument("--fill", action="store_true", help="从原话抽地名填入动作链（默认关闭）")
     p.add_argument("--refresh", action="store_true", help="跳过本地缓存强制回源")

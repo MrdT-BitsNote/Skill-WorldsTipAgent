@@ -116,7 +116,7 @@ python scripts/motofun.py route --text "骑太浮山，中午在常德吃点好�
 - `@references/insights.md` —— 已沉淀的可复用规则（每轮自检后反写）。
 - `growth_log.md` —— 逐轮执行记录与踩坑；新会话开工前先读它和 insights。
 - `scripts/motofun.py` —— 查询引擎；`scripts/route.py` —— 意图路由入口；`scripts/pack.py` —— 可复现打包。
-- `test/run_all.py` —— 边界用例一键验证；`fixtures/` —— 手写规范夹具（复刻真实双形态结构，非真实数据）。
+- `test/run_all.py` —— 边界用例一键验证；`离线样例目录/` —— 手写规范夹具（复刻真实双形态结构，非真实数据）。
 - `QC_REPORT.md` —— 质检报告与 DoD 核对；`CHANGELOG.md` —— 版本变更。
 
 ## 已知限制

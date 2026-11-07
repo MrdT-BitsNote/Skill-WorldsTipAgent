@@ -159,7 +159,7 @@ def main():
         json.dump({"ugc": []}, f, ensure_ascii=False)
 
     manifest = {
-        "version": "0.2.272", "engine": "worldstip.py", "offline_default": True,
+        "version": "0.2.273", "engine": "worldstip.py", "offline_default": True,
         "input": a.text, "parsed": p, "steps": [], "outputs": {},
     }
 

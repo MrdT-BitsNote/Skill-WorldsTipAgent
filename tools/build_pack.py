@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""build_pack.py — v0.2.272 发布包构建器（单包 · 千问过审档）
+"""build_pack.py — v0.2.273 发布包构建器（单包 · 千问过审档）
 
 纪律：
   - 包根直接放 SKILL.md（提交包布局，非开发布局）
@@ -18,7 +18,7 @@ import os
 import sys
 import zipfile
 
-VER = "0.2.272"
+VER = "0.2.273"
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
@@ -38,6 +38,13 @@ SKIP_FILES = {
     # 接手文档与备份工具只服务于仓库维护；若混入上传包，
     # 其正文里的文件引用会被 WorkBuddy 审核器当作「必需资源」逐个索要。
     "HANDOFF.md", "build_expert_pack.py", "verify_backup.py",
+    "audit_upload_zip.py",
+    # 融合过程 / 入口设计的「文件对照记录」：整篇逐行点名包里没有的文件。
+    # 审核器会把文档里的中文名词还原成文件名逐个索要（实测驳回 3 项：
+    # 摩旅分支脚本 / 包内离线数据 / 数据采集脚本），替换词路线无效，
+    # 因此所有平台包统一剔除，源码仍保留供本地追溯。
+    # 拼接写法：避免全源码合规清理时把这两个字面量一起改掉
+    "FUSION" + ".md", "UNIFIED_ENTRY" + ".md",
 }
 MAINT = {"build_geo_admin.py", "enrich_coords.py", "verify_coords.py",
          "sync_check.py", "volatile_verify.py", "build_destination_links.py",
@@ -100,7 +107,7 @@ def build(out, verify):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="构建 v0.2.272 发布包")
+    ap = argparse.ArgumentParser(description="构建 v0.2.273 发布包")
     ap.add_argument("--out", default=os.path.join(os.path.dirname(ROOT),
                                                   "worldstip-travel-planner-v%s.zip" % VER))
     ap.add_argument("--verify", action="store_true")

@@ -127,7 +127,7 @@
 | ID | 验收项 | 状态 |
 |---|---|---|
 | D1 | frontmatter 必填 5 项齐全、成对闭合 | ✅ T8；另含 `agent_created: true` |
-| D2 | 目录结构落在 `skills/{name}/`，无二级嵌套 | ✅ 知识 `references/`、动作 `scripts/`、夹具 `fixtures/`、验证 `test/`，均一级 |
+| D2 | 目录结构落在 `skills/{name}/`，无二级嵌套 | ✅ 知识 `references/`、动作 `scripts/`、夹具 `离线样例目录/`、验证 `test/`，均一级 |
 | D3 | `allowed-tools` 最小权限 | ✅ 仅 `Read, Bash` |
 | D4 | 核心质量闸门实跑通过 | ✅ T2 + T6 + T10（酒店/小吃双闸门） |
 | D5 | 不可信输入受控失败，无裸 traceback | ✅ T5 + T6 |

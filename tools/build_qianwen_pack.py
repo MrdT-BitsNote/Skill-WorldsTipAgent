@@ -37,6 +37,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import build_pack as BP              # noqa: E402
 import build_workbuddy_pack as BWB   # noqa: E402
+import audit_upload_zip as AU        # noqa: E402  审核器视角硬闸门
 
 LIMIT = 10 * 1024 * 1024
 
@@ -128,7 +129,7 @@ SENSITIVE = ("政治",)
 DAMAGE = re.compile(r"[A-Za-z]官方渠道|官方渠道[A-Za-z]")
 
 # frontmatter 重写：千问包不带 places_history / fixtures / render_booklet，
-# 原描述却宣称「人文史 sidecar 按需加载」「离线夹具可复现」「九风格增强渲染」，
+# 原描述却宣称「人文史 sidecar 按需加载」「离线样例数据可复现」「九风格增强渲染」，
 # 属描述与实际不符；description 里还堆了 10 个触发词，观感像 SEO 堆砌。
 FM_TEXT = {
     "description":
@@ -301,6 +302,11 @@ def main():
     out = os.path.abspath(out)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     build(out)
+    try:
+        AU.assert_clean(out)
+    except RuntimeError:
+        os.remove(out)
+        raise
     return 0 if report(out) else 1
 
 

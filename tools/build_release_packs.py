@@ -14,6 +14,7 @@ import os, sys, zipfile, json
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import build_pack as BP  # 复用 collect() / pack_bytes()
+import audit_upload_zip as AU  # noqa: E402  审核器视角硬闸门
 
 ROOT = BP.ROOT
 VER = BP.VER
@@ -22,7 +23,7 @@ STAMP = (2026, 11, 7, 0, 0, 0)
 META_JSON = json.dumps({
     "slug": "worldstip-travel-planner",
     "displayName": "WorldsTip 旅行规划小册子",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "summary": "输入目的地与天数，生成 A5 紧凑旅行小册子：怎么去、必吃必玩、逐日动线、安全提醒；基于真实 POI 与气候数据，绝不编造。",
     "license": "MIT",
     "internalVersion": VER,
@@ -92,8 +93,21 @@ def main():
                "_meta.json", META_JSON, verify=True)
     dm = build(os.path.join(dist, "worldstip-travel-planner-v%s-dumate.zip" % VER),
                "PLATFORM.md", PLATFORM_MD, verify=True)
-    print("\nWorkBuddy=%s  SkillHub=%s  DuMate=%s" % (wb, sh, dm))
-    return wb or sh or dm
+    # 硬闸门补齐：WorkBuddy 已在专用构建器内拦过；完整包（SkillHub / DuMate）
+    # 同样不能夹带会被审核器当成「必需资源」的中文名词或指向被裁文档的路径。
+    sh_out = os.path.join(dist, "worldstip-travel-planner-v%s-skillhub.zip" % VER)
+    dm_out = os.path.join(dist, "worldstip-travel-planner-v%s-dumate.zip" % VER)
+    clean = True
+    for p in (sh_out, dm_out):
+        print("\n=== 审核器视角硬闸门: %s ===" % os.path.basename(p))
+        try:
+            AU.assert_clean(p)
+        except RuntimeError as e:
+            print("  %s" % e)
+            clean = False
+    print("\nWorkBuddy=%s  SkillHub=%s  DuMate=%s  硬闸门=%s"
+          % (wb, sh, dm, "PASS" if clean else "FAIL"))
+    return wb or sh or dm or (0 if clean else 1)
 
 
 if __name__ == "__main__":

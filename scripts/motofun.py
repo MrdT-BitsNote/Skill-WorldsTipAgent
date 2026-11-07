@@ -766,7 +766,7 @@ def build_parser():
     p.add_argument("--keyword", help="路线名称关键词")
     p.add_argument("--route-id", help="路线 ID")
     p.add_argument("--text", dest="text", help="route 命令的用户原话")
-    p.add_argument("--data-dir", help="离线夹具目录（含 moto_index.json / moto_*.json / fun_data.json）")
+    p.add_argument("--data-dir", help="离线样例数据目录（含 moto_index.json / moto_*.json / fun_data.json）")
     p.add_argument("--offline", action="store_true", help="禁止联网，仅用缓存")
     p.add_argument("--fill", action="store_true", help="route 命令：从原话抽地名填入动作链（默认关闭）")
     p.add_argument("--kind", choices=("food", "districts"), default="food",

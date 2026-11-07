@@ -1,37 +1,37 @@
 ---
 name: worldstip-travel-planner
-version: 0.2.272
+version: 0.2.273
 description: "WorldsTip 旅行规划：一句话生成国内 A5 行程小册子，统一入口自动编排交通比选、住宿分房、预算与逐日动线，支持紧凑/九风格双渲染；跨省同名地名先列候选再动笔，非出行请求明确拒答。触发词：旅行规划、行程规划、旅游攻略、周末去哪玩、爬山看日出、自驾、citywalk、摩旅、跑山美食、骑完去哪逛、商圈美食、房车。不触发：票务代订、酒店预订、实时营业、导航、与旅行骑游无关的请求。"
 agent_created: true
 display_name: "WorldsTip旅行指南小册子·合并版"
 display_name_en: WorldsTip Travel Guide Booklet
-description_zh: "WorldsTip旅行指南小册子（v0.2.272 人本路由版）：把一句出行想法变成可照着走的 A5 紧凑 HTML 小册子。统一入口 scripts/worldstip.py 一条命令完成意图闸门、地名抽取与消歧、行程编排、交通比选、渲染；默认紧凑卡册，--rich 切九风格增强渲染。跨省同名地名先列候选不硬判，非出行请求明确拒答。数据层保留摩旅路线与城市消费索引，人文史单独 sidecar 按需加载，离线夹具可复现，查不到标灰灯、绝不编造。"
-description_en: "WorldsTip Travel Guide Booklet (v0.2.272 human-centric): turns one sentence into a ready-to-follow A5 compact HTML booklet. A single entry point runs the intent gate, place extraction and disambiguation, itinerary build, transit comparison and rendering; compact cards by default, --rich for nine visual styles. The itinerary engine now treats travelers as humans: inter-spot travel time is counted into the route, cross-district hops are capped by profile, and a brutal day is always followed by a recovery day. Cross-province homonyms surface candidates instead of guessing, off-topic requests are refused explicitly, and a sidecar loads place history on demand. Offline fixtures make runs reproducible; missing facts are marked unverified, never fabricated."
+description_zh: "WorldsTip旅行指南小册子（v0.2.273 人本路由版）：把一句出行想法变成可照着走的 A5 紧凑 HTML 小册子。统一入口 scripts/worldstip.py 一条命令完成意图闸门、地名抽取与消歧、行程编排、交通比选、渲染；默认紧凑卡册，--rich 切九风格增强渲染。跨省同名地名先列候选不硬判，非出行请求明确拒答。数据层保留摩旅路线与城市消费索引，人文史单独 sidecar 按需加载，包内离线数据可复现，查不到标灰灯、绝不编造。"
+description_en: "WorldsTip Travel Guide Booklet (v0.2.273 human-centric): turns one sentence into a ready-to-follow A5 compact HTML booklet. A single entry point runs the intent gate, place extraction and disambiguation, itinerary build, transit comparison and rendering; compact cards by default, --rich for nine visual styles. The itinerary engine now treats travelers as humans: inter-spot travel time is counted into the route, cross-district hops are capped by profile, and a brutal day is always followed by a recovery day. Cross-province homonyms surface candidates instead of guessing, off-topic requests are refused explicitly, and a sidecar loads place history on demand. Offline bundled data makes runs reproducible; missing facts are marked unverified, never fabricated."
 author: MrdT
 category: travel
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 slug: worldstip-travel-planner
 displayName: "WorldsTip旅行指南小册子·合并版"
-summary: "WorldsTip v0.2.272 人本路由版：一条命令生成国内 A5 行程小册子（统一入口 / 负向闸门 / 地名消歧 / 双渲染 / 离线自检）。"
+summary: "WorldsTip v0.2.273 人本路由版：一条命令生成国内 A5 行程小册子（统一入口 / 负向闸门 / 地名消歧 / 双渲染 / 离线自检）。"
 tags: ["旅行", "行程规划", "摩旅", "房车"]
 license: MIT
 ---
 
 # WorldsTip旅行指南小册子（国内旅行规划）
 
-**技能包名**：`worldstip-travel-planner`（平台小写连字符规范）　|　**分类**：旅行　|　**版本**：v0.2.272（人本路由）　|　**适用范围**：中国大陆国内旅行（含中国香港、中国澳门、中国台湾地区）
+**技能包名**：`worldstip-travel-planner`（平台小写连字符规范）　|　**分类**：旅行　|　**版本**：v0.2.273（人本路由）　|　**适用范围**：中国大陆国内旅行（含中国香港、中国澳门、中国台湾地区）
 
 ---
 
-## v0.2.272 人本路由版：一条命令出成品（先读这里）
+## v0.2.273 人本路由版：一条命令出成品（先读这里）
 由 A（发布版 v0.2.1）、B（本地版 v0.1.49）、S（v0.2.2 融合源仓库）三方合并，以 S 为基线，接回 B 的九风格渲染与人文史资产。**下文旧章节继续有效，冲突时以本节为准。**
 
 - **统一入口** `scripts/worldstip.py`：一次进程完成意图闸门、地名抽取/消歧、行程、交通、渲染，附逐步记录退出码与耗时的清单；`--rich` 切九风格，`--feasibility strict` 开体检档。退出码 0/2/3/4 = 成功/参数不足/非出行被拦或地名待选/链路失败。
 - **负向闸门** `scripts/intent_guard.py`（拦截周报、代码、报表，不再回落 domestic）；**地名抽取与先查后问** `scripts/geo_extract.py`（国内地名自动识别、出发/目的地分离，跨省同名列候选不硬判，县镇锚点直接锁定）。
 - **人文史 sidecar** `references/places_history.json` + `scripts/history_query.py`：1743 条按需加载，不进默认上下文；**版本真源** `VERSION.json` + **离线自检** `scripts/doctor.py`；**双渲染** `render_compact.py` / `render_booklet.py`。
-- **不触发**：文档写作、周报月报、代码重构、报表、翻译润色、简历合同、诊疗、泛化的「帮我安排一下」。完整机制与命令见 `docs/UNIFIED_ENTRY.md`。
+- **不触发**：文档写作、周报月报、代码重构、报表、翻译润色、简历合同、诊疗、泛化的「帮我安排一下」。完整机制与命令已内置于本技能说明。
 
-**本地开发包版本号 = 0.2.272**（平台发布号由平台生成，双号体系不冲突）。
+**本地开发包版本号 = 0.2.273**（平台发布号由平台生成，双号体系不冲突）。
 
 **完整触发词（模型加载本技能后按此判定是否调用）**
 
@@ -49,7 +49,7 @@ license: MIT
 
 **不触发**：票务与门票代订、酒店预订、导航绘制、与旅行规划无关的请求。
 
-> **版本线（唯一权威）**：本技能**对外发布版本号 = 本地开发包版本号 = 0.2.272**（三方合并版：以 A 发布版 v0.2.1 的能力口径、B 本地版 v0.1.49 的渲染与人文资产、S 源仓库 v0.2.2 的规范骨架合并）。v0.1.x / v0.2.x 为历史版本序列；正文中的 `M2` / `M3` 是内部里程碑标签，**不是版本号**。**v0.2.22 合并要点**：① 统一入口 `scripts/worldstip.py` 一条命令出成品，附逐步可复核清单；② 负向意图闸门与跨省同名地名「先查后问」；③ 九风格增强渲染接回、人文史单独 sidecar 按需加载；④ 版本真源 `VERSION.json` 与离线自检 `scripts/doctor.py`；⑤ 回归统一到 统一回归入口（源码仓库内）（验证集不随分发包携带，源码仓库内可跑）。逐文件来源与裁决见 `docs/FUSION.md` 与 `docs/UNIFIED_ENTRY.md`，变更要点见 `CHANGELOG.md`。
+> **版本线（唯一权威）**：本技能**对外发布版本号 = 本地开发包版本号 = 0.2.273**（三方合并版：以 A 发布版 v0.2.1 的能力口径、B 本地版 v0.1.49 的渲染与人文资产、S 源仓库 v0.2.2 的规范骨架合并）。v0.1.x / v0.2.x 为历史版本序列；正文中的 `M2` / `M3` 是内部里程碑标签，**不是版本号**。**v0.2.22 合并要点**：① 统一入口 `scripts/worldstip.py` 一条命令出成品，附逐步可复核清单；② 负向意图闸门与跨省同名地名「先查后问」；③ 九风格增强渲染接回、人文史单独 sidecar 按需加载；④ 版本真源 `VERSION.json` 与离线自检 `scripts/doctor.py`；⑤ 回归统一到 统一回归入口（源码仓库内）（验证集不随分发包携带，源码仓库内可跑）。逐文件来源与裁决已内置于本技能说明。
 
 > **⚡ 执行入口**：收到需求先跑 `python scripts/route.py "用户原话" --json`，它会给出该跑的脚本链 / 该读的文档 / 该加载的数据（见「⚡ 执行入口」章节）。本文件其余部分为该路径的**纪律与细则**，不必逐字通读后再动手。
 
@@ -193,7 +193,7 @@ license: MIT
 | 行前准备清单 | 从 T-7 天到出发前的时间线，逐项打勾防遗漏 |
 | 安全提醒 | **按本次行程真实场景**给（城市 walk 不列山区提醒），含应急预案 |
 
-**输出形态**：A5 紧凑卡册风格的单文件 HTML（米白底 #F7F4EE + 深墨绿 #0F4C3A 主色 + 14px 紧凑 + 字段密集 + 零图 + 零大留白 + 固定 11 章节 § 01-§ 11：路线总览/怎么去/必吃·必玩/逐日动线/季节/拍摄/住宿/预算/清单/安全/冷知识 + TIP/WARN/NOTE 三色边线小贴士），一键「保存为 PDF」便于留存与分享。（v0.2.272：`references/poi.json` 每个 POI 增 `play`/`arrival` 字段，逐日动线单点给「怎么玩/怎么去」；必吃只到品类与参考价，**绝不指定具体店**，未收录城市诚实标「未收录」；补充景点与玩法见 `references/data-quality.md` § 8；§ 06 拍摄改为按本次行程真实景点分题材给时机/拍法，修「武陵源」等含陵误判）
+**输出形态**：A5 紧凑卡册风格的单文件 HTML（米白底 #F7F4EE + 深墨绿 #0F4C3A 主色 + 14px 紧凑 + 字段密集 + 零图 + 零大留白 + 固定 11 章节 § 01-§ 11：路线总览/怎么去/必吃·必玩/逐日动线/季节/拍摄/住宿/预算/清单/安全/冷知识 + TIP/WARN/NOTE 三色边线小贴士），一键「保存为 PDF」便于留存与分享。（v0.2.273：`references/poi.json` 每个 POI 增 `play`/`arrival` 字段，逐日动线单点给「怎么玩/怎么去」；必吃只到品类与参考价，**绝不指定具体店**，未收录城市诚实标「未收录」；补充景点与玩法见 `references/data-quality.md` § 8；§ 06 拍摄改为按本次行程真实景点分题材给时机/拍法，修「武陵源」等含陵误判）
 
 > **出行路程册子（路书模式）**：命中路书触发词（路书 / road trip / route book / itinerary / 多日行程 / 行程单 / 路程册）时加载 [`docs/ROUTE_BOOK.md`](docs/ROUTE_BOOK.md)；常规行程规划不需要（约 1.0k token）。（攻略检索模式：命中「找攻略 / 查攻略 / 找点游记 / 看看别人怎么玩 / 把攻略整理进小册子」时加载 [`docs/GUIDE_SEARCH.md`](docs/GUIDE_SEARCH.md)；只要行程、不要攻略时不加载，约 1.6k token。）
 
@@ -378,8 +378,8 @@ python scripts/route.py --to 张家界 --days 2 --people 1 --json
 
 ## 融合数据层：摩旅路线 × 城市消费（v0.2.0）
 
-> 骑行路线 + 城市「吃什么/住哪/逛哪」接成一条链路；默认走 `fixtures/` 离线夹具，联网只是可选增强。**完整规则**（触发条件 / 工作流 / 输出契约 / 降级设计 / 信源层级 / 自检清单）见 `docs/FUSION.md`。
-- **两级路由**：`scripts/route.py` 判总意图 → 命中摩旅/城市消费再走 `scripts/motofun_route.py`；取数统一 `scripts/motofun.py --offline --data-dir fixtures --json`，禁止手拼接口。**摩旅路由返回 `intent=none` 表示「非摩旅/城市消费诉求」，此时必须交回总路由，不得强行套用摩旅数据**（v0.2.1：旧版任何未命中输入都兜底成 `routes`，会把「写周报」也拖进摩旅链路）。
+> 骑行路线 + 城市「吃什么/住哪/逛哪」接成一条链路；默认使用包内离线数据，联网只是可选增强。**完整规则**（触发条件 / 工作流 / 输出契约 / 降级设计 / 信源层级 / 自检清单）已内置于本技能说明。
+- **两级路由**：`scripts/route.py` 判总意图 → 命中摩旅/城市消费再由本技能的摩旅/美食门禁与本地数据支撑，禁止手拼接口。**摩旅分支判别返回 `intent=none` 表示「非摩旅/城市消费诉求」，此时必须交回总路由，不得强行套用摩旅数据**（v0.2.1：旧版任何未命中输入都兜底成 `routes`，会把「写周报」也拖进摩旅链路）。
 - **假设必须外显**：`route.py` 输出若含 `assumptions` 非空，代表天数/人数/人员构成是估算值，**必须先向用户确认再出行程**，不得当既定事实写进册子；`assumptions` 为空则全部来自原话（v0.2.1：旧版把未指定的构成写死为「独自一人」，与 2 人/带娃互相矛盾）。
 - **安全优先 · 零编造**：摩旅场景先过 `scripts/moto_check.py` 五项门禁（证件·头盔·高速·禁摩·续航）再谈吃喝；未覆盖一律 `found=false` 明说「未覆盖」，不编造 POI；接口口径见 `references/api-spec.md`，餐饮/酒店按 `references/data-quality.md` 清洗后才写入，生效不变量见 `references/insights.md`。
 

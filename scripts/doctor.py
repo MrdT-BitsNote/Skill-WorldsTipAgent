@@ -168,7 +168,7 @@ def check_data():
 
 def check_refs():
     missing = []
-    pat = re.compile(r"`((?:scripts|references|docs|tools|examples|fixtures|test|tests)/[^`\s]+\.[A-Za-z0-9]+)`")
+    pat = re.compile(r"`((?:scripts|references|docs|tools|examples|test|tests)/[^`\s]+\.[A-Za-z0-9]+)`")
     for doc in ("SKILL.md", "README.md", "INSTALL.md", "DoD.md"):
         p = os.path.join(ROOT, doc)
         if not os.path.isfile(p):

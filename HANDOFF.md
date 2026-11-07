@@ -1,7 +1,7 @@
 # HANDOFF · WorldsTip 旅行规划技能接手手册
 
 > **面向**：任何在任意机器接手本仓库继续修改的 agent 或开发者。
-> **主线分支**：`v0.2.272`　|　**内部版本真源**：`VERSION.json` → `0.2.272`　|　**更新**：2026-11-07
+> **主线分支**：`v0.2.273`　|　**内部版本真源**：`VERSION.json` → `0.2.273`　|　**更新**：2026-11-07
 > **一句话定位**：本仓库同时是「技能源码」「四个平台上传包」「WorkBuddy 专家包源码」「发布归档」的唯一真源，改任何东西都从这里出发，不要直接改 zip。
 
 ---
@@ -11,7 +11,7 @@
 ```bash
 # 目录名必须是 worldstip-travel-planner —— doctor.py 会校验 SKILL.md 的 name 与目录名一致，
 # 用默认仓库名 Skill-WorldsTipAgent 会让自检误报 FAIL。
-git clone -b v0.2.272 https://github.com/MrdT-BitsNote/Skill-WorldsTipAgent.git worldstip-travel-planner
+git clone -b v0.2.273 https://github.com/MrdT-BitsNote/Skill-WorldsTipAgent.git worldstip-travel-planner
 cd worldstip-travel-planner
 
 python scripts/doctor.py          # 离线自检 17 项，任一失败 EXIT 1
@@ -34,8 +34,9 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 | `scripts/doctor.py` | 离线自检（版本/结构/字段/语法/数据/引用/冒烟） | — |
 | `references/*.json` | 静态数据层：POI、必吃、行政区划、车站码、气候、摩旅路线、人文史 sidecar | `doctor.py` + `run_all.py` |
 | `references/data-quality.md` | 数据口径与三条红线、已知缺口 | 人工复核 |
-| `docs/*.md` | 机制说明（22 篇）；**WorkBuddy 包只保留其中 9 篇** | 重建 WorkBuddy 包并跑引用核对 |
+| `docs/*.md` | 机制说明（22 篇）；**WorkBuddy 包只保留其中 9 篇**；`FUSION.md` / `UNIFIED_ENTRY.md` 是文件对照记录，**四个平台包一律剔除**（源码保留供追溯） | 重建四平台包并跑引用核对 |
 | `tools/build_pack.py` | 通用包构建器：`collect()` 文件清单、`pack_bytes()` LF 归一、`VER` 版本常量 | 重建全部包 |
+| `tools/audit_upload_zip.py` | **审核器视角硬闸门**：扫描包内文本里的中文占位名词 / 中文名 `.py` / 指向已剔除文档的路径，四平台构建器构建后强制调用，命中即删产物并终止 | `python tools/audit_upload_zip.py dist/*.zip` |
 | `tools/build_release_packs.py` | 一次产出 WorkBuddy / SkillHub / DuMate 三个包 | 见 §3 |
 | `tools/build_workbuddy_pack.py` | WorkBuddy 专用：≤3 MiB 裁剪 + 引用改写 + `check_refs()` 核对 | 见 §3 |
 | `tools/build_qianwen_pack.py` | 千问专用：安全绿网净化 + 自检 report | 见 §3 |
@@ -46,7 +47,9 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 | `HANDOFF.md` | 本文件，仅仓库维护用 | — |
 | `fixtures/`、`tests/`、`test/`、`assets/` | 离线夹具、验证集、图标 | `run_all.py` |
 
-**隔离资产**（`HANDOFF.md`、`expert/`、`build_expert_pack.py`、`verify_backup.py`）已被三个构建器显式排除，**不会进入任何平台上传包**。原因见 §5 的 WorkBuddy 驳回记录：审核器会把文档里出现的文件名当作「必须存在的资源」逐个索要。
+**隔离资产**（`HANDOFF.md`、`expert/`、`build_expert_pack.py`、`verify_backup.py`、`audit_upload_zip.py`）与两份文件对照记录（`docs/FUSION.md`、`docs/UNIFIED_ENTRY.md`）已被四个构建器显式排除，**不会进入任何平台上传包**。原因见 §5 的 WorkBuddy 驳回记录：审核器会把文档里出现的文件名当作「必须存在的资源」逐个索要。
+
+**`releases/` 只保留当前可上传的最新包**（v0.2.273 四平台包 + 专家 zip + 辅助技能包）。历史版本 zip 一律移到 `dist/_archive/`：2026-11-07 的复发驳回就是「SkillHub / DuMate 旧包仍含对照记录、文件名相近被误传」引起的，目录里放多版同名包会持续制造这个错误。
 
 ---
 
@@ -58,14 +61,15 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 | `v0.2.26` | `b134dc0` | §6 拍摄清单行程锚定 + `陵` 误判修复，SkillHub 包 |
 | `v0.2.27` | `8148a4b` | WorkBuddy 补齐 `LICENSE` 与 11 个被引用的 docs，废弃「占位词」路线 |
 | `v0.2.271` | `735f46c` | 千问二轮绿网整改：去出境数据 / 品牌导流 / 描述不符 |
-| `v0.2.272` | 本分支 | 剔除文件对照型文档（`FUSION.md` / `UNIFIED_ENTRY.md`）；**技能 + 专家 + 文档完整备份** |
+| `v0.2.272` | `6952885` / `a5f74d9` / `b5d1b98` | 技能 + 专家 + 接手文档完整备份；按官方样板补齐专家包内嵌技能 |
+| `v0.2.273` | 本分支 | **上传包合规加固**：四平台统一剔除文件对照记录、源码级清零中文占位名词、构建期审核器视角硬闸门、版本递增 |
 
 **不要 `git push origin main`**：远端 `main` 与本地 `main` 不同源，强推会覆盖建仓初始提交。所有迭代走非破坏性版本分支，本地 `main` 只作开发工作区。查当前分支提交用 `git rev-parse HEAD`。
 
 **版本号规则**（平台会硬性校验）：
 1. 内部版本统一由 `VERSION.json.version` 裁决，改版本必须同步 `SKILL.md`、`README.md`、`CHANGELOG.md`、`INSTALL.md`、`QC_REPORT.md`、`DoD.md`、`scripts/worldstip.py`、`tools/build_pack.py` 共 8 处，`doctor.py` 逐项比对。
-2. WorkBuddy 要求包内 `version` **严格大于**平台当前最新版本；被驳回后重传必须递增（`0.2.26 → 0.2.27 → 0.2.271 → 0.2.272`）。
-3. SkillHub 的 `_meta.json.version` 是**平台发布号**（`1.2.0`），与内部版本分离；用 `internalVersion` 字段对齐内部版本，两者不要混写。
+2. WorkBuddy 要求包内 `version` **严格大于**平台当前最新版本；被驳回后重传必须递增（`0.2.26 → 0.2.27 → 0.2.271 → 0.2.272 → 0.2.273`）。
+3. SkillHub 的 `_meta.json.version` 是**平台发布号**（`1.2.1`），与内部版本分离；用 `internalVersion` 字段对齐内部版本，两者不要混写。
 4. 专家包 `plugin.json.version`（`1.0.0`）是**独立版本线**，只在专家包结构变化时递增；与技能版本通过 `expert/worldstip-travel-expert/README.md` 的对应表对齐。
 5. `SKILL.md` 恰好 500 行：增删内容要原地合并 blockquote / 删空行，不能靠追加行。
 
@@ -75,7 +79,7 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 
 | 平台 | 产物 | 硬约束 | 特殊处理 |
 | --- | --- | --- | --- |
-| **WorkBuddy** | `worldstip-travel-planner-v0.2.272-workbuddy.zip` | 解压后 ≤ **3 MiB**（3,145,728 B）；md 里点名的文件必须真实存在；`display_name` 在同类型资产中唯一；包内 `name` 必须与资产 name 一致；`version` 递增 | 裁掉 `fixtures/tools/tests/assets`、未被 `SKILL.md` 引用的 docs、`places_history.json`、`render_booklet.py` 等；`display_name` 改为「融合版」；`SKILL.md`/README 里的引用整句改写为自洽描述；`LICENSE` 真实入包 |
+| **WorkBuddy** | `worldstip-travel-planner-v0.2.273-workbuddy.zip` | 解压后 ≤ **3 MiB**（3,145,728 B）；md 里点名的文件必须真实存在；`display_name` 在同类型资产中唯一；包内 `name` 必须与资产 name 一致；`version` 递增 | 裁掉 `fixtures/tools/tests/assets`、未被 `SKILL.md` 引用的 docs、`places_history.json`、`render_booklet.py` 等；`display_name` 改为「融合版」；`SKILL.md`/README 里的引用整句改写为自洽描述；`LICENSE` 真实入包；**构建后强制跑审核器视角硬闸门** |
 | **SkillHub** | `…-skillhub.zip` | 包根 `SKILL.md`；追加 `_meta.json` | 完整包（127 文件），平台发布号 `1.2.0`；上传地址 `https://skillhub.cn/skills/indiv-mrdt/worldstip` |
 | **DuMate（百度）** | `…-dumate.zip` | 复用标准 `SKILL.md` 包 | 与 SkillHub 同源，仅追加 `PLATFORM.md` 导入说明 |
 | **千问 AI** | `…-qianwen.zip` | ZIP ≤ **10 MiB**；根级 `SKILL.md`；frontmatter 必填 `name` + `description`；**安全绿网**内容扫描 | 在 WorkBuddy 裁剪集上再剔开发文档与出境数据文件、域名改机构名、去品牌词与限制性条款；约 75 文件 |
@@ -95,7 +99,7 @@ python tools/verify_backup.py --json                # 机器可读结论
 
 所有构建器共用 `build_pack.collect()` 的同一份文件清单，固定时间戳 `(2026,11,7,0,0,0)`、稳定排序、文本统一 LF，**同输入产出字节可复现**；`--verify` 逐条目比对包内字节与源码。构建完把 `dist/` 的 zip 复制进 `releases/`（用 `git add -f`），`verify_backup.py` 会校验两处字节一致。
 
-**当前实测基线**（v0.2.272）：WorkBuddy 92 文件 / 解压 2,968,514 B / zip 989,126 B，引用核对 166 条零缺失；千问 75 文件 / zip 910,340 B；SkillHub / DuMate 127 文件 / zip 约 1.51 MB。
+**当前实测基线**（v0.2.273）：WorkBuddy 92 文件 / 解压 2,969,027 B（上限余量 176,701 B）/ zip 989,403 B，引用核对 166 条零缺失；千问 75 文件 / zip 910,614 B；SkillHub 125 文件 / 1,509,597 B；DuMate 125 文件 / 1,509,829 B；专家 zip 8 文件 / 240,764 B。四平台包审核器视角扫描命中 0 条。
 
 ---
 
@@ -121,10 +125,11 @@ python tools/verify_backup.py                      # 备份 + 包结构 + 版本
 | `display_name` 已被使用 | 同类型资产名重复 | 加唯一后缀（`·MrdT` / 「融合版」），在 `patch_skill()` 内统一改写 |
 | 包内 `name` 与资产 name 不一致 | 传错包（把 `delivery-no-pseudoblock` 包传到了 `worldstip-travel-planner` 资产） | 上传前核对包根 `SKILL.md` 的 `name`；`verify_backup.py` 校验四包版本与真源一致 |
 | 解压后超出 3 MiB（3,178,519 B） | 完整包夹带 fixtures / docs / 富渲染 | 专用 `build_workbuddy_pack.py` 裁剪，压到 2,968,514 B |
-| 版本号必须大于当前最新 | 重传未递增 | 版本线递增到 `0.2.272`，8 处版本同步 |
+| 版本号必须大于当前最新 | 重传未递增 | 版本线递增到 `0.2.273`，8 处版本同步 |
 | 缺少「LICENSE」 | `ANTI_DISTILL.md` 用 markdown 链接引用它，但 `ALLOW_NOEXT` 未放行无扩展名文件 | `build_pack.py` 增加 `ALLOW_NOEXT = {LICENSE, LICENCE, NOTICE}` |
 | 缺少「专项文档」 | 曾用中文占位词替换 `docs/*.md` 路径，审核器把占位词本身当文件名继续索要 | **占位词路线已废弃**：改为补回真实 docs 文件 |
 | 缺少「摩旅路由.py」「本地离线夹具」「联网采集模块」 | `docs/FUSION.md` / `UNIFIED_ENTRY.md` 是文件对照记录，整篇点名了包里没有的文件 | 从 WorkBuddy 包剔除这两篇；其余 docs 命中被裁文件关键词时整行删除；`check_refs()` 复核 166 条引用 |
+| **同一驳回在 v0.2.272 复发**（审核时间 14:47） | 只有 WorkBuddy 包剔除了对照记录；**SkillHub / DuMate 包仍含它**，`CHANGELOG.md` 自身也逐字点名这三项；文件名相近被误传 | ① `build_pack.collect()` 统一排除两份对照记录，四平台全不再含；② 源码级清零全部中文占位名词与悬空路径（含 `description_en` 的 `Offline fixtures`、`VERSION.json` 的 lineage 描述、`doctor.py` 正则、`scripts/*.py` 的 help）；③ 废弃 `DOC_SUBS` 中文替换规则（审核器会还原成 `.py`）；④ 新增 `audit_upload_zip.py` 硬闸门并挂到四个构建器 + `verify_backup.py`；⑤ 版本递增 0.2.273；⑥ `releases/` 只留最新包，旧版移入 `_archive` |
 | WorkBuddy 引用核对失败 | `SKILL.md` / README 里写了被裁掉的路径 | `SKILL_EXACT` / `LINE_RULES` / `SUB_RULES` 整句改写为自洽描述，不留悬空路径 |
 | 千问安全绿网 | 外链、政府域名、`QC_REPORT.md` 敏感词清单、限制性条款、品牌词、出境数据、导流电子书、描述与包内容不符 | 见 §6 |
 | 千问 `re.compile` 被改坏 | 域名替换兜底把 `compile` 里的字母误伤 | `scrub_origins()` 限制 fallback 仅作用于 `.md/.json`；`DAMAGE` 正则自检源码误伤 |
@@ -166,13 +171,13 @@ python tools/verify_backup.py                      # 备份 + 包结构 + 版本
 
 ## 8. 已知缺口（如实披露，不要假装已覆盖）
 
-1. **平台裁剪差异**：WorkBuddy 与千问包不含 `places_history.json`（人文史 sidecar）、`render_booklet.py`（`--rich` 九风格增强渲染）、`fixtures/`（离线夹具）、`docs/FUSION.md` 与 `UNIFIED_ENTRY.md`。这两个包的能力是完整包的子集，写文案时不要声称它们含这些能力。
+1. **平台裁剪差异**：四个平台包均不含 `docs/FUSION.md` 与 `UNIFIED_ENTRY.md`（文件对照记录，无执行价值）。WorkBuddy 与千问包另不含 `places_history.json`（人文史 sidecar）、`render_booklet.py`（`--rich` 九风格增强渲染）、`fixtures/`（离线样例数据）。这两个包的能力是完整包的子集，写文案时不要声称它们含这些能力。
 2. **千问国内版不含出境能力**：`visa_rules / country_safety / currency_tz / outbound_safety` 已被剔除，只能做国内行程。
 3. **静态快照**：POI / 气候 / 消费索引均为静态数据，不含营业状态、排队、实时票价、天气；实时联网为可选增强，默认离线。
 4. **城市覆盖有限**：`poi.json` 20 城、`food_guide.json` 26 键，未覆盖城市在渲染层诚实标「未收录」；`destinations.json` 的 393 城坐标气候覆盖面远大于 POI 层。
 5. **港澳台**：行政区划层已收录规范名称，但 POI / 必吃层未收录港澳目的地明细。
 6. **数据对齐口径**：`references/data-quality.md` §5 记录 moto / fun 两数据集无共同主键、仅靠城市中文名对齐，数据更新后需重跑匹配率扫描；县级市与乡镇无单城档案，降级到省级即精度损失。
-7. **离线夹具不含实时天气**：`--profile upload` 类审核需人工在平台侧确认，本地无法代替。
+7. **包内离线数据不含实时天气**：`--profile upload` 类审核需人工在平台侧确认，本地无法代替。
 
 ---
 
@@ -192,10 +197,11 @@ python tools/verify_backup.py                      # 备份 + 包结构 + 版本
 - [ ] clone 时目录名是 `worldstip-travel-planner`（否则 doctor 误报）
 - [ ] `python scripts/doctor.py` 全绿
 - [ ] `python tests/run_all.py` → `REGRESSION: PASS`
-- [ ] `python tools/verify_backup.py` → `BACKUP: PASS`
+- [ ] `python tools/verify_backup.py` → `BACKUP: PASS`（内含四包审核器视角零危险词 + 不含对照文档检查）
+- [ ] `python tools/audit_upload_zip.py releases/*.zip` → `AUDIT: PASS`
 - [ ] 四平台包 + 专家 zip 以 `releases/` 为权威副本；本地若有 `dist/`，`verify_backup.py` 会额外比对两处字节一致（无 `dist/` 时如实标 `SKIP`，不算失败）
-- [ ] 新版本上传前确认 `version` 大于平台当前最新、`display_name` 唯一
-- [ ] 未把 `HANDOFF.md` / `expert/` / 备份脚本打进任何上传包
+- [ ] 新版本上传前确认 `version` 大于平台当前最新、`display_name` 唯一；**只上传 `releases/` 里当前版本的那个 zip**，不要从 `_archive/` 取
+- [ ] 未把 `HANDOFF.md` / `expert/` / 备份脚本 / 文件对照记录打进任何上传包
 
 ---
 
@@ -241,7 +247,7 @@ design-experts/
 
 ### 12.4 我方专家包逐项对照（整改后）
 
-| 项 | 官方样板 | 我方 v0.2.272（整改后） | 结论 |
+| 项 | 官方样板 | 我方 v0.2.273（整改后） | 结论 |
 | --- | --- | --- | --- |
 | `plugin.json` 键集合 | 16 键 | 16 键，完全一致 | 一致 |
 | `author` | `{name, email}` | `{name, email}` | 已补齐 |

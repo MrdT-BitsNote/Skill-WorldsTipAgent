@@ -25,6 +25,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 DIST = os.path.dirname(ROOT) + "/dist"
 RELEASES = ROOT + "/releases"
+sys.path.insert(0, HERE)
+import audit_upload_zip as AU  # noqa: E402  审核器视角硬闸门复用
 
 WB_LIMIT = 3 * 1024 * 1024          # WorkBuddy：解压后上限 3145728 字节
 QW_LIMIT = 10 * 1024 * 1024         # 千问：zip 文件上限 10 MiB
@@ -165,6 +167,13 @@ def main_checks():
             leaks = sorted({k for k in ISOLATED
                             if any(k in n for n in names)})
             check("%s 未夹带接手资产" % pf, not leaks, ",".join(leaks))
+            # 审核器视角：中文占位名词 / 中文名.py / 指向被裁文档的路径
+            hits, scanned = AU.scan(rp)
+            check("%s 审核器视角零危险词" % pf, not hits,
+                  "%d 文本文件 / %d 命中" % (scanned, len(hits)))
+            fdocs = [n for n in names
+                     if n in ("docs/FUSION.md", "docs/UNIFIED_ENTRY.md")]
+            check("%s 不含文件对照型文档" % pf, not fdocs, ",".join(fdocs))
             if pf == "workbuddy":
                 un = sum(i.file_size for i in z.infolist())
                 check("WorkBuddy 解压 <= 3 MiB", un <= WB_LIMIT,
