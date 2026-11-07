@@ -50,6 +50,37 @@ EX_QW_DOCS = {
 # 所以这里必须显式补上 docs。
 EX_QW_DIRS = BWB.EX_DIRS | {"docs"}
 
+# 出境「数据」与安全编排：本版定位国内旅行，这些文件既与声明矛盾，又是绿网高风险面
+# （各国安全/签证/使馆/货币时区）。
+# 注意 **不能删 outbound_constraints.py**：它提供 is_domestic / is_outbound 纯白名单判断，
+# route.py 靠它把港澳台正确识别为境内；删了会降级成关键词匹配，把「香港」误判成境外并拒答。
+# 该模块的 is_outbound 不读任何数据文件，数据只在未曾实例化的 OutboundConstraints 类里。
+EX_QW_FILES = {
+    "references/country_safety.json",
+    "references/visa_rules.json",
+    "references/currency_tz.json",
+    "scripts/outbound_safety.py",
+    # 必吃板块的「延伸阅读外链」：明写「同品牌美食电子书站 / 站内 book_id / 保证 100% 有链接」，
+    # 属商业导流设计。必吃清单本身在 food_guide.json，不受影响。
+    "references/food_book_links.json",
+}
+
+# 品牌词中性化：数据文件里的「WorldsTip 摩旅地图库 / 美食电子书库 / 站内接口」
+# 有商业导流观感，改为内置数据源描述；frontmatter 去掉品牌前缀。
+# 注意 `name: worldstip-travel-planner` 是平台资产标识，不能改（会变成新资产）。
+BRAND_SUBS = (
+    ("WorldsTip Travel Guide Booklet", "Travel Guide Booklet"),
+    ("WorldsTip旅行指南小册子", "旅行指南小册子"),
+    ("WorldsTip 旅行规划", "旅行规划"),
+    ("WorldsTip 摩旅地图库", "内置摩旅线路库"),
+    ("WorldsTip 摩旅线路库", "内置摩旅线路库"),
+    ("WorldsTip 美食电子书库", "内置美食清单"),
+    ("WorldsTip v0.2.271", "v0.2.271"),
+    ("WorldsTip by MrdT", "MrdT"),
+    ("WorldsTip", "内置数据"),
+    ("，站内数据接口）", "，本地离线数据）"),
+)
+
 # B. 域名 -> 机构名（先去重复，再换裸域名，最后兜底）
 DEDUP = (
     (r"中国领事服务网\s*cs\.mfa\.gov\.cn\s*", "中国领事服务网 "),
@@ -89,14 +120,64 @@ QW_SKILL_SUBS = (
      "*© WorldsTip by MrdT · 本技能以 MIT 许可发布；核心 POI 与气候数据受保护。*"),
 )
 
-TEXT_EXT = (".md", ".json", ".py", ".txt")
-
 DOMAIN = re.compile(r"[a-z0-9.\-]*(?:worldstip\.com|qianwenai\.com|github\.com|"
                     r"openstreetmap\.org|unpkg\.com|w3\.org)", re.I)
 URL = re.compile(r"https?://")
 SENSITIVE = ("政治",)
-# 替换误伤信号：中文替换词紧贴 ASCII 字母/点（说明命中的是标识符片段，如 re.com*pile*）
+# 替换误伤信号：中文替换词紧贴 ASCII 字母（说明命中的是标识符片段，如 re.com*pile*）
 DAMAGE = re.compile(r"[A-Za-z]官方渠道|官方渠道[A-Za-z]")
+
+# frontmatter 重写：千问包不带 places_history / fixtures / render_booklet，
+# 原描述却宣称「人文史 sidecar 按需加载」「离线夹具可复现」「九风格增强渲染」，
+# 属描述与实际不符；description 里还堆了 10 个触发词，观感像 SEO 堆砌。
+FM_TEXT = {
+    "description":
+        "一句话生成国内 A5 行程小册子：自动完成交通方式比选、住宿分房、预算估算与逐日动线编排，"
+        "输出单文件 HTML 便于保存分享；跨省同名地名先列候选再确认，非出行请求明确拒答。"
+        "适用于国内周末短途与长假出行。",
+    "description_zh":
+        "国内旅行规划小册子（v0.2.271）：把一句出行想法变成可照着走的 A5 紧凑 HTML 小册子。"
+        "统一入口一条命令完成意图校验、地名抽取与消歧、行程编排、交通比选与渲染；"
+        "跨省同名地名先列候选不硬判，非出行请求明确拒答。事实以包内离线库为准，"
+        "没覆盖的字段标灰待核，绝不编造。",
+    "description_en":
+        "Travel Guide Booklet (v0.2.271): turns one sentence into a ready-to-follow A5 compact "
+        "HTML booklet. One entry point runs intent validation, place extraction and "
+        "disambiguation, itinerary build, transit comparison and rendering. Cross-province "
+        "homonyms surface candidates instead of guessing; off-topic requests are refused "
+        "explicitly. Facts come from the bundled offline library, and anything not covered is "
+        "marked unverified, never fabricated.",
+}
+
+# 能力声明对齐：原写「含中国香港/澳门/台湾地区」，但意图闸门的地名库未覆盖港澳，
+# 实测会被判「未识别到出行意图」拒答 —— 声明与实际不符，千问包按实际能力表述。
+SCOPE_SUBS = (
+    ("（含中国香港、中国澳门、中国台湾地区）", ""),
+    ("（含港澳台）", ""),
+    ('display_name: "旅行指南小册子·合并版"', 'display_name: "国内旅行指南小册子"'),
+    ('displayName: "旅行指南小册子·合并版"', 'displayName: "国内旅行指南小册子"'),
+)
+
+
+# 剔除 food_book_links.json 后，SKILL.md 里对它的两处引用要一并清除，
+# 否则就是幽灵引用（模型会据此编造一个不存在的文件）。
+SKILL_REGEX_SUBS = (
+    (r"板块末尾按 `references/food_book_links\.json`.*?(?=\s*\|)", ""),
+    (r"`references/food_book_links\.json`\s*", ""),
+)
+
+
+def patch_frontmatter(text):
+    """只重写 frontmatter 段内的指定字段，正文不动。"""
+    if not text.startswith("---"):
+        return text
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return text
+    fm = parts[1]
+    for key, val in FM_TEXT.items():
+        fm = re.sub(r"(?m)^%s: .*$" % re.escape(key), '%s: "%s"' % (key, val), fm, count=1)
+    return "---" + fm + "---" + parts[2]
 
 
 def scrub_origins(text, fallback_ok=False):
@@ -116,7 +197,7 @@ def build(out):
         top = rel.split("/")[0]
         if "/" in rel and top in EX_QW_DIRS:
             continue
-        if rel in BWB.EX_FILES or rel in EX_QW_DOCS:
+        if rel in BWB.EX_FILES or rel in EX_QW_DOCS or rel in EX_QW_FILES:
             continue
         items.append((rel, p))
 
@@ -132,6 +213,15 @@ def build(out):
                 elif rel == "README.md":
                     text = BWB.patch_readme(text)
                 text = scrub_origins(text, fallback_ok=rel.lower().endswith(DOC_EXT))
+                for a, b in BRAND_SUBS:
+                    text = text.replace(a, b)
+                if rel == "SKILL.md":
+                    # 能力声明对齐 + 幽灵引用清除 + frontmatter 重写
+                    for a, b in SCOPE_SUBS:
+                        text = text.replace(a, b)
+                    for pat, rep in SKILL_REGEX_SUBS:
+                        text = re.sub(pat, rep, text)
+                    text = patch_frontmatter(text)
                 data = text.encode("utf-8")
             zi = zipfile.ZipInfo(rel, date_time=(2026, 11, 7, 0, 0, 0))
             zi.compress_type = zipfile.ZIP_DEFLATED
@@ -165,6 +255,7 @@ def report(out):
     fm = parts[1] if skill.startswith("---") and len(parts) >= 3 else ""
     # 替换误伤自检：任何 .py 出现中文替换词紧贴字母，说明把源码标识符改坏了
     damage = []
+    brand = 0
     with zipfile.ZipFile(out) as z:
         for n in names:
             if not n.endswith(".py"):
@@ -172,6 +263,10 @@ def report(out):
             t = z.read(n).decode("utf-8", errors="replace")
             for m in DAMAGE.finditer(t):
                 damage.append("%s: %s" % (n, t[max(0, m.start() - 20):m.end() + 15]))
+        for n in names:
+            if not n.lower().endswith((".md", ".json", ".py", ".txt")):
+                continue
+            brand += z.read(n).decode("utf-8", errors="replace").count("WorldsTip")
     checks = [
         ("ZIP <= 10MiB", size <= LIMIT, "%d bytes (%.2f MiB)" % (size, size / 1048576.0)),
         ("根目录 SKILL.md", "SKILL.md" in names, "文件数 %d" % len(names)),
@@ -182,6 +277,8 @@ def report(out):
         ("零 http(s) URL", urls == 0, "命中 %d" % urls),
         ("零高敏词", sensitive == 0, "命中 %s" % (SENSITIVE,)),
         ("无开发文档夹带", not (set(names) & EX_QW_DOCS), str(sorted(set(names) & EX_QW_DOCS))),
+        ("无出境能力文件", not (set(names) & EX_QW_FILES), str(sorted(set(names) & EX_QW_FILES))),
+        ("品牌词已中性化", brand == 0, "WorldsTip 残留 %d" % brand),
         ("替换无源码误伤", not damage, str(damage[:3])),
     ]
     print("包路径 : %s" % out)
