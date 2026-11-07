@@ -23,6 +23,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
 ALLOW_EXT = {".md", ".json", ".py", ".svg", ".txt"}
+# 无扩展名但必须随包分发的文件：MIT 许可要求许可证原文跟随分发，
+# 且 ANTI_DISTILL.md 以 [MIT License](LICENSE) 链接引用它 —— 缺了会被平台判「内置文件缺失」。
+ALLOW_NOEXT = {"LICENSE", "LICENCE", "NOTICE"}
 SKIP_DIRS = {"__pycache__", ".git", ".pytest_cache", ".mypy_cache",
              "releases", "worldstip-out",
              # 验证集与维护期脚本不随交付包分发（平台两级目录 + 交付卫生约定）
@@ -39,7 +42,7 @@ MAINT = {"build_geo_admin.py", "enrich_coords.py", "verify_coords.py",
 def pack_bytes(p):
     """文本统一 LF；其余类型原样。"""
     data = open(p, "rb").read()
-    if os.path.splitext(p)[1].lower() in ALLOW_EXT:
+    if os.path.splitext(p)[1].lower() in ALLOW_EXT or os.path.basename(p) in ALLOW_NOEXT:
         data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
     return data
 
@@ -51,7 +54,7 @@ def collect():
         rel_dir = os.path.relpath(dp, ROOT).replace("\\", "/")
         for f in sorted(fn):
             ext = os.path.splitext(f)[1].lower()
-            if ext not in ALLOW_EXT:
+            if ext not in ALLOW_EXT and f not in ALLOW_NOEXT:
                 continue
             if f in SKIP_FILES or f in MAINT or f.startswith("test_"):
                 continue

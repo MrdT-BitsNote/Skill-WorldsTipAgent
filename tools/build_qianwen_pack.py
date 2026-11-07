@@ -45,6 +45,10 @@ EX_QW_DOCS = {
     "CHANGELOG.md", "DoD.md", "QC_REPORT.md", "INSTALL.md",
     "ANTI_DISTILL.md", "报告生成规范.md", "排版规范.md",
 }
+# 千问包不需要开发者文档；docs/ 里还含上游项目链接（MOTOFUN_UPSTREAM_SKILL.md
+# 有 http 外链），整目录排除。WorkBuddy 的 EX_DIRS 已不含 docs（它要保留被引用的 11 个），
+# 所以这里必须显式补上 docs。
+EX_QW_DIRS = BWB.EX_DIRS | {"docs"}
 
 # B. 域名 -> 机构名（先去重复，再换裸域名，最后兜底）
 DEDUP = (
@@ -110,7 +114,7 @@ def build(out):
     items = []
     for rel, p in BP.collect():
         top = rel.split("/")[0]
-        if "/" in rel and top in BWB.EX_DIRS:
+        if "/" in rel and top in EX_QW_DIRS:
             continue
         if rel in BWB.EX_FILES or rel in EX_QW_DOCS:
             continue
