@@ -202,3 +202,54 @@ python tools/verify_backup.py                      # 备份 + 包结构 + 版本
 ## 11. 权属与许可
 
 MIT 许可 + 权属水印，署名须保留「WorldsTip by MrdT」。反蒸馏条款见 `ANTI_DISTILL.md` 与 `LICENSE`（专家包内也各有一份）。`delivery-no-pseudoblock-v0.2.22-workbuddy.zip` 是配套的终检纪律辅助技能，独立版本线，仅作归档，不参与本技能构建。
+
+---
+
+## 12. WorkBuddy 官方专家包结构样板（2026-11-07 学习）
+
+来源：`https://codebuddy-platform-1258344699.cos.ap-beijing.myqcloud.com/open/static/files/design-experts.zip`（官方示例专家包 `design-experts`，15,909 B）。解压后的有效文件只有 4 个，其余是 macOS 元数据（`.DS_Store`、`__MACOSX/`），不属于规范内容。
+
+### 12.1 官方目录结构
+
+```text
+design-experts/
+├── .codebuddy-plugin/plugin.json          专家包清单
+├── agents/design-md-architect.md          Agent 定义（frontmatter + 正文）
+├── avatars/expert.png                    头像（plugin.json 引用）
+└── skills/
+    └── design-reference/                 专家专属内嵌技能
+        ├── SKILL.md
+        └── references/README.md          按需读取的索引/数据
+```
+
+**要点**：专家包内可以内嵌技能，路径固定为 `skills/<技能名>/SKILL.md`；Agent 通过 frontmatter 的 `skills: [<技能名>]` 绑定。专家包允许多级嵌套目录，与技能上传包「目录深度 ≤ 1」是两套约束（见 §4 判据适用范围）。
+
+### 12.2 三份文件的 frontmatter 是两套约定，不可混用
+
+| 位置 | 官方字段 | 说明 |
+| --- | --- | --- |
+| `.codebuddy-plugin/plugin.json` | `name / version / description / author{name,email} / agents / expertType / agentName / displayName{en,zh} / profession{en,zh} / displayDescription{en,zh} / avatar / categoryId / defaultInitPrompt{zh,en} / plugin / tags[{en,zh}] / quickPrompts[{en,zh}]` | 共 16 个键，双语字段一律 `{en, zh}` |
+| `agents/*.md` | `name / description / tools / maxTurns / skills` | `tools` 是数组；`skills` 绑定包内 `skills/` 下的技能名 |
+| `skills/<name>/SKILL.md` | `title / summary / read_when` | **内嵌技能**用渐进披露式元数据（`read_when` 是触发条件列表），**不**写 `name/version/description` |
+
+平台**独立上传包**的 `SKILL.md`（本仓库根目录那份）用另一套：`name / version / description / display_name / allowed-tools / ...`，且恰好 500 行。这两套格式服务对象不同，不要把内嵌技能的 `title/summary/read_when` 抄进独立包，也不要把独立包的 16 个字段抄进内嵌技能。
+
+### 12.3 官方样板自身的两处缺陷（不照抄）
+
+1. `displayName` 写成 `{"en": "琳达", "zh": "Diana"}` —— 中英文值对调了。我方 `plugin.json` 的 `en/zh` 是正确的。
+2. `plugin.json` 引用 `avatars/expert.png`，但 zip 内**没有** `avatars/` 目录，头像文件缺失。我方专家包带真实 512×512 PNG，比样板完整。
+
+### 12.4 我方专家包逐项对照
+
+| 项 | 官方 | 我方 v0.2.272 | 结论 |
+| --- | --- | --- | --- |
+| `plugin.json` 键集合 | 16 键 | 16 键，完全一致 | 一致 |
+| `author` | `{name, email}` | `{name}`（缺 `email`） | 待补 |
+| `agents/*.md` frontmatter | `name/description/tools/maxTurns/skills` | `name/description/displayName/profession/maxTurns` | 缺 `tools` 与 `skills`；多出两个在 `plugin.json` 已有的重复字段 |
+| `skills/` 内嵌技能 | 有 | 无 | 结构缺项 |
+| `avatars/expert.png` | 引用但缺文件 | 真实存在 228,477 B | 我方更完整 |
+| 独立技能包 `SKILL.md` | 不适用（样板只有内嵌技能） | 500 行 + 16 字段，四平台已过审 | 保持现状 |
+
+### 12.5 待定整改
+
+是否把专家包升级为「带 `skills/` 内嵌技能」的完整形态，属于封装取向决策，尚未执行。三种可选做法：① 补 `author.email` + agent 的 `tools`/`skills`，新增一份 `title/summary/read_when` 格式的**入口型**内嵌 `SKILL.md`（不复制 500 行正文，明确指向仓库根 `SKILL.md` 单一真源）；② 只补 `author.email` 与 `tools`，保持裸 agent 形态，避免两份技能说明；③ 现有包不动，仅把本节规范用于后续新建专家包。无论选哪种，改动后都要重跑 `tools/build_expert_pack.py --verify` 与 `tools/verify_backup.py`，并同步 `dist/` 与 `releases/`。
