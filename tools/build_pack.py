@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""build_pack.py — v0.2.26 发布包构建器（单包 · 千问过审档）
+"""build_pack.py — v0.2.27 发布包构建器（单包 · 千问过审档）
 
 纪律：
   - 包根直接放 SKILL.md（提交包布局，非开发布局）
@@ -18,7 +18,7 @@ import os
 import sys
 import zipfile
 
-VER = "0.2.26"
+VER = "0.2.27"
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
@@ -92,7 +92,7 @@ def build(out, verify):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="构建 v0.2.26 发布包")
+    ap = argparse.ArgumentParser(description="构建 v0.2.27 发布包")
     ap.add_argument("--out", default=os.path.join(os.path.dirname(ROOT),
                                                   "worldstip-travel-planner-v%s.zip" % VER))
     ap.add_argument("--verify", action="store_true")

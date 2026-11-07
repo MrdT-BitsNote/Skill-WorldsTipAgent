@@ -44,6 +44,10 @@ KEY_DATA = {
 FM_REQUIRED = ("description", "description_zh", "description_en", "version", "author")
 TEMP_MARK = ("worldstip-out", "__pycache__", ".pytest_cache",
              "_tmp_", ".bak", ".zip")
+# 与 tools/build_pack.SKIP_DIRS 保持一致：本地版本库与归档位不进交付包，
+# 也不参与目录深度 / 临时产物检查（否则本地 git init 后必然误报）。
+SKIP_WALK = {".git", "releases", "worldstip-out", "__pycache__",
+             ".pytest_cache", ".mypy_cache"}
 
 results = []
 
@@ -81,6 +85,7 @@ def check_version():
 def check_structure():
     deep, temp = [], []
     for dp, dn, fn in os.walk(ROOT):
+        dn[:] = sorted(d for d in dn if d not in SKIP_WALK)
         rel = os.path.relpath(dp, ROOT).replace("\\", "/")
         if any(m == part for m in TEMP_MARK for part in rel.split("/")):
             temp.append(rel)

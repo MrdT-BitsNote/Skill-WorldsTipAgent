@@ -22,7 +22,7 @@ STAMP = (2026, 11, 7, 0, 0, 0)
 META_JSON = json.dumps({
     "slug": "worldstip-travel-planner",
     "displayName": "WorldsTip 旅行规划小册子",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "summary": "输入目的地与天数，生成 A5 紧凑旅行小册子：怎么去、必吃必玩、逐日动线、安全提醒；基于真实 POI 与气候数据，绝不编造。",
     "license": "MIT",
     "internalVersion": VER,
@@ -82,12 +82,17 @@ def build(out, extra_rel=None, extra_data=None, verify=True):
 
 def main():
     dist = os.path.join(os.path.dirname(ROOT), "dist")
-    wb = build(os.path.join(dist, "worldstip-travel-planner-v%s-workbuddy.zip" % VER), verify=True)
+    # WorkBuddy 有「解压 <= 3MB」+「SKILL.md 引用必须存在」双约束，
+    # 必须走专用构建器（瘦身 + 引用改写），不能复用完整包清单。
+    import build_workbuddy_pack as BWB
+    wb_out, _ = BWB.build(os.path.join(
+        dist, "worldstip-travel-planner-v%s-workbuddy.zip" % VER))
+    wb = 0 if BWB.report(wb_out) else 1
     sh = build(os.path.join(dist, "worldstip-travel-planner-v%s-skillhub.zip" % VER),
                "_meta.json", META_JSON, verify=True)
     dm = build(os.path.join(dist, "worldstip-travel-planner-v%s-dumate.zip" % VER),
                "PLATFORM.md", PLATFORM_MD, verify=True)
-    print("\nWORKBuddy=%s  SkillHub=%s  DuMate=%s" % (wb, sh, dm))
+    print("\nWorkBuddy=%s  SkillHub=%s  DuMate=%s" % (wb, sh, dm))
     return wb or sh or dm
 
 
