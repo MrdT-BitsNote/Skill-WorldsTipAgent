@@ -1,0 +1,5 @@
+# 统一换行：源文件一律 LF（doctor 会校验 SKILL.md 纯 LF，CRLF 会导致自检失败）
+* text=auto eol=lf
+*.zip binary
+*.png binary
+*.svg -text
