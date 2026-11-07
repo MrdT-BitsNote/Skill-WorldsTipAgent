@@ -1,0 +1,61 @@
+{
+  "province": "湖南省",
+  "code": "hunan",
+  "cities": [
+    { "slug": "changde", "name": "常德", "routes": 1 },
+    { "slug": "changsha", "name": "长沙", "routes": 1 }
+  ],
+  "routes": [
+    {
+      "id": "taifushan",
+      "n": "临澧太浮山跑山线",
+      "t": "攻山压弯",
+      "d": 56,
+      "days": 1,
+      "h": ["太浮山", "沅澧名山", "跑山"],
+      "c": "#2E7D5B",
+      "p": [[29.05, 111.68], [29.06, 111.69]],
+      "w": [[29.05, 111.68], [29.10, 111.70]],
+      "wn": ["常德诗墙公园", "太浮山"],
+      "city": "常德",
+      "citySlug": "changde",
+      "url": "/routes/taifushan/",
+      "cs": "verified",
+      "srcs": 3
+    },
+    {
+      "id": "changsha-r1",
+      "n": "长沙近郊休闲骑游线",
+      "t": "近郊休闲",
+      "d": 32,
+      "days": 1,
+      "h": ["橘子洲", "湘江"],
+      "c": "#2E7D5B",
+      "p": [[28.20, 112.93], [28.21, 112.94]],
+      "w": [[28.20, 112.93]],
+      "wn": ["橘子洲头"],
+      "city": "长沙",
+      "citySlug": "changsha",
+      "url": "/hunan/routes/changsha-r1/",
+      "cs": "reviewed",
+      "srcs": 2
+    },
+    {
+      "id": "hunan-loop1",
+      "n": "湖南跨市长途环线一号",
+      "t": "长途环线",
+      "d": 860,
+      "days": 5,
+      "h": ["跨市", "环线"],
+      "c": "#2E7D5B",
+      "p": [[28.20, 112.93], [29.05, 111.68]],
+      "w": [[28.20, 112.93], [29.05, 111.68]],
+      "wn": ["长沙市政府", "常德市政府"],
+      "city": "湖南",
+      "citySlug": "loops",
+      "url": "/hunan/routes/hunan-loop1/",
+      "cs": "computed",
+      "srcs": 0
+    }
+  ]
+}

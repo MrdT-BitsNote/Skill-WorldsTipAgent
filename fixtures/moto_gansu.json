@@ -1,0 +1,26 @@
+{
+  "province": "甘肃省",
+  "code": "gansu",
+  "cities": [
+    { "slug": "dunhuang", "name": "敦煌", "routes": 1 }
+  ],
+  "routes": [
+    {
+      "id": "dunhuang-r1",
+      "n": "敦煌鸣沙山环线",
+      "t": "山林湖泊",
+      "d": 68,
+      "days": 1,
+      "h": ["鸣沙山", "月牙泉"],
+      "c": "#C89B3C",
+      "p": [[40.09, 94.66]],
+      "w": [[40.09, 94.66]],
+      "wn": ["鸣沙山月牙泉"],
+      "city": "敦煌",
+      "citySlug": "dunhuang",
+      "url": "/gansu/routes/dunhuang-r1/",
+      "cs": "verified",
+      "srcs": 2
+    }
+  ]
+}

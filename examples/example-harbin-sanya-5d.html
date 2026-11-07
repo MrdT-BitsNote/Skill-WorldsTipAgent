@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>哈尔滨 - 三亚 5 天</title>
+<style>
+:root{--bg:#F7F4EE;--card:#FFF;--ink:#0F0F0F;--sub:#5A5A5A;--line:#D9D2C2;--line2:#B7AE99;--accent:#0F4C3A;--warn:#A85A00;--ok:#1B7C3F;--red:#B91C1C;--mono:ui-monospace,Menlo,Consolas,monospace;--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line2)}
+a:hover{border-color:var(--accent)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.01em}
+h2{font-size:18px;line-height:1.3;margin:0 0 6px}
+h3{font-size:15px;line-height:1.3;margin:0 0 4px}
+h4{font-size:13.5px;color:var(--ink);margin:8px 0 4px;font-weight:700}
+.sec-no{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--accent);display:block;margin-bottom:4px}
+.sub-en{font-size:11.5px;color:var(--sub);font-weight:500;letter-spacing:.04em;margin-bottom:8px}
+p{font-size:13.5px;line-height:1.55;margin:0 0 4px}
+ul,ol{margin:0 0 4px;padding-left:18px}
+li{font-size:13.5px;line-height:1.5;margin-bottom:1px}
+li::marker{color:var(--sub)}
+em.tip{display:block;background:#FFFBE8;border-left:3px solid var(--warn);padding:6px 10px;margin:6px 0;font-size:12.5px;line-height:1.5;color:#5A3A00}
+em.warn{display:block;background:#FFF0EE;border-left:3px solid var(--red);padding:6px 10px;margin:6px 0;font-size:12.5px;line-height:1.5;color:#7A1F12}
+em.note{display:block;background:#F0F7F2;border-left:3px solid var(--ok);padding:6px 10px;margin:6px 0;font-size:12.5px;line-height:1.5;color:#1B5A2C}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;background:#E8E3D5;color:var(--ink);margin-right:4px;line-height:1.5;letter-spacing:.02em}
+.tag.ok{background:#E1F2E6;color:#1B5A2C}
+.tag.warn{background:#FCEFD3;color:#7A4A00}
+.tag.red{background:#FBE3E0;color:#7A1F12}
+.tag.accent{background:#E0EFE9;color:#0F4C3A}
+.poi{display:block;margin:2px 0 0;font-size:13px;line-height:1.5}
+.poi .tag{font-size:10.5px;padding:0 5px;margin-left:3px;vertical-align:middle}
+.muted{color:var(--sub);font-size:11.5px;line-height:1.5}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:1px 12px;margin:4px 0}
+.kv .k{color:var(--sub);font-size:12.5px;line-height:1.5;white-space:nowrap}
+.kv .v{font-size:13px;line-height:1.5}
+hr{border:0;border-top:1px dashed var(--line);margin:8px 0}
+.bar{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:4px 0 6px}
+.bar .lbl{font-size:11.5px;color:var(--sub);font-family:var(--mono);font-weight:600;letter-spacing:.04em;min-width:54px}
+.bar .val{font-size:13px}
+.solid{border-top:1px solid var(--line);margin:14px 0 0}
+.tline{display:grid;grid-template-columns:46px 1fr;gap:8px;margin:4px 0;padding:3px 0;border-bottom:1px dotted var(--line)}
+.tline:last-child{border-bottom:0}
+.tline .t{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--accent);padding-top:1px}
+.tline .b{font-size:13px;line-height:1.5}
+.tline .b .nm{font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}
+.tbl th,.tbl td{padding:3px 6px;text-align:left;border-bottom:1px solid var(--line)}
+.tbl th{color:var(--sub);font-weight:600;font-size:11.5px;background:#EFEAD8}
+.tbl td.r{text-align:right;font-variant-numeric:tabular-nums}
+.lead{font-size:15px;line-height:1.55;color:var(--ink);font-weight:500}
+.cover-art{display:block;width:100%;height:auto;max-height:132px;border-radius:8px;margin:0 0 12px;background:#F7F4EE}
+.hero{padding:24px 0 14px;border-bottom:1.5px solid var(--ink)}
+.hero h1{font-size:30px;line-height:1.1;letter-spacing:-.025em;margin-bottom:4px}
+.hero .meta{font-size:12.5px;color:var(--sub);display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px}
+.hero .meta b{color:var(--ink);font-weight:700}
+.sec{padding:14px 0 12px;border-bottom:1px solid var(--line)}
+.sec.tight{padding:10px 0 8px}
+.sec.bright{background:#FFFCF3;margin:0 -20px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.sec h2 .en{font-size:11.5px;color:var(--sub);font-weight:500;letter-spacing:.04em;margin-left:6px}
+.day{display:grid;grid-template-columns:42px 1fr;gap:10px;margin:8px 0}
+.day .no{font-family:var(--mono);font-weight:800;font-size:22px;color:var(--accent);line-height:1;padding-top:2px}
+.day .body b{font-size:14px}
+.day .body .d-meta{font-size:12px;color:var(--sub);margin:2px 0 4px}
+.slot{display:grid;grid-template-columns:42px 1fr;gap:6px;padding:3px 0;font-size:12.5px;border-bottom:1px dotted var(--line2)}
+.slot:last-child{border-bottom:0}
+.slot .ts{font-family:var(--mono);color:var(--accent);font-weight:700}
+.slot .nm b{font-weight:700}
+.slot .nm .du{color:var(--sub);font-size:11.5px;margin-left:4px}
+.callout{padding:8px 12px;border:1px solid var(--line);background:#FFFCF3;font-size:12.5px;line-height:1.55;margin:6px 0}
+.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.pack-card{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#FFF}
+.pack-card.full{grid-column:1 / -1}
+.pack-card h5{font-size:12.5px;font-weight:700;color:var(--accent);margin:0 0 3px;letter-spacing:.02em}
+.pack-card .items{font-size:12.5px;line-height:1.65;color:var(--ink)}
+.pack-card .items i{font-style:normal;color:var(--sub);padding:0 3px}
+@media(max-width:640px){.pack-grid{grid-template-columns:1fr}}
+.gate{display:grid;grid-template-columns:18px 1fr;gap:6px 8px;align-items:start;margin:4px 0;font-size:13px}
+.gate .l{width:9px;height:9px;border-radius:50%;margin-top:5px}
+.gate .l.ok{background:var(--ok)} .gate .l.warn{background:var(--warn)} .gate .l.red{background:var(--red)} .gate .l.gray{background:#999}
+.gate .t b{font-weight:700}
+.gate .t .d{color:var(--sub);font-size:12.5px;line-height:1.5}
+footer{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;border-top:1px solid var(--line);margin-top:14px}
+.toc{padding:10px 0;border-bottom:1px solid var(--line)}
+.toc h4{font-size:11.5px;color:var(--sub);font-weight:600;font-family:var(--mono);letter-spacing:.06em;margin-bottom:4px}
+.toc ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:1px 16px}
+.toc li{font-size:12.5px;line-height:1.4}
+.toc a{border:0;color:var(--ink)}
+.toc a:hover{color:var(--accent)}
+@media(max-width:640px){.row{grid-template-columns:1fr}.toc ul{grid-template-columns:1fr}.day{grid-template-columns:32px 1fr}.day .no{font-size:18px}.hero h1{font-size:24px}}
+.g-supp{margin:10px 0 2px;border-top:1px dashed var(--line2);padding-top:8px}
+.g-supp h4{font-size:13.5px;margin:0 0 2px}
+.g-supp-note{font-size:11.5px;color:var(--sub);margin:0 0 6px}
+.g-group{font-size:12px;font-weight:700;color:var(--accent);margin:7px 0 2px;letter-spacing:.02em}
+.g-list{margin:0;padding-left:16px}
+.g-list li{font-size:12.5px;line-height:1.55;margin:3px 0;list-style:disc}
+.g-src{font-size:11px;color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+<svg class="cover-art" viewBox="0 0 720 132" preserveAspectRatio="xMidYMid slice" role="img" aria-label="行程封面：哈尔滨 至 三亚，5 天"><defs><linearGradient id="wt-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBE7CE"/><stop offset="1" stop-color="#F7F4EE"/></linearGradient></defs><rect width="720" height="132" fill="url(#wt-sky)"/><circle cx="566" cy="44" r="22" fill="#E8A05B" opacity=".9"/><path d="M0 96 L92 58 L168 92 L246 44 L332 98 L410 66 L500 100 L588 60 L672 98 L720 78 L720 132 L0 132 Z" fill="#C8D8C6" opacity=".85"/><path d="M0 112 L110 84 L206 116 L300 82 L396 120 L492 90 L590 118 L680 88 L720 104 L720 132 L0 132 Z" fill="#0F4C3A" opacity=".78"/><path d="M260 104 H460" stroke="#FFFFFF" stroke-width="1.6" stroke-dasharray="5 4" opacity=".9"/><circle cx="260" cy="104" r="5" fill="#FFFFFF" stroke="#0F4C3A" stroke-width="2"/><circle cx="460" cy="104" r="5" fill="#0F4C3A" stroke="#FFFFFF" stroke-width="2"/><circle cx="260" cy="104" r="2.4" fill="#0F4C3A" opacity=".55"/><circle cx="310" cy="104" r="2.4" fill="#0F4C3A" opacity=".55"/><circle cx="360" cy="104" r="2.4" fill="#0F4C3A" opacity=".55"/><circle cx="410" cy="104" r="2.4" fill="#0F4C3A" opacity=".55"/><circle cx="460" cy="104" r="2.4" fill="#0F4C3A" opacity=".55"/><text x="20" y="28" font-size="11" font-weight="700" letter-spacing="2" fill="#0F4C3A">WORLDSTIP / 行程封面</text><text x="20" y="53" font-size="19" font-weight="700" fill="#0F4C3A">哈尔滨 → 三亚</text><text x="20" y="72" font-size="11" fill="#5A5A5A">5 天 · 离线生成的示意插画，非实景照片</text><text x="700" y="28" text-anchor="end" font-size="11" fill="#0F4C3A">冬</text></svg>
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+  <span class="sec-no" style="margin:0">WORLDSTIP · 旅行指南小册子</span>
+  <span class="tag">冬</span>
+  <span class="tag accent">强度 2 · 轻</span>
+</div>
+<h1>哈尔滨 - 三亚 5 天</h1>
+<p class="lead">哈尔滨 → <b>三亚</b> · 5 天 ·  · 节奏画像「休闲」 · 结伴好友·2-4人熟人</p>
+<div class="meta">
+  <span>人均预算 <b>¥5,366</b></span>
+  <span>住宿 舒适 / 餐饮 舒适</span>
+  <span>房间 1 间 · 4 晚</span>
+  <span>费用口径 AA 分摊</span>
+</div>
+</div>
+<section class="sec"><span class="tag ok">✅ 可执行性体检通过：未发现 P0 硬错（零依赖关卡库校验）。</span></section>
+<div class="toc"><h4>CONTENTS</h4><ul><li><a href="#sec1">§1 路线总览</a></li><li><a href="#sec2">§2 怎么去</a></li><li><a href="#sec2b">§2b 可执行性体检</a></li><li><a href="#sec3">§3 必吃·必玩</a></li><li><a href="#sec4">§4 逐日动线</a></li><li><a href="#sec5">§5 季节与气候</a></li><li><a href="#sec6">§6 美景拍摄</a></li><li><a href="#sec7">§7 住宿</a></li><li><a href="#sec8">§8 预算速查</a></li><li><a href="#sec9">§9 行前清单</a></li><li><a href="#sec10">§10 安全与应急</a></li><li><a href="#sec11">§11 出发前多知道一点</a></li></ul></div>
+<section class="sec" id="sec1"><span class="sec-no">§ 01</span><h2>路线总览<span class="en">Route & Rhythm</span></h2><p class="sub-en">每天怎么走、用时多少、强度分布</p><div class="day"><div class="no">D1</div><div class="body"><b>抵达日</b> · 三亚 · 3.0h<div class="d-meta">上午 亚龙湾</div></div></div><div class="day"><div class="no">D2</div><div class="body"><b>游玩日</b> · 三亚 · 3.0h<div class="d-meta">上午 天涯海角</div></div></div><div class="day"><div class="no">D3</div><div class="body"><b>游玩日</b> · 三亚 · 4.0h<div class="d-meta">上午 南山</div></div></div><div class="day"><div class="no">D4</div><div class="body"><b>游玩日</b> · 三亚 · 4.0h<div class="d-meta">上午 蜈支洲岛</div></div></div><div class="day"><div class="no">D5</div><div class="body"><b>返程日</b> · 三亚 · 3.0h<div class="d-meta">上午 海景度假酒店</div></div></div><p style="margin-top:6px"><b>总用时</b>：17.0 小时（含停留，不含长途）</p><em class="note">画像「通用出行者」· 关注点：玩得顺、不踩坑、留得住回忆</em></section>
+<section class="sec" id="sec2"><span class="sec-no">§ 02</span><h2>怎么去<span class="en">Getting There</span></h2><p class="sub-en">未指定通行方式 · 公共交通比选，票价时长均为估算</p><table class="tbl"><thead><tr><th>方式</th><th>时长</th><th>票价</th><th>推荐度</th></tr></thead><tbody><tr><td>高铁</td><td>14.8h</td><td>¥1583</td><td></td></tr><tr><td>普铁</td><td>44.0h</td><td>硬座¥447 / 硬卧¥964</td><td></td></tr><tr><td>飞机</td><td>7.4h(含地面)</td><td>¥774~2581</td><td><span class="tag accent">推荐</span></td></tr><tr><td>客车</td><td>53.4h</td><td>¥1032</td><td></td></tr><tr><td>自驾</td><td>45.9h</td><td>约¥3743(油费+过路)</td><td></td></tr></tbody></table><em class="tip">💡 机票折扣估算低至 ¥774（约 3 折），不超过高铁估算 ¥1583 的 1.05 倍，且总耗时（7.4h）未超过高铁（14.8h）的 1.3 倍；可优先考虑机票，但请以实时票价为准。 距离 3442km 较远，若不赶时间，普铁夜班硬卧（约 ¥964）可省一晚住宿，适合预算优先。</em><p>直线距离 <b>3442 km</b></p><div class="card" style="border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin:10px 0">
+<h3 style="margin:0 0 8px">出行查询指引 <span class="feat-badge">以官方实时为准</span></h3>
+<p style="font-size:13px;color:var(--sub);margin:0 0 10px">哈尔滨 → 三亚 · 2026-11-08</p>
+<p style="margin:4px 0;font-size:13px">🚄 <b>铁路</b>：铁路出行：请到 12306 官方渠道（App / 官网 www.12306.cn）按到发站查询当日车次、余票与票价（建议到发站：哈尔滨 → 三亚）。本技能不代订、不缓存实时票价。</p>
+<p style="margin:4px 0;font-size:13px">✈ <b>民航</b>：民航出行：请到各航空公司官方渠道或官方售票平台查询哈尔滨—三亚 当日航班、时刻与票价，以官方实时结果为准。</p>
+<p style="font-size:11.5px;color:var(--sub);margin:8px 0 0">票价/余票/时刻以官方渠道实时结果为准；本技能仅做规划与信息引导，不代订、不外链导流、不缓存票价。</p>
+</div></section>
+<section class="sec" id="sec2b">
+<h2><span style="color:var(--sub);font-size:14px;margin-right:6px">§2b</span>可执行性体检<span class="en">Feasibility</span></h2>
+<p>✅ 各项指标均在经验安全阈值内，行程节奏与体力分配合理。</p>
+<em class="warn">体检基于经验阈值与本地关卡库（不含实时交通/票务/天气）；P0 为出行前必须复核的硬项，出行前 1–3 天请以官方实时信息为准。</em>
+</section>
+<section class="sec" id="sec3"><span class="sec-no">§ 03</span><h2>必吃 · 必玩<span class="en">Must-Eat &amp; Must-Do</span></h2><p class="sub-en">点到品类与招牌玩法，不指定具体店；查不到写未覆盖，绝不编造</p><h4>🍜 必吃（品类 · 为何值得 · 参考价）</h4><ul><li><b>清补凉</b> · 椰奶底加杂粮，解暑标配 <span class="muted">（小吃 · ¥8-15）</span></li><li><b>海南粉 / 抱罗粉</b> · 早餐首选，本地小馆比景区便宜一半 <span class="muted">（早餐 · ¥12-18）</span></li><li><b>椰子鸡火锅</b> · 三个椰子一锅水，文昌鸡最嫩 <span class="muted">（正餐 · ¥120-180 / 锅）</span></li><li><b>海鲜加工（第一市场 / 春园）</b> · 自购后加工，蒸煮 15-25 元一斤 <span class="muted">（正餐 · ¥80-150 / 人）</span></li><li><b>烤生蚝与烤鱿鱼</b> · 夜市现烤，按个或按份计价 <span class="muted">（夜宵 · ¥30-60）</span></li></ul><h4>🎯 必玩（招牌玩法）</h4><ul><li><b>亚龙湾</b> <span class="tag">三亚 · 第一海滩</span> — 沙滩漫步与游泳，酒店私家海滩最干净</li><li><b>天涯海角</b> <span class="tag">天涯区 · 经典地标</span> — 海滩拍照打卡刻字石，傍晚退潮好走</li><li><b>南山</b> <span class="tag">崖州 · 当地信仰园区</span> — 看海上观音与南山寺，园区大建议电瓶车</li><li><b>蜈支洲岛</b> <span class="tag">海棠湾 · 出海一日</span> — 登岛玩潜水/摩托艇，海水清澈需上岛一日</li><li><b>海景度假酒店</b> <span class="tag">亚龙湾/海棠湾 · 顶奢</span> — 酒店躺平看海、泳池与SPA，慢度假核心</li></ul></section>
+<section class="sec" id="sec4"><span class="sec-no">§ 04</span><h2>逐日动线<span class="en">Day by Day</span></h2><p class="sub-en">时间锚点 + 节点说明 + 关键提示</p><div style="margin:10px 0 8px"><b>D1 · 抵达日</b> · 三亚 · 3.0h · 含车程1.5h · 跨区1次 <span class="tag" style="color:#2e7d32;background:#e8f5e9">体力低</span></div><div class="slot"><div class="ts">09:30</div><div class="nm"><b>上午</b> <span class="du">3.0h（含车程1.5h）</span><div class="poi"><b>亚龙湾</b> <span class="tag">三亚 · 第一海滩</span><br><span class="muted">怎么玩：沙滩漫步与游泳，酒店私家海滩最干净</span><br><span class="muted">怎么去：亚龙湾，市区打车/公交约30-40分钟，旅游专线可达</span></div><br><span class="muted">亚龙湾（三亚 · 第一海滩） ｜ 宽松慢逛，留白为主</span></div></div><div class="slot"><div class="ts">13:30</div><div class="nm"><b>下午</b> <span class="du">0.0h</span><br><span class="muted">自由活动 ｜ 大景区玩半天，回住处休息最舒服</span></div></div><em class="tip">💡 抵达日先打卡：亚龙湾</em><div style="margin:10px 0 8px"><b>D2 · 游玩日</b> · 三亚 · 3.0h · 含车程1.5h · 跨区1次 <span class="tag" style="color:#2e7d32;background:#e8f5e9">体力低</span></div><div class="slot"><div class="ts">09:30</div><div class="nm"><b>上午</b> <span class="du">3.0h（含车程1.5h）</span><div class="poi"><b>天涯海角</b> <span class="tag">天涯区 · 经典地标</span><br><span class="muted">怎么玩：海滩拍照打卡刻字石，傍晚退潮好走</span><br><span class="muted">怎么去：天涯区，公交/打车约40分钟，景区较大需步行</span></div><br><span class="muted">天涯海角（天涯区 · 经典地标） ｜ 宽松慢逛，留白为主</span></div></div><div class="slot"><div class="ts">13:30</div><div class="nm"><b>下午</b> <span class="du">0.0h</span><br><span class="muted">自由活动 ｜ 大景区玩半天，回住处休息最舒服</span></div></div><em class="tip">💡 今日主打：天涯海角</em><div style="margin:10px 0 8px"><b>D3 · 游玩日</b> · 三亚 · 4.0h · 含车程1.5h · 跨区1次 <span class="tag" style="color:#b26a00;background:#fff4e0">体力中</span></div><div class="slot"><div class="ts">09:30</div><div class="nm"><b>上午</b> <span class="du">4.0h（含车程1.5h）</span><div class="poi"><b>南山</b> <span class="tag">崖州 · 当地信仰园区</span><br><span class="muted">怎么玩：看海上观音与南山寺，园区大建议电瓶车</span><br><span class="muted">怎么去：崖州区，距市区约40km，包车/旅游专线约1h</span></div><br><span class="muted">南山（崖州 · 当地信仰园区） ｜ 宽松慢逛，留白为主</span></div></div><div class="slot"><div class="ts">13:30</div><div class="nm"><b>下午</b> <span class="du">0.0h</span><br><span class="muted">自由活动 ｜ 大景区玩半天，回住处休息最舒服</span></div></div><em class="tip">💡 今日主打：南山（节奏适中，留意末班与体力分配）</em><div style="margin:10px 0 8px"><b>D4 · 游玩日</b> · 三亚 · 4.0h · 含车程1.5h · 跨区1次 <span class="tag" style="color:#b26a00;background:#fff4e0">体力中</span></div><div class="slot"><div class="ts">09:30</div><div class="nm"><b>上午</b> <span class="du">4.0h（含车程1.5h）</span><div class="poi"><b>蜈支洲岛</b> <span class="tag">海棠湾 · 出海一日</span><br><span class="muted">怎么玩：登岛玩潜水/摩托艇，海水清澈需上岛一日</span><br><span class="muted">怎么去：海棠湾码头乘船上岛，市区包车约1h+船程，限流早去</span></div><br><span class="muted">蜈支洲岛（海棠湾 · 出海一日） ｜ 宽松慢逛，留白为主</span></div></div><div class="slot"><div class="ts">13:30</div><div class="nm"><b>下午</b> <span class="du">0.0h</span><br><span class="muted">自由活动 ｜ 大景区玩半天，回住处休息最舒服</span></div></div><em class="tip">💡 今日主打：蜈支洲岛（节奏适中，留意末班与体力分配）</em><div style="margin:10px 0 8px"><b>D5 · 返程日</b> · 三亚 · 3.0h · 含车程1.5h · 跨区1次 <span class="tag" style="color:#2e7d32;background:#e8f5e9">体力低</span></div><div class="slot"><div class="ts">09:30</div><div class="nm"><b>上午</b> <span class="du">3.0h（含车程1.5h）</span><div class="poi"><b>海景度假酒店</b> <span class="tag">亚龙湾/海棠湾 · 顶奢</span><br><span class="muted">怎么玩：酒店躺平看海、泳池与SPA，慢度假核心</span><br><span class="muted">怎么去：亚龙湾/海棠湾沿海，打车/酒店接机，建议提前订海景房</span></div><br><span class="muted">海景度假酒店（亚龙湾/海棠湾 · 顶奢） ｜ 宽松慢逛，留白为主</span></div></div><div class="slot"><div class="ts">13:30</div><div class="nm"><b>下午</b> <span class="du">0.0h</span><br><span class="muted">自由活动 ｜ 大景区玩半天，回住处休息最舒服</span></div></div><em class="tip">💡 返程日收尾：海景度假酒店</em></section>
+<section class="sec bright" id="sec5"><span class="sec-no">§ 05</span><h2>季节与气候<span class="en">Season & Climate</span></h2><p><b>冬</b> 季 · 季节结论绑定出行日期 · 出行前 3 天务必复核实时天气预报</p><p>冬（12-2 月）· 雪景与雾凇、温泉旺季；部分景区歇业、路况复杂</p><p><b>本季关注</b>：从容 · 慢悠悠 · 留白 · 不赶 · 坐下来</p></section>
+<section class="sec" id="sec6"><span class="sec-no">§ 06</span><h2>美景拍摄<span class="en">Photo Guide</span></h2><p class="sub-en">本次行程出片清单 · 只列真会去的点 · 同类题材时机/参数只讲一次</p><h4>人文建筑</h4><p class="muted">时机：蓝调时刻（亮灯后 20–30 min）城市灯火与天光平衡最出片</p><ul><li><b>南山</b></li></ul><em class="note">拍法：建筑线条做引导线、侧光显立体；避开正午顶光，仰拍显气势、低角度收飞檐</em><h4>湖海江河</h4><p class="muted">时机：无风清晨拍倒影最稳，顺光时水面反光呈金色</p><ul><li><b>天涯海角</b> — 椰林做前景框景</li><li><b>蜈支洲岛</b> — 低角度贴沙面拍，留足天空与倒影</li></ul><em class="note">拍法：慢门 + ND 减光（白天 ND1000、1–3s）拍丝滑水流；偏振镜 CPL 压反光、增强倒影</em><em class="note">参数为通用起手值，实拍按现场光线微调；手机开网格线 + 长按锁定曝光，即可完成大部分题材。</em></section>
+<section class="sec" id="sec7"><span class="sec-no">§ 07</span><h2>住宿安排<span class="en">Where to Stay</span></h2><p><b>1 间 · 4 晚</b> · 1 间 × 4 晚（按房间计, 非按人数）</p><p>房型：大床房</p><p>选房逻辑：2 人约需 1 间</p><h4>💡 住宿贴士</h4><ul><li>2 人 1 间：偏好各自床位可改双床房</li></ul><h4>📍 选址速查</h4><ul><li><b>景区/山脚</b> · 离次日游玩点近，节省路程，旺季必须提前订</li><li><b>高铁/机场沿线</b> · 出发前/返程后各住一晚，避开早班车与红眼航班</li><li><b>市区/商圈</b> · 餐饮交通便利，适合城市观光与美食</li><li><b>草原/海岛</b> · 必住一晚当地特色（蒙古包/海景房），看星空/听海浪</li></ul></section>
+<section class="sec" id="sec8"><span class="sec-no">§ 08</span><h2>预算速查<span class="en">Budget</span></h2><p class="sub-en">基于距离的估算 · 实时票价查 12306 / 航司</p><table class="tbl"><thead><tr><th>分项</th><th class="r">最低/人</th><th class="r">常规/人</th><th class="r">占常规合计</th></tr></thead><tbody><tr><td>交通</td><td class="r">¥3642</td><td class="r">¥3642</td><td class="r">68%</td></tr><tr><td>住宿</td><td class="r">¥400</td><td class="r">¥600</td><td class="r">11%</td></tr><tr><td>餐饮</td><td class="r">¥500</td><td class="r">¥700</td><td class="r">13%</td></tr><tr><td>门票</td><td class="r">¥200</td><td class="r">¥200</td><td class="r">4%</td></tr><tr><td>其他</td><td class="r">¥155</td><td class="r">¥224</td><td class="r">4%</td></tr><tr><td><b>人均合计</b></td><td class="r"><b>¥4,897</b></td><td class="r"><b>¥5,366</b></td><td class="r">100%</td></tr></tbody></table><h4>💡 节省口诀</h4><ul><li>住宿按<b>房间</b>而非按人数 · 单人订大床房最划算</li><li>餐饮：早餐住宿含 / 午晚餐本地老店更地道</li><li>门票：学生证/老年证/军官证带好可省；多日票通常比单日票划算</li><li>机票：周中+提前 14 天是常见低洼；关注临近退票高峰</li></ul><em class="note">💑 陪伴结构「结伴好友·2-4人熟人」· 费用口径：<b>AA 分摊</b> · 费用 AA 均摊最省心；住宿按拼房后的『间数』计、非按人头。明示每人分摊与整团合计两档。</em></section>
+<section class="sec" id="sec9"><span class="sec-no">§ 09</span><h2>行前清单<span class="en">Pre-trip Checklist</span></h2><p class="sub-en">每类一张卡 · 出门前 1 天逐项打勾</p><div class="pack-grid"><div class="pack-card"><h5>🪪 证件</h5><div class="items">身份证<i>·</i>现金/银行卡<i>·</i>手机+充电器</div></div><div class="pack-card"><h5>👕 衣物</h5><div class="items">换洗衣物<i>·</i>舒适鞋<i>·</i>外套(昼夜温差)</div></div><div class="pack-card"><h5>🛡 防护</h5><div class="items">防晒霜<i>·</i>墨镜<i>·</i>帽子<i>·</i>雨伞/雨衣</div></div><div class="pack-card"><h5>💊 健康</h5><div class="items">常用药<i>·</i>创可贴<i>·</i>晕车药(自驾)</div></div><div class="pack-card"><h5>🔌 电子</h5><div class="items">充电宝<i>·</i>数据线<i>·</i>耳机</div></div><div class="pack-card full"><h5>🎯 画像重点</h5><div class="items">折叠椅<i>·</i>保温杯<i>·</i>相机<i>·</i>速干毛巾<i>·</i>小零食</div></div><div class="pack-card full"><h5>🗓 季节性</h5><div class="items">羽绒服<i>·</i>暖宝宝<i>·</i>防滑鞋<i>·</i>厚袜<i>·</i>保温杯<i>·</i>护踝</div></div></div><h4>⏰ 行前时间线（倒排）</h4><div class="tline"><div class="t">T-7d</div><div class="b">车票/机票开抢（12306 提前 15 天，热门线提前 7 天盯候补）· 住宿预订（旺季景区房紧俏）</div></div><div class="tline"><div class="t">T-3d</div><div class="b">装备清单逐项打勾 · 车辆/摩托检查 · 保险购买（含高风险运动条款）</div></div><div class="tline"><div class="t">T-1d</div><div class="b">充电满 · 现金零钱 · 药品分装 · 证件票据集中放贴身包 · 天气终查（恶劣预警触发 Plan B）</div></div><div class="tline"><div class="t">D-day</div><div class="b">水与食物装包 · 雨具按预报 · 行程发给家人 · 家中水电燃气门窗检查</div></div></section>
+<section class="sec bright" id="sec10"><span class="sec-no">§ 10</span><h2>安全与应急<span class="en">Safety & Emergency</span></h2><p class="sub-en">只给本地化、可落地的最优解</p><h4>🛡 通用安全</h4><ul><li>证件：身份证随身（购票/住宿实名刚需）</li><li>信息留底：行程单发给家人一份，含住宿地址与返程时间</li><li>紧急电话：110 报警 / 120 急救 / 122 交通</li><li>保险：户外活动买含高风险运动的意外险（一天期 5-15 元）</li><li>健康：慢性病患者带足药量+1 天余量；常备创可贴/肠胃药/退烧药</li><li>财物：大额现金分开放，手机挂绳防挤掉</li></ul><h4>👥 结伴好友·2-4人熟人 · 专属提醒</h4><ul><li>贵重物品分人保管、夜间结伴</li><li>异性同行注意分房得体</li><li>迁就各人体力设集合点；排满也留一顿共同夜宵/早餐时间</li><li>⚠ AA 先行垫付易生分歧，出发前讲清记账方式；别替所有人订死同一节奏。</li></ul></section>
+<section class="sec" id="sec11"><span class="sec-no">§ 11</span><h2>出发前多知道一点<span class="en">A Few Extra Things</span></h2><h4>· 12306 捡漏三时段</h4><p>放票不是一次放完：每日 6-7 点会放前一日累积的退票，22-23 点是退票高峰，开车前 1-2 天还会放出预留票与限售解除后的余票。抢不到别急着买高价，多刷这几个点。</p><h4>· 官方只认 12306</h4><p>第三方平台只是代为下单，退票、改签、候补都绕不开 12306。抢票软件容易被风控，关键票还是官方 App 最稳。</p></section>
+</div>
+<footer>
+<div class="wrap">
+本报告由 WorldsTip 旅行指南小册子技能生成 · 票价与开放时间以官方当日为准 · 户外活动请量力而行
+</div>
+</footer>
+</body>
+</html>

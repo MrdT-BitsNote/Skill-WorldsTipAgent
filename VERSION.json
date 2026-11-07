@@ -1,0 +1,25 @@
+{
+  "schema": "worldstip.version-truth.v1",
+  "version": "0.2.26",
+  "codename": "unified",
+  "lineage": {
+    "A": "worldstip__skillhub v0.2.1（发布版，规范骨架 + 离线夹具 + 假设外显）",
+    "B": "worldstip-travel-planner v0.1.49（本地版，9 风格增强渲染 + 人文史 + 成品样例）",
+    "S": "权威源仓库 v0.2.2（A+B 超集，发布前中性化）",
+    "merged_from": ["A", "B", "S"],
+    "base": "S",
+    "profile": "qianwen-first"
+  },
+  "version_files": [
+    "SKILL.md",
+    "README.md",
+    "CHANGELOG.md",
+    "INSTALL.md",
+    "QC_REPORT.md",
+    "DoD.md",
+    "scripts/worldstip.py",
+    "tools/build_pack.py"
+  ],
+  "rule": "以上文件的当前版本号必须等于 version 字段；历史版本记录允许出现在 CHANGELOG 的往期条目中，不参与比对。doctor.py 负责逐项核验。",
+  "released_at": "2026-11-07"
+}

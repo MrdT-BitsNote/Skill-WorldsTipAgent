@@ -1,0 +1,26 @@
+{
+  "province": "重庆市",
+  "code": "chongqing",
+  "cities": [
+    { "slug": "qijiang", "name": "綦江", "routes": 1 }
+  ],
+  "routes": [
+    {
+      "id": "qijiang-r1",
+      "n": "綦江山路休闲线",
+      "t": "休闲骑游",
+      "d": 42,
+      "days": 1,
+      "h": ["山路", "古镇"],
+      "c": "#8C5B3F",
+      "p": [[29.03, 106.65]],
+      "w": [[29.03, 106.65]],
+      "wn": ["綦江城区"],
+      "city": "綦江",
+      "citySlug": "qijiang",
+      "url": "/chongqing/routes/qijiang-r1/",
+      "cs": "verified",
+      "srcs": 1
+    }
+  ]
+}
