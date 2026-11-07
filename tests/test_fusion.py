@@ -24,8 +24,10 @@ def main():
             k, v = line.split(":", 1); fm[k.strip()] = v.strip()
 
     print("[F1] 平台两级目录（S7 等价）")
-    # 排除版本库与缓存：.git/objects/xx 天然三级，且随提交量变化，不是发布内容。
-    _VCS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "releases"}
+    # 排除版本库、缓存、发布归档与独立专家包：这些都不是技能交付包内容。
+    # expert/ 自带 .codebuddy-plugin/ 与 agents/ 子目录，其结构由
+    # tools/verify_backup.py 单独校验，不适用技能包的两级目录断言。
+    _VCS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "releases", "expert"}
     _walk = [(p, p.relative_to(ROOT)) for p in ROOT.rglob("*")
              if not any(part in _VCS for part in p.relative_to(ROOT).parts)]
     nested = [str(rel) for p, rel in _walk if p.is_dir() and len(rel.parts) > 1]

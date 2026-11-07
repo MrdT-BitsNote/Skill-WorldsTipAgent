@@ -44,10 +44,12 @@ KEY_DATA = {
 FM_REQUIRED = ("description", "description_zh", "description_en", "version", "author")
 TEMP_MARK = ("worldstip-out", "__pycache__", ".pytest_cache",
              "_tmp_", ".bak", ".zip")
-# 与 tools/build_pack.SKIP_DIRS 保持一致：本地版本库与归档位不进交付包，
-# 也不参与目录深度 / 临时产物检查（否则本地 git init 后必然误报）。
+# 与 tools/build_pack.SKIP_DIRS 保持一致：本地版本库、归档位与独立专家包
+# 都不进技能交付包，因此不参与技能包的目录深度 / 临时产物检查。
+# expert/ 是 WorkBuddy 专家包源码（自带 .codebuddy-plugin/ 与 agents/ 子目录），
+# 其结构由 tools/verify_backup.py 单独校验，不适用技能包的两级约束。
 SKIP_WALK = {".git", "releases", "worldstip-out", "__pycache__",
-             ".pytest_cache", ".mypy_cache"}
+             ".pytest_cache", ".mypy_cache", "expert"}
 
 results = []
 

@@ -43,10 +43,13 @@ import build_pack as BP  # noqa: E402  复用 collect() / pack_bytes() / VER
 
 LIMIT = 3 * 1024 * 1024  # WorkBuddy 解压后上限 3145728 字节
 
-EX_DIRS = {"fixtures", "tools", "test", "tests", "assets"}
+EX_DIRS = {"fixtures", "tools", "test", "tests", "assets",
+           # 专家包源码 / 接手文档属仓库维护资产，不进任何上传包
+           "expert"}
 EX_FILES = {
     "growth_log.md",
     "CONTEXT.md",
+    "HANDOFF.md",
     # 开发过程文档：对终端用户无价值，且正文引用大量历史脚本/验证集，
     # 保留只会不断触发「引用了不存在的文件」判定。
     "CHANGELOG.md",

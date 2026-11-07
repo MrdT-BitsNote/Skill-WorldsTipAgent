@@ -329,10 +329,12 @@ for k, v in fm.items():
         check(v.startswith('"') and v.endswith('"'), f"含冒号字段 {k} 已整体加引号")
 check("Read" in fm.get("allowed-tools", "") and "Bash" in fm.get("allowed-tools", "") and not any(x in fm.get("allowed-tools", "") for x in ("Shell", "Exec", "Sudo")), "allowed-tools 最小权限（融合版白名单含 Read/Bash、无越权工具）")
 
-# 目录层级：包内不得出现二级子目录。
-# 排除 .git / 缓存 / 发布归档：它们不是发布内容，扫进来只会让断言永远红
+# 目录层级：技能交付包内不得出现二级子目录。
+# 排除 .git / 缓存 / 发布归档 / 独立专家包：这些都不是技能交付包内容
 # （.git/objects/xx 天然是三级目录，且随提交数量变化）。
-_VCS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "releases"}
+# expert/ 自带 .codebuddy-plugin/ 与 agents/ 子目录，其结构由
+# tools/verify_backup.py 单独校验，不适用技能包的两级目录断言。
+_VCS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "releases", "expert"}
 
 
 def _pkg_walk():

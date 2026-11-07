@@ -29,10 +29,15 @@ ALLOW_NOEXT = {"LICENSE", "LICENCE", "NOTICE"}
 SKIP_DIRS = {"__pycache__", ".git", ".pytest_cache", ".mypy_cache",
              "releases", "worldstip-out",
              # 验证集与维护期脚本不随交付包分发（平台两级目录 + 交付卫生约定）
-             "tests", "test"}
+             "tests", "test",
+             # 专家包源码是独立产品线，只随 releases/ 里的 zip 分发，不进技能包
+             "expert"}
 SKIP_FILES = {
     "_patch_v022.py", "_verify_v022.py", "_tmp_plan.json",
     "run_all_fused.py", "build_fused_pack.py",
+    # 接手文档与备份工具只服务于仓库维护；若混入上传包，
+    # 其正文里的文件引用会被 WorkBuddy 审核器当作「必需资源」逐个索要。
+    "HANDOFF.md", "build_expert_pack.py", "verify_backup.py",
 }
 MAINT = {"build_geo_admin.py", "enrich_coords.py", "verify_coords.py",
          "sync_check.py", "volatile_verify.py", "build_destination_links.py",
