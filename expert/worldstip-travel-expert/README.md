@@ -6,11 +6,27 @@
 | --- | --- |
 | 专家包版本 | `1.0.0`（`plugin.json` 内） |
 | 对应技能版本 | `worldstip-travel-planner` **v0.2.272**（技能内部版本，见仓库根 `VERSION.json`） |
-| 形态 | Agent 型（单个 AI 专家），适配 WorkBuddy 专家目录 |
+| 形态 | Agent 型（单个 AI 专家 + 内嵌技能），适配 WorkBuddy 专家目录 |
+| 内嵌技能 | `skills/worldstip-travel-planner/`（入口型，用 `title/summary/read_when` 元数据，由 Agent 的 `skills` 字段绑定） |
 | 源码位置 | 本仓库 `expert/worldstip-travel-expert/` |
 | 可分发压缩包 | 仓库 `releases/worldstip-travel-expert.zip` |
 
 > 专家包版本号与技能版本号是**两条独立版本线**：专家包只在自身结构/`plugin.json` 变化时递增，技能版本由 `VERSION.json` 统一裁决。两者通过上表建立对应关系，避免版本错位。
+
+## 目录结构（对齐 WorkBuddy 官方专家包样板）
+
+```text
+worldstip-travel-expert/
+├── .codebuddy-plugin/plugin.json            专家包清单（16 字段，含 author.email）
+├── agents/worldstip-travel-expert.md       Agent 定义（frontmatter 含 tools / maxTurns / skills）
+├── avatars/expert.png                      512×512 真实头像
+├── skills/worldstip-travel-planner/        内嵌技能
+│   ├── SKILL.md                            入口说明，frontmatter 为 title/summary/read_when
+│   └── references/README.md                数据口径与索引说明
+└── README.md / LICENSE / ANTI_DISTILL.md
+```
+
+**两套 frontmatter 不混用**：专家包内嵌技能用 `title / summary / read_when`；独立平台上传包的技能正文用 `name / version / description / display_name / allowed-tools`。内嵌技能只是**入口**，不复制 500 行技能正文，也不复制 POI / 价格 / 天气数据——版本真源、正文真源、数据真源都只有一份（详见独立技能包 `HANDOFF.md` §12）。
 
 ## 核心功能（对应技能 v0.2.272 的四大关切）
 

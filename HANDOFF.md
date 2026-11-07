@@ -239,17 +239,27 @@ design-experts/
 1. `displayName` 写成 `{"en": "琳达", "zh": "Diana"}` —— 中英文值对调了。我方 `plugin.json` 的 `en/zh` 是正确的。
 2. `plugin.json` 引用 `avatars/expert.png`，但 zip 内**没有** `avatars/` 目录，头像文件缺失。我方专家包带真实 512×512 PNG，比样板完整。
 
-### 12.4 我方专家包逐项对照
+### 12.4 我方专家包逐项对照（整改后）
 
-| 项 | 官方 | 我方 v0.2.272 | 结论 |
+| 项 | 官方样板 | 我方 v0.2.272（整改后） | 结论 |
 | --- | --- | --- | --- |
 | `plugin.json` 键集合 | 16 键 | 16 键，完全一致 | 一致 |
-| `author` | `{name, email}` | `{name}`（缺 `email`） | 待补 |
-| `agents/*.md` frontmatter | `name/description/tools/maxTurns/skills` | `name/description/displayName/profession/maxTurns` | 缺 `tools` 与 `skills`；多出两个在 `plugin.json` 已有的重复字段 |
-| `skills/` 内嵌技能 | 有 | 无 | 结构缺项 |
+| `author` | `{name, email}` | `{name, email}` | 已补齐 |
+| `agents/*.md` frontmatter | `name/description/tools/maxTurns/skills` | 同左 5 键 | 已对齐；删掉与 `plugin.json` 重复的 `displayName`/`profession` |
+| `skills/` 内嵌技能 | 有 | `skills/worldstip-travel-planner/`（`SKILL.md` + `references/README.md`） | 已补齐 |
+| 内嵌技能 frontmatter | `title/summary/read_when` | 同左 3 键 | 已对齐，未混入独立包字段 |
 | `avatars/expert.png` | 引用但缺文件 | 真实存在 228,477 B | 我方更完整 |
-| 独立技能包 `SKILL.md` | 不适用（样板只有内嵌技能） | 500 行 + 16 字段，四平台已过审 | 保持现状 |
+| 独立技能包 `SKILL.md` | 不适用（样板只有内嵌技能） | 500 行 + 16 字段，四平台已过审 | **保持原样，未改动** |
 
-### 12.5 待定整改
+### 12.5 已落地整改（2026-11-07）
 
-是否把专家包升级为「带 `skills/` 内嵌技能」的完整形态，属于封装取向决策，尚未执行。三种可选做法：① 补 `author.email` + agent 的 `tools`/`skills`，新增一份 `title/summary/read_when` 格式的**入口型**内嵌 `SKILL.md`（不复制 500 行正文，明确指向仓库根 `SKILL.md` 单一真源）；② 只补 `author.email` 与 `tools`，保持裸 agent 形态，避免两份技能说明；③ 现有包不动，仅把本节规范用于后续新建专家包。无论选哪种，改动后都要重跑 `tools/build_expert_pack.py --verify` 与 `tools/verify_backup.py`，并同步 `dist/` 与 `releases/`。
+采用「按样板补全结构，但保持单一真源」的方案：
+
+1. `plugin.json` 补 `author.email`（取 Git 配置的公开 noreply 邮箱）。
+2. Agent frontmatter 改为官方 5 键：`tools: [Read, Write, Edit, Glob, Grep, Bash]`（与技能 `allowed-tools` 一致）、`skills: [worldstip-travel-planner]`；删除与 `plugin.json` 重复的展示字段。
+3. 新增内嵌技能 `skills/worldstip-travel-planner/SKILL.md`，frontmatter 为 `title/summary/read_when`，**入口型**：只写能力边界、数据口径、工作流程与输出契约，不复制 500 行正文、不复制任何 POI / 价格 / 天气数据，并显式声明版本真源、正文真源、数据真源只有一份。
+4. 新增 `skills/worldstip-travel-planner/references/README.md`，说明数据来自完整技能包、本专家包无数据副本、三条红线与静态快照缺口。
+5. 修正 Agent 正文一处事实错误：原文写「查本地库」并列出 5 个数据文件名，但专家包独立分发时**不含**这些文件；改为「调用内嵌技能确认口径，数据随完整技能包分发，不可用时降级」。
+6. 专家包 README 增补目录结构与「两套 frontmatter 不混用」说明。
+
+**验证**：`tools/verify_backup.py` 从 64 项扩到 **76 项**，新增 12 项专门检查内嵌技能 frontmatter、Agent 的 `tools/skills` 绑定、绑定目标真实存在、`plugin.json` 的 `author.email`、专家 zip 含内嵌技能文件等；全绿 76/76。`doctor.py` 17/17、`tests/run_all.py` 16/16 + 32/32 不受影响（`expert/` 已在三处判据中排除）。专家 zip 由 6 文件变 8 文件、240,764 B，`dist/` 与 `releases/` 字节一致；**四个平台上传包字节未变**（接手资产与专家源码均被构建器排除）。

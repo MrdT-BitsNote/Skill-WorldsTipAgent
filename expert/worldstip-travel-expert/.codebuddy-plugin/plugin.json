@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Travel planning expert that turns a destination plus days into an A5 compact booklet guide: how to get there, must-eat/must-do, day-by-day routes with per-POI play/arrival, season advice and scenario-based safety — built on verified POI and climate data, never fabricating.",
   "author": {
-    "name": "WorldsTip by MrdT"
+    "name": "WorldsTip by MrdT",
+    "email": "mrdt@users.noreply.github.com"
   },
   "agents": ["./agents/worldstip-travel-expert.md"],
 

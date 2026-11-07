@@ -86,7 +86,9 @@ def main_checks():
     edir = ROOT + "/expert/worldstip-travel-expert"
     for f in ("README.md", "LICENSE", "ANTI_DISTILL.md",
               ".codebuddy-plugin/plugin.json", "agents/worldstip-travel-expert.md",
-              "avatars/expert.png"):
+              "avatars/expert.png",
+              "skills/worldstip-travel-planner/SKILL.md",
+              "skills/worldstip-travel-planner/references/README.md"):
         check("专家源码含 %s" % f, os.path.isfile(edir + "/" + f), f)
     try:
         pj = json.loads(read(edir + "/.codebuddy-plugin/plugin.json").decode("utf-8"))
@@ -94,6 +96,8 @@ def main_checks():
               pj.get("name") == "worldstip-travel-expert", str(pj.get("name")))
         check("plugin.json 版本独立成线", bool(pj.get("version")),
               "专家包 %s / 技能 %s" % (pj.get("version"), ver))
+        check("plugin.json author 含 email",
+              bool(pj.get("author", {}).get("email")), str(pj.get("author")))
         for rel in list(pj.get("agents", [])) + [pj.get("avatar", "")]:
             rel = rel.lstrip("./")
             check("plugin.json 指向真实文件 %s" % rel, os.path.isfile(edir + "/" + rel), rel)
@@ -106,6 +110,39 @@ def main_checks():
               "%dx%d, %d bytes" % (w, h, len(png)))
     except Exception as e:
         check("头像 PNG 512×512", False, str(e))
+
+    # 3b. WorkBuddy 官方专家包结构（2026-11-07 design-experts 样板对照）
+    skill_dir = edir + "/skills/worldstip-travel-planner"
+    try:
+        inner = read(skill_dir + "/SKILL.md").decode("utf-8")
+        im = re.match(r"^---\n(.*?)\n---", inner, re.S)
+        ikeys = set(re.findall(r"^([A-Za-z_][A-Za-z0-9_-]*):",
+                               im.group(1), re.M)) if im else set()
+        check("内嵌技能 frontmatter 为 title/summary/read_when",
+              {"title", "summary", "read_when"} <= ikeys, str(sorted(ikeys)))
+        overlap = {"name", "version", "description", "allowed-tools"} & ikeys
+        check("内嵌技能不混入独立包字段", not overlap, str(sorted(overlap)))
+        check("内嵌技能声明单一真源版本", ver in inner, ver)
+        check("内嵌技能不复制 500 行正文",
+              "不是技能正文副本" in inner and "不复制" in inner, "")
+    except Exception as e:
+        check("内嵌技能 frontmatter 为 title/summary/read_when", False, str(e))
+    try:
+        ag = read(edir + "/agents/worldstip-travel-expert.md").decode("utf-8")
+        am = re.match(r"^---\n(.*?)\n---", ag, re.S)
+        akeys = set(re.findall(r"^([A-Za-z_][A-Za-z0-9_-]*):",
+                               am.group(1), re.M)) if am else set()
+        check("Agent frontmatter 含 tools 与 skills",
+              {"tools", "skills"} <= akeys, str(sorted(akeys)))
+        bound = re.search(r"^skills:\s*\[([^\]]+)\]", am.group(1), re.M)
+        bound_names = [x.strip() for x in bound.group(1).split(",")] if bound else []
+        check("Agent 绑定的内嵌技能真实存在",
+              bool(bound_names) and all(os.path.isdir(edir + "/skills/" + n)
+                                       for n in bound_names), str(bound_names))
+        dup = {"displayName", "profession"} & akeys
+        check("Agent 不重复声明 plugin.json 已有的展示字段", not dup, str(sorted(dup)))
+    except Exception as e:
+        check("Agent frontmatter 含 tools 与 skills", False, str(e))
 
     # 4. 四个平台上传包
     # 权威副本是 releases/（GitHub 里唯一被跟踪的 zip）；dist/ 是本地构建产物，
@@ -166,6 +203,9 @@ def main_checks():
               "%d 项" % len(names))
         check("专家 zip 含 plugin.json",
               "worldstip-travel-expert/.codebuddy-plugin/plugin.json" in names, "")
+        for rel in ("worldstip-travel-expert/skills/worldstip-travel-planner/SKILL.md",
+                    "worldstip-travel-expert/skills/worldstip-travel-planner/references/README.md"):
+            check("专家 zip 含内嵌技能文件 %s" % rel.split("/")[-1], rel in names, rel)
         if os.path.isfile(DIST + "/" + ez):
             check("dist 专家 zip 与 releases 字节一致",
                   sha(read(rel_ez)) == sha(read(DIST + "/" + ez)), "")
