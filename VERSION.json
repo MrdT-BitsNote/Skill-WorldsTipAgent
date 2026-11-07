@@ -1,6 +1,6 @@
 {
   "schema": "worldstip.version-truth.v1",
-  "version": "0.2.271",
+  "version": "0.2.272",
   "codename": "unified",
   "lineage": {
     "A": "worldstip__skillhub v0.2.1（发布版，规范骨架 + 离线夹具 + 假设外显）",

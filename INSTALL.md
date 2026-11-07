@@ -1,7 +1,7 @@
 **本包内容**：`SKILL.md`（技能定义）+ `references/`（40+ 份数据参考）+ `scripts/`（数十个纯标准库 Python 脚本，运行期依赖）+ `docs/`（架构 / 规范 / FAQ / 机制说明）+ `fixtures/`（离线自检夹具）+ `assets/`（logo）。分发包为控制体积，不含回归验证集与维护期构建脚本（仅源码仓库保留），也不含可选的 `moto-places` 扩展数据包（按需另装，见 `docs/RESOURCES.md`）。
 
-**版本**：v0.2.271　**许可**：MIT
-> **版本号说明**：本技能**内部开发版本 = 0.2.271**（全包文档统一以此为准）；SkillHub 平台侧 `_meta.json` 的 `version`（如 1.0.0）是平台发布流水号，与内部版本相互单独、不冲突。单一真源为根目录 `VERSION.json`，`scripts/doctor.py` 会逐项核验。
+**版本**：v0.2.272　**许可**：MIT
+> **版本号说明**：本技能**内部开发版本 = 0.2.272**（全包文档统一以此为准）；SkillHub 平台侧 `_meta.json` 的 `version`（如 1.0.0）是平台发布流水号，与内部版本相互单独、不冲突。单一真源为根目录 `VERSION.json`，`scripts/doctor.py` 会逐项核验。
 
 ## 适用平台
 
