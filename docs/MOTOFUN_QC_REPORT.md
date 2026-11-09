@@ -91,7 +91,7 @@
 | `--refresh` 回源 | `routes --province hunan --refresh` 在线 | 强制回源成功，数据与缓存一致；`--refresh --offline` 不联网 |
 | 真实全量回归 | 7 维 × 389 城 + 391 个 `(city,province,is_loop)` 三元组 | 119219 → 116155；匹配链保持 v0.1.1 的 0 未匹配 / 0 歧义 |
 | A/B 零回归 | 见 §2 | 3 条路径逐字节一致；282 差异全部归因，未解释项 0 |
-| 打包 | `python scripts/pack.py` | 固定时间戳、条目按路径排序；包内字节一致、无嵌套违规、解压后测试 EXIT 0 |
+| 打包 | `python scripts/pack.py`（源码仓库内，moto 上游打包器，不随本技能分发） | 固定时间戳、条目按路径排序；包内字节一致、无嵌套违规、解压后测试 EXIT 0 |
 | 可复现 | 两次单独打包比对 SHA256 | 一致（哈希只由 `pack.py` 实跑输出，不写入本报告以免自引用改变包内容） |
 
 ---
@@ -171,10 +171,9 @@ python scripts/motofun.py city --name 常德市 --dims malls,xiaocan,leisure,kid
 python scripts/motofun.py rank --kind food --n 5
 python scripts/motofun.py cascade --keyword 太浮山 --province hunan --with-track
 python scripts/motofun.py routes --province hunan --refresh   # 强制回源
-python scripts/route.py "全国美食榜" --json
-python scripts/pack.py                                  # 固定时间戳打包 + 字节/自包含校验
-# 上传前（需先安装 skill-quality-audit）：
-python ~/.workbuddy/skills/skill-quality-audit/scripts/audit.py . worldstip-moto-fun_v0.1.2.zip --profile upload
+python scripts/motofun_route.py "全国美食榜" --json
+# 打包（仅源码仓库内，moto 上游 pack.py，不随本技能分发）：python scripts/pack.py
+# 上传前走本仓库统一质检：python scripts/doctor.py --root . （平台侧审核器另计）
 ```
 
 ## 8. 关于「不重复造技能」的判断依据

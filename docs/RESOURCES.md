@@ -2,6 +2,24 @@
 
 > 本文件由 `SKILL.md` 分层拆分而来（v0.1.35），原始内容未删减。
 
+## 检索层分工（六个入口别混用）
+
+「搜东西」有六个脚本，历史上被混用过（拿 `search_dest` 当景点库搜、拿 `places_query`
+反问城市信息）。逐个写清边界，避免再次串味：
+
+| 入口 | 数据源 | 回答什么 | 典型命令 | 明确不做 |
+|---|---|---|---|---|
+| `search_dest.py` | `destinations.json`（393 城） | **城市级**目的地检索：名称/别名/拼音模糊、按区域、按主题、按建议天数 | `python scripts/search_dest.py 草原` | 不出景点级候选；不做联网 |
+| `places_query.py` | `moto_places.json`（2514 条，可选扩展包） | **景点级**候选：按省/市/类型/关键词过滤，回全称 `fn`，默认排除 suspect 与非景点条目 | `python scripts/places_query.py --province 湖南 --limit 8` | 禁止全文读入；不提供人文史长文 |
+| `history_query.py` | `places_history.json`（sidecar） | **人文史**：某一景点的历史/文化背景，按名精确或包含匹配 | `python scripts/history_query.py 张家界 --json` | 查不到明确 `found=false`；数据未随包时退出码 2 |
+| `guide_list.py` | 宿主真实检索结果（JSON 数组） | **攻略清单落地校验**：三元组必填、URL 必须真实、禁票务/交易深链、时效降级、去重排序 | `python scripts/guide_list.py guides.json [--strict]` | 自己不抓取、不存原文、不验证正文真伪 |
+| `guide_digest.py` | 攻略研读结论（LLM 提取） | **研读沉淀**：把「结论+来源+核验日期」写进 `research.json` 的 `ugc`；同事实多源合并升 verified | `python scripts/guide_digest.py facts.json --merge research.json` | 缺三元组直接拒收；不抓取原文 |
+| `site_query.py` | 自有站点（仅全量包） | **站点侧数据**：摩旅路线 / 商圈美食等按省市区拉取，懒加载 + 缓存 + 失败降级 | `python scripts/site_query.py fun --city 岳阳市 --limit 10` | 失败时报「数据不可用」退出码 2，**不编造** |
+
+判据顺序（拿不准时按此走）：城市级 → `search_dest`；景点级 → `places_query`；
+历史背景 → `history_query`；外部攻略 → 宿主检索 + `guide_list`（清单）/ `guide_digest`（沉淀）；
+自有站点 → `site_query`。**同一问题不要同时调两个入口再拼答案**——数据源不同，拼出来会自相矛盾。
+
 ## 资源清单
 
 **数据（references/）**
@@ -10,7 +28,7 @@
 - `CONTEXT.md` — **领域术语表（v0.1.24）**：四轴正交模型（Party Type/Audience/Style/Theme Playbook）+ 6 类陪伴结构的规范术语、边界判据与消歧裁定（纯词汇表，不含实现）。
 - `destinations.json` — **393 个国内目的地**（v0.1.17 从 moto 摩旅线路库城市 center 回灌真实 GCJ-02 坐标，**300 个含经纬度坐标**，其余靠名称检索 + 天气地理编码兜底；覆盖 31 省级行政区与港澳台地区，回灌条目带 `coord_source=moto_route_center` 溯源，绝不编造坐标）。**v0.1.3 起每条可带 `aliases`**（登记 worldstip.com 站点的 SEO 显示名，如「北海 · 涠洲岛」→ 涠洲岛），`search_dest.py` 关键字与主题检索均命中 alias；安徽木梨硔以 `slug=mulihong` 单独入库，与四川木里（`slug=muli`）区分。
 - `moto_places.json`（**可选扩展数据包 `moto-places`，主包不内置**）— **景点级地点库（v0.1.41：2514 条 / 32 省级单位 / 41 类）**。每条含 `n`(名称) `admin`(省·市·区县) `t`(类型) `lat/lng`(坐标，**100% 有坐标**) `hi`(亮点，均 79 字) `his`(历史，均 53 字) `src`(来源线路) `st`/`fl`(质量标签)。来源：moto-site-astro 31 省线路途经点归并 + 地图服务 POI/regeo 核验。与 `destinations.json`（393 城）交集仅 30 条，**独有 2296+ 个城市库没有的景点级地点**。**v0.1.41 修复湖南省 443 点全量丢失**（`is_primary` 陈旧计算，0 → 384 条）。
-  - **使用纪律（硬）**：必须经 `scripts/places_query.py` 检索，**严禁全文读入上下文**（1.3MB ≈ 40 万 token）。默认排除 `fl` 非空条目（1996 clean / 518 suspect），需 `--include-suspect` 放行。
+  - **使用纪律（硬）**：必须经 `scripts/places_query.py` 检索，**严禁全文读入上下文**（1.1MB ≈ 30 万 token）。默认排除 `fl` 非空条目（1996 clean / 518 suspect），需 `--include-suspect` 放行。
   - **降级契约**：文件不存在时脚本退出码 `2` → 退回 `destinations.json` 城市级建议 + 输出挂灰灯，不得静默降级。
   - **安装**：解压 `worldstip-travel-planner-ext-motoplaces-v*.zip` 覆盖到技能根目录（与 `SKILL.md` 同级）。
 - `seasons_climate.json` — **六气候区×四季方案**（气温/穿衣/当季看点/风险）— 小册子特色板块数据源
@@ -34,7 +52,7 @@
 - `carbon_factors.json` — **碳足迹因子库**：高铁/飞机/自驾/大巴/普铁 的 gCO2/人·km 与参考人公里价，`_sec_carbon` 双轴对比用
 - `weather_contingency.json` — **天气突变 Plan B 替代方向库**：降雨/高温/低温/大风/雾霾 下的室内与替代活动
 - `altitude_playbook.json` — **高反应急手册**：分级处置 + 常备药 + 就近就医枢纽
-- `lost_items_playbook.json` — **证件与财物遗失应急手册**：身份证/银行卡/手机/钱包的国内挂失冻结补办流程 + 应急热线（v0.0.12）
+- `lost_items_playbook.json` — **证件与财物遗失应急手册**：身份证/银行卡/手机/钱包的国内挂失冻结补办流程 + 应急热线（v0.0.12）。**读法**：行程离家 ≥2 天、或用户提到「丢/被偷/挂失」时，读取对应条目写进 § 安全提醒（只写国内流程与官方热线，不编造补办时效）。
 
 **规范文档（根目录）**
 - `报告生成规范.md` — **v0.1.14 定稿 · 权威报告生成纪律**：固定 10 章节结构（§01-§10）+ 13 项出册前验收清单 + 明确通行方式规则（§02）+ 行前清单卡片化（§08）+ TIP/WARN/NOTE 三色边线 + 零图纯文字 + A5 紧凑卡册版式。所有小册子输出必须严格遵循，与 `排版规范.md` 互为补充。
@@ -65,7 +83,7 @@
 | `plan_transit.py` | **交通比选（市内/近郊/跨城三级分流）**：市内圈（≤30km，只推公交/地铁/出租/网约车）、近郊圈（30-150km，优先自驾/班车，高铁仅通高铁且≥50km才列）、跨城（六方式比选）；坐标缺失不默认高铁，提示先确认「市内 or 跨城」 |
 | `check_weather.py` / `fetch_weather.py` | 户外天气预检（四档）/ 实时天气（fetch_weather 已接入 `live_api`，天气服务优先·Open-Meteo 兜底） |
 | `live_api.py` | **真实 API 统一接入层（v0.1.0）**：地图服务(MAP_CFG) 距离/驾车路径、天气服务(WEATHER_CFG) 7天预报、Open-Meteo(免授权) 兜底；环境变量驱动、失败回落 None |
-| `plan_context.py` | 季节感知+电车油车规划 |
+| `plan_context.py` | **季节感知 + 自驾动力规划（v0.2.274 起接 `seasons_climate.json` 单一事实源）**：`python scripts/plan_context.py --to 大理 --date 2026-07-15 [--car ev --drive 380]`；输出气候区（按 plateau/tropical/northwest/southwest 名单判定）、当月气温、装备、当季看点、气候风险 + 电车/油车能耗与补能策略。`build_itinerary.py --date` 内嵌同一套逻辑写入 `plan.json.context`，**不要在正文里另写一份季节判断** |
 | `search_dest.py` | 目的地关键字与主题检索（攻略与票务以宿主 WebSearch 公开检索为准，不抓取平台内容） |
 | `guide_list.py` | **攻略检索清单校验器（v0.1.27）**：把宿主检索结果整理成 JSON 喂入，负责 URL 合法性校验（禁手拼/禁票务域名/禁交易路径——攻略模式唯一可点击外链的标准闸门）、按 URL 归一化去重、按 match→confidence→日期排序、>30/90 天时效告警、渲染 Markdown 清单；`--strict` 有拒绝即退出码 1 |
 | `guide_digest.py` | **攻略研读沉淀校验器（v0.1.28）**：把攻略研读结论（fact/category/source/source_type/verified_on/confidence）校验合并为 `research.json` 的 `ugc` 条目——三元组缺一即拒（灰灯不进册）、fact>160 字拒（防照搬原文）、同事实多单独来源自动合并升级「多源印证」、日期拒未来、category→kind 映射兼容既有 ugc 结构；`--merge research.json` 去重合并写回、`--strict` 有拒绝退出码 1 |
@@ -74,8 +92,9 @@
 | `transit_links.py` | **交通查询文字指引（v0.1.17 · 标准改判）**：用 station_codes.json(3404站) 解析城市→站名→电报码，输出「请到 12306 官方渠道 / 航司官方渠道查询」品牌中性文字提示。**不生成任何可点击外链、不做站外引导、不点名具体商业平台**（旧版曾生成第三方 OTA 深链，因标准要求已整体移除）。`--json`/`--html` 输出；`render_html()` 生成无超链接的查询指引卡片嵌入小册子 |
 | `profile.py` | **跨会话偏好档案**（六维度 recall/remember/reset，落 `~/.aitrip/profile.json`） |
 | `refloader.py` | **共享 reference 加载器（v0.1.3）**：统一 `references/` 目录解析与 JSON 读取语义（`load(name, default=)` / `path()` / `ref_dir()`），消除各脚本重复的 `json.load(open(...))`。**刻意不做跨调用缓存**——每次返回全新对象，避免调用方就地修改污染后续读取；缺文件/损坏按 `default` 兜底（默认 `{}`，传 `default=None` 则返回 `None`），绝不抛异常打断主流程。已被 geo_lookup / outbound_constraints / outbound_safety / moto_check / geo_disambiguate / build_itinerary / check_weather / plan_route / search_dest 复用 |
+| `build_geo_checklist.py` | **地名管控清单生成器（源码仓库内，不随包）**：`python scripts/build_geo_checklist.py [--out 文件.md]` 把 references 里的行政区/坐标/归属数据摊成可审校的 Markdown 清单，用于发现「哪里还是空的」，不参与行程生成 |
 | `volatile_verify.py` | **易变数据自动核验（v0.1.17）**：扫描 references/*.json 中所有 `_stability:volatile`/`volatile:true`/`vol_note` 标记及 stability.json 定义的 volatile 字段名，检查 `_updated` 日期戳是否超过 30 天阈值。`--strict` 有过期退出码 1、`--json` 机器可读、`--file` 单文件、`--fix` 自动刷新日期戳。跳过 stability.json 字典本身 |
-| `enrich_coords.py` / `verify_coords.py` | 坐标补全（并发≤4）/ 反查自检 |
+| `enrich_coords.py` / `verify_coords.py` | **构建期维护脚本（源码仓库内，不随包）**：坐标补全（并发≤4）/ 反查自检：`python scripts/verify_coords.py --json` 抽检 lat/lon 是否落在所属行政区，`--limit N` 控制样本量；数据侧改动后必须跑一遍 |
 | `reflect.py` | **复盘回写**（准确度/安全/预算/舒适/内容 1-5★，落 `~/.aitrip/feedback.json`） |
 | `places_query.py` | **景点级地点检索（v0.1.41 · 配套可选扩展包 `moto-places`）**：按 `--province / --admin / --type / --kw` 过滤 `references/moto_places.json`，默认回 8 条、`hi` 截断 120 字——**数据不进上下文，只进结果**。默认排除质量问题条目（`fl` 非空），`--include-suspect` 放行；`--list-provinces` / `--list-types` / `--json` / `--full-hi` / `--with-his`。退出码契约：`0` 有结果 / `1` 无匹配 / **`2` 扩展数据未安装**（上层退回城市级建议并挂灰灯）。须先 `cd` 到技能根目录（相对路径取数） |
 | `sync_check.py` | **数据同步校验（v0.1.3）**：把 live 站点 worldstip.com 的目的地清单与 `destinations.json` 按 **slug** 联表，报出「冲突 / 显示名漂移 / 站点独有 / 技能独有」，防止静默错误。纯比较逻辑 `compare()` 与联网 I/O 分离；`--live` 联网拉取、`--site-file` 离线比对、`--strict` 有未登记问题退出码 1、`--json` 机器可读。已知且经确认的差异登记进 `KNOWN` 白名单（europe/georgia 跨域页、shishou 出发地、muli 站点归属待修），报为「已知」而非「错误」 |

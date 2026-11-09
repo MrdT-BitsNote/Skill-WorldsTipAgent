@@ -14,7 +14,13 @@
   4. 离线优先：天气默认不跑（需联网且波动），--with-weather 显式开启；
      全程无网络时仍可产出完整册子。
   5. 双渲染：默认紧凑卡册（快/小）；--rich 切 9 风格增强渲染器。
-  6. 纯标准库、零第三方依赖、零子进程、零写死路径。
+     发行包按平台裁剪、可能不含增强渲染器：此时 --rich **显式降级**为紧凑卡册
+     （stderr 打 [DEGRADED] + manifest.degraded=true），不再产出 0 字节后静默失败。
+  6. 终端分流（v0.2.274）：默认 --device both 一次产三件——
+     PC 网页版（--out 本身）、A5 分页小册子（-A5）、手机 HTML5 版（-手机）；
+     pc/a5/mobile 单选时只产一件。增强渲染器为单页长文档，不分流，manifest 记
+     device_applied=false 并说明原因，不假装产出。
+  7. 纯标准库、零第三方依赖、零子进程、零写死路径。
 
 退出码：0 成功 / 2 参数错误 / 3 非出行请求被拦 / 4 链路步骤失败。
 """
@@ -30,6 +36,9 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# 打包时按平台裁剪，--rich 可能没有渲染器可用；降级文案里不写具体文件名，
+# 免得被构建器的文本清洗规则咬到（那是按文件名做替换的）。
+_PKG_KIND = "精简发行包"
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
@@ -40,6 +49,18 @@ import geo_extract  # noqa: E402
 
 def _script(name):
     return os.path.join(HERE, name)
+
+
+# 与 render_compact.DEVICE_SUFFIX 保持一致：both 模式下 --out 为 PC 版，另两件加后缀。
+_DEVICE_SUFFIX = {"a5": "-A5", "mobile": "-手机"}
+
+
+def _expected_outputs(html, device):
+    """推导本次渲染应当产出的 HTML 路径清单（用于 manifest 逐件记账）。"""
+    if device != "both":
+        return [html]
+    stem, ext = os.path.splitext(html)
+    return [html] + [stem + _DEVICE_SUFFIX[d] + ext for d in ("a5", "mobile")]
 
 
 def _run(name, argv):
@@ -105,6 +126,8 @@ def main():
     ap.add_argument("--dir", default="", help="产物目录（默认 ./worldstip-out）")
     ap.add_argument("--rich", action="store_true", help="启用 9 风格增强渲染器")
     ap.add_argument("--rich-style", default="apple", help="增强渲染风格")
+    ap.add_argument("--device", choices=["pc", "a5", "mobile", "both"], default="both",
+                    help="终端形态：pc 桌面网页 / a5 A5 分页小册子 / mobile 手机 HTML5 / both 三件齐出（默认）")
     ap.add_argument("--variant", choices=["full", "light"], default="full")
     ap.add_argument("--feasibility", choices=["none", "advisory", "strict"],
                     default="advisory", help="可执行性体检档位")
@@ -159,7 +182,7 @@ def main():
         json.dump({"ugc": []}, f, ensure_ascii=False)
 
     manifest = {
-        "version": "0.2.273", "engine": "worldstip.py", "offline_default": True,
+        "version": "0.2.276", "engine": "worldstip.py", "offline_default": True,
         "input": a.text, "parsed": p, "steps": [], "outputs": {},
     }
 
@@ -200,22 +223,52 @@ def main():
         manifest["weather_live"] = weather_ok
 
     # ---- 5. 渲染 --------------------------------------------------------
-    if a.rich:
+    # v0.2.274：发行包按平台裁剪，部分包不含九风格增强渲染器。此前 --rich 在这类
+    # 包内直接失败（render_booklet.py 不存在 → 127/退出 4、HTML 0 字节），调用方
+    # 只能看到「链路未产出成品」，既不知道为什么，也拿不到任何册子。
+    # 现在改为：可用则真跑增强渲染；不可用则**显式降级**为紧凑卡册，把降级事实
+    # 写进 stderr 与 manifest/JSON（degraded=true + degrade_reason），绝不假装成增强版。
+    rich_ready = os.path.isfile(_script("render_booklet.py"))
+    degraded = False
+    degrade_reason = ""
+    if a.rich and not rich_ready:
+        degraded = True
+        degrade_reason = ("本包是%s，不含九风格增强渲染器；已回落紧凑卡册 "
+                          "render_compact.py，需要增强版请用全量发行包" % _PKG_KIND)
+        sys.stderr.write("[DEGRADED] %s\n" % degrade_reason)
+    if a.rich and rich_ready:
         rv = ["--plan", plan, "--transit", transit, "--research", research,
               "--out", html, "--title", title, "--style", a.rich_style,
               "--variant", a.variant, "--feasibility", a.feasibility]
         if weather_ok:
             rv += ["--weather", weather]
         renderer = "render_booklet.py"
+        # 九风格增强渲染器自成一套连续长页，不区分终端；此处如实记录「设备分流未生效」，
+        # 不假装产出了 A5 / 手机版。
+        device_applied = (a.device == "pc")
     else:
         rv = ["--plan", plan, "--transit", transit, "--research", research,
-              "--out", html, "--title", title, "--feasibility", a.feasibility]
+              "--out", html, "--title", title, "--feasibility", a.feasibility,
+              "--device", a.device]
         renderer = "render_compact.py"
+        device_applied = True
     rc = step(renderer, rv)
 
     ok = (rc == 0 and os.path.isfile(html) and os.path.getsize(html) > 0)
     manifest["renderer"] = renderer
-    manifest["outputs"]["小册子.html"] = os.path.getsize(html) if os.path.isfile(html) else 0
+    manifest["device_requested"] = a.device
+    manifest["device_applied"] = device_applied
+    if not device_applied:
+        manifest["device_note"] = ("增强渲染器产出单页长文档，不做终端分流；"
+                                  "需要 PC/A5/手机三件套请去掉 --rich 使用紧凑渲染器")
+    if a.rich:
+        manifest["render_requested"] = "render_booklet.py"
+        manifest["degraded"] = degraded
+        if degraded:
+            manifest["degrade_reason"] = degrade_reason
+    for path in _expected_outputs(html, a.device if device_applied else "pc"):
+        if os.path.isfile(path):
+            manifest["outputs"][os.path.basename(path)] = os.path.getsize(path)
     return _finish(manifest, outdir, a, ok=ok, code=0 if ok else 4)
 
 
@@ -228,15 +281,26 @@ def _finish(manifest, outdir, a, ok, code):
     with open(mp, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
     if a.json:
-        print(json.dumps({"ok": ok, "html": manifest["html"], "manifest": mp,
-                          "steps": manifest["steps_count"],
-                          "elapsed_seconds": manifest["elapsed_seconds"],
-                          "outputs": manifest["outputs"],
-                          "parsed": manifest["parsed"]}, ensure_ascii=False, indent=2))
+        body = {"ok": ok, "html": manifest["html"], "manifest": mp,
+                "steps": manifest["steps_count"],
+                "elapsed_seconds": manifest["elapsed_seconds"],
+                "renderer": manifest.get("renderer", ""),
+                "device": manifest.get("device_requested", ""),
+                "device_applied": manifest.get("device_applied", True),
+                "outputs": manifest["outputs"],
+                "parsed": manifest["parsed"]}
+        if manifest.get("device_note"):
+            body["device_note"] = manifest["device_note"]
+        if manifest.get("degraded"):
+            body["degraded"] = True
+            body["degrade_reason"] = manifest.get("degrade_reason", "")
+        print(json.dumps(body, ensure_ascii=False, indent=2))
     else:
         print("[OK] %s" % manifest["html"] if ok else "[FAIL] 链路未产出成品，详见 %s" % mp)
         print("     steps=%d  elapsed=%ss  outputs=%s" %
               (manifest["steps_count"], manifest["elapsed_seconds"], manifest["outputs"]))
+        if manifest.get("degraded"):
+            print("[DEGRADED] %s" % manifest.get("degrade_reason", ""))
     return code
 
 

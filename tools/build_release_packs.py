@@ -22,9 +22,9 @@ STAMP = (2026, 11, 7, 0, 0, 0)
 
 META_JSON = json.dumps({
     "slug": "worldstip-travel-planner",
-    "displayName": "WorldsTip 旅行规划小册子",
-    "version": "1.2.1",
-    "summary": "输入目的地与天数，生成 A5 紧凑旅行小册子：怎么去、必吃必玩、逐日动线、安全提醒；基于真实 POI 与气候数据，绝不编造。",
+    "displayName": "WorldsTip旅行指南小册子",
+    "version": VER,
+    "summary": "一句话生成旅行小册子，按终端一次出三件：电脑网页版、可打印 A5、手机 HTML5。含逐日动线、交通比选、住宿分房、预算与摩旅真实里程；查不到的地方标「需现场确认」，不编造。",
     "license": "MIT",
     "internalVersion": VER,
 }, ensure_ascii=False, indent=2).encode("utf-8")
@@ -49,10 +49,48 @@ def add_to_items(items, rel, data):
     return items
 
 
-def build(out, extra_rel=None, extra_data=None, verify=True):
+# SkillHub 的类型白名单不收无扩展名文件，上传后直接报「不允许的文件类型: LICENSE」。
+# WorkBuddy 认原名（其专用构建器断言根级必须存在 LICENSE），故只在这两包内改名，
+# 并把包内对它的引用一并改写，否则 markdown 链接会指向不存在的文件。
+RENAME = {"LICENSE": "LICENSE.md"}
+LICENSE_SUBS = [
+    ("[MIT License](LICENSE)（详见根目录 `LICENSE`）",
+     "[MIT License](LICENSE.md)（详见根目录 `LICENSE.md`）"),
+    ("本声明与 `LICENSE` 一并构成完整授权条件",
+     "本声明与 `LICENSE.md` 一并构成完整授权条件"),
+    ("├── LICENSE                      MIT 协议 + 数据免责声明",
+     "├── LICENSE.md                   MIT 协议 + 数据免责声明"),
+]
+
+
+def apply_platform_fix(items, rename=None, subs=None):
+    """按平台改写文件清单：先重命名，再对 .md 做定点文本替换。
+
+    替换前统一走 BP.pack_bytes（LF 归一），保证与未改动的包字节口径一致。
+    """
+    if rename:
+        items = [(rename.get(rel, rel), p) for rel, p in items]
+    if subs:
+        out = []
+        for rel, p in items:
+            if not rel.endswith(".md"):
+                out.append((rel, p))
+                continue
+            data = p if isinstance(p, bytes) else BP.pack_bytes(p)
+            text = data.decode("utf-8")
+            for a, b in subs:
+                text = text.replace(a, b)
+            out.append((rel, text.encode("utf-8")))
+        items = out
+    return items
+
+
+def build(out, extra_rel=None, extra_data=None, verify=True,
+          rename=None, subs=None):
     items = BP.collect()
     if extra_rel:
         items = add_to_items(items, extra_rel, extra_data)
+    items = apply_platform_fix(items, rename, subs)
     items = sorted(items)
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -90,9 +128,11 @@ def main():
         dist, "worldstip-travel-planner-v%s-workbuddy.zip" % VER))
     wb = 0 if BWB.report(wb_out) else 1
     sh = build(os.path.join(dist, "worldstip-travel-planner-v%s-skillhub.zip" % VER),
-               "_meta.json", META_JSON, verify=True)
+               "_meta.json", META_JSON, verify=True,
+               rename=RENAME, subs=LICENSE_SUBS)
     dm = build(os.path.join(dist, "worldstip-travel-planner-v%s-dumate.zip" % VER),
-               "PLATFORM.md", PLATFORM_MD, verify=True)
+               "PLATFORM.md", PLATFORM_MD, verify=True,
+               rename=RENAME, subs=LICENSE_SUBS)
     # 硬闸门补齐：WorkBuddy 已在专用构建器内拦过；完整包（SkillHub / DuMate）
     # 同样不能夹带会被审核器当成「必需资源」的中文名词或指向被裁文档的路径。
     sh_out = os.path.join(dist, "worldstip-travel-planner-v%s-skillhub.zip" % VER)

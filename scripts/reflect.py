@@ -14,15 +14,45 @@
 import argparse
 import json
 import os
+import sys
 from datetime import datetime
 
-FEEDBACK = os.path.expanduser("~/.aitrip/feedback.json")
 FIELDS = ["accuracy", "safety", "budget", "comfort", "content"]
+_WRITE_FAIL = ("❌ 复盘写入失败（%s）\n"
+               "   目标路径: %s\n"
+               "   本次复盘**没有保存**，不要向用户声称已记录。\n"
+               "   处置：把 AITRIP_HOME 指向可写目录后重试，例如 "
+               "`AITRIP_HOME=/tmp/aitrip python reflect.py --trip ...`\n")
+
+
+def feedback_path() -> str:
+    """复盘路径：AITRIP_HOME 优先，否则 ~/.aitrip。
+
+    v0.2.274：托管沙箱里 $HOME 可能不可写，原先直接 open(...,"w") 抛原始
+    PermissionError traceback。改为原子写 + 明确诊断（同 profile.py）。
+    """
+    base = os.environ.get("AITRIP_HOME") or os.path.join(os.path.expanduser("~"), ".aitrip")
+    return os.path.join(base, "feedback.json")
+
+
+def _save(data: list) -> tuple[bool, str]:
+    path = feedback_path()
+    tmp = path + ".tmp"
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, path)
+        return True, path
+    except OSError as e:
+        return False, "%s: %s" % (type(e).__name__, e)
 
 
 def _load() -> list:
     try:
-        return json.load(open(FEEDBACK, encoding="utf-8"))
+        with open(feedback_path(), encoding="utf-8") as f:
+            got = json.load(f)
+        return got if isinstance(got, list) else []
     except Exception:
         return []
 
@@ -30,8 +60,9 @@ def _load() -> list:
 def add(entry: dict) -> list:
     data = _load()
     data.append(entry)
-    os.makedirs(os.path.dirname(FEEDBACK), exist_ok=True)
-    json.dump(data, open(FEEDBACK, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    ok, info = _save(data)
+    if not ok:
+        raise OSError(info)
     return data
 
 
@@ -66,11 +97,14 @@ def main() -> int:
         "text": args.text or "",
         "tag": args.tag or "",
     }
-    add(entry)
+    try:
+        add(entry)
+    except OSError as e:
+        sys.stderr.write(_WRITE_FAIL % (e, feedback_path()))
+        return 2
     print(f"✅ 已记录复盘：{entry['trip']} / {entry['field']} {entry['score']}★")
     return 0
 
 
 if __name__ == "__main__":
-    import sys
     sys.exit(main())

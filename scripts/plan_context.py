@@ -18,11 +18,60 @@
     山区充电桩少; 油车要算加油站间距
 
 本脚本输出**可操作**的结论, 不是泛泛的提醒。
+
+## 数据来源（单一事实源）
+区域归类与四季基线读 `references/seasons_climate.json`（六气候区 × 四季，
+含 `match_rules` 判定顺序）；本文件只保留「月级细化表」（把四季拆到 12 个月）。
+月表里没有的气候区（如 `northwest`）直接用基线数据的四季块，绝不凭印象补。
+基线缺失时退回内置常量并在 `warnings` 里说明，不静默。
 """
 import argparse
 import json
+import re
 import sys
 from datetime import date, datetime
+from pathlib import Path
+
+REF_SEASONS = Path(__file__).resolve().parent.parent / "references" / "seasons_climate.json"
+
+
+def _load_baseline() -> dict:
+    try:
+        with open(REF_SEASONS, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+BASELINE = _load_baseline()
+REGION_DATA = BASELINE.get("regions") or {}
+MATCH_RULES = BASELINE.get("match_rules") or {}
+
+
+def available() -> bool:
+    """季节基线是否可读。False 时下游应标注「按内置常量估算」。"""
+    return bool(REGION_DATA)
+
+
+def _as_set(key: str) -> set:
+    return set(MATCH_RULES.get(key) or ())
+
+
+SEASON_OF_MONTH = {
+    1: "冬", 2: "冬", 3: "春", 4: "春", 5: "春",
+    6: "夏", 7: "夏", 8: "夏", 9: "秋", 10: "秋", 11: "秋", 12: "冬",
+}
+
+
+def season_word(month: int) -> str:
+    """月份 → 春/夏/秋/冬（供 build_itinerary 自动补 --season）。"""
+    return SEASON_OF_MONTH.get(int(month), "")
+
+
+def season_block(kind: str, month: int) -> dict:
+    """基线数据里 (气候区, 月份) 对应的四季块；无则空字典。"""
+    s = season_word(month)
+    return ((REGION_DATA.get(kind) or {}).get("seasons") or {}).get(s) or {}
 
 # ── 季节画像: 按月份给不同地区的气候与专属建议 ──
 # key = (月份, 区域归类); 区域归类见 region_of()
@@ -104,16 +153,17 @@ SEASON = {
     },
 }
 
-# 区域归类
+# 区域归类（兜底）：基线数据 match_rules.climate_of 缺失时才用
 REGION_KIND = {
     "华北": "north", "东北": "north",
     "华东": "south", "华中": "south", "华南": "tropical",
-    "西南": "plateau", "西北": "plateau",
+    "西南": "southwest", "西北": "northwest",
     "港澳台": "tropical", "主题乐园": "south",
 }
 # 真正的高寒高海拔目的地(海拔 2500m 以上, 需按高原工况)
 # 注意: 玉龙雪山/苍山/九寨沟等是"景区高海拔但城区温和",
 # 与拉萨/香格里拉这类"整城高海拔"不同, 故不列入。
+# 基线数据 match_rules.plateau_list 存在时与之求并集。
 TRUE_PLATEAU = {
     "拉萨", "香格里拉", "色达", "稻城亚丁", "四姑娘山", "若尔盖", "理塘",
     "芒康", "新都桥", "塔公", "丹巴", "甘孜", "阿坝", "凉山西昌", "毕棚沟",
@@ -129,16 +179,60 @@ HIGH_ALT_SCENIC = {
     "普达措", "老君山", "玉龙", "梅里",
 }
 
+_PLATEAU_ALL = TRUE_PLATEAU | _as_set("plateau_list")
+
 
 def region_kind(city: str, region: str) -> str:
-    # 整城位于高原 → 按高原工况
-    if city in TRUE_PLATEAU:
+    """目的地 → 六气候区 key。
+
+    判定顺序照抄基线数据 match_rules.note：
+      高原名单 → 热带名单 → 西北名单 → 西南名单 → 大区映射 → 兜底 south。
+    名单来自 references/seasons_climate.json（单一事实源），基线缺失才用本地常量。
+    """
+    c = (city or "").strip()
+    if c in _PLATEAU_ALL:
         return "plateau"
-    # 西南其余地区(大理/丽江城区等)海拔 1500-2400, 气候温和,
-    # 按 southern 夏季多雨处理更准确, 单独建一档
-    if region == "西南":
-        return "southwest"
+    for kind in ("tropical", "northwest", "southwest"):
+        if c in _as_set(f"{kind}_list"):
+            return kind
+    mapped = MATCH_RULES.get("climate_of", {}).get(region)
+    if mapped:
+        return mapped
     return REGION_KIND.get(region, "south")
+
+
+def region_label(kind: str) -> str:
+    return ((REGION_DATA.get(kind) or {}).get("label")) or kind
+
+
+def advice(kind: str, month: int) -> dict:
+    """气候区 + 月份 → 可执行建议。
+
+    月表（本文件）负责「这个月具体什么气温、要带什么」；
+    基线数据（seasons_climate.json）负责「这个季节看什么景、有什么风险」。
+    月表没有的气候区直接从基线的四季块取，不编造。
+    """
+    block = season_block(kind, month)
+    row = SEASON.get(kind, {}).get(month)
+    if row:
+        label, climate, tips = row
+        source = "月表"
+    else:
+        label = season_word(month)
+        climate = block.get("temp", "")
+        tips = [t.strip() for t in re.split(r"[；;]", block.get("clothing", "")) if t.strip()]
+        source = "季节基线" if block else "无数据"
+    return {
+        "kind": kind,
+        "month": month,
+        "quarter": season_word(month),
+        "season": label,
+        "climate": climate,
+        "tips": tips,
+        "highlight": block.get("highlight", ""),
+        "risk": block.get("risk", ""),
+        "source": source,
+    }
 
 
 # ── 自驾动力类型 ──
@@ -239,13 +333,15 @@ def build(cities: list[str], regions: dict, trip_date: str | None,
             out["warnings"].append(f"日期格式错误: {trip_date}, 应为 YYYY-MM-DD")
             d, m = None, date.today().month
         if d:
+            if not available():
+                out["warnings"].append(
+                    "季节基线 references/seasons_climate.json 不可读 —— 区域归类与四季景观/风险"
+                    "改按内置常量估算，结论只到「月表」层级，出行前务必实查天气预报。")
             for c in cities:
                 kind = region_kind(c, regions.get(c, ""))
-                label, climate, tips = SEASON[kind][m]
-                out["cities"][c] = {
-                    "kind": kind, "month": m, "season": label,
-                    "climate": climate, "tips": tips,
-                }
+                adv = advice(kind, m)
+                adv["region_label"] = region_label(kind)
+                out["cities"][c] = adv
 
     # 节假日提示
     if trip_date:
@@ -332,8 +428,13 @@ def main() -> int:
         print(f"出行日期: {r['date']}")
         for c, v in r["cities"].items():
             print(f"\n── {c} · {v['season']}（{v['climate']}）")
+            print(f"   气候区: {v.get('region_label', v['kind'])} │ 依据: {v.get('source', '')}")
             for t in v["tips"]:
                 print(f"   · {t}")
+            if v.get("highlight"):
+                print(f"   本季看点: {v['highlight']}")
+            if v.get("risk"):
+                print(f"   本季风险: {v['risk']}")
     else:
         print(r["warnings"][0] if r["warnings"] else "未提供日期")
 
@@ -360,5 +461,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    from pathlib import Path
     sys.exit(main())

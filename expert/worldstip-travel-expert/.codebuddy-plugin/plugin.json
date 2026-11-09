@@ -1,7 +1,7 @@
 {
   "name": "worldstip-travel-expert",
   "version": "1.0.0",
-  "description": "Travel planning expert that turns a destination plus days into an A5 compact booklet guide: how to get there, must-eat/must-do, day-by-day routes with per-POI play/arrival, season advice and scenario-based safety — built on verified POI and climate data, never fabricating.",
+  "description": "Travel planning expert that turns a destination plus days into three ready-to-use builds of one guide: a desktop web page, an A5 paginated booklet for printing or save-as-PDF, and a mobile HTML5 page — transit comparison, must-eat/must-do, day-by-day routes with per-POI play/arrival, season advice and scenario-based safety — built on verified POI and climate data, never fabricating.",
   "author": {
     "name": "WorldsTip by MrdT",
     "email": "mrdt@users.noreply.github.com"
@@ -13,21 +13,21 @@
 
   "displayName": {
     "en": "WorldsTip Travel Planner",
-    "zh": "WorldsTip 旅行规划师"
+    "zh": "WorldsTip旅行规划师"
   },
   "profession": {
-    "en": "Travel Planning Expert",
-    "zh": "旅行规划专家"
+    "en": "WorldsTip Travel Expert",
+    "zh": "WorldsTip出行专家"
   },
   "displayDescription": {
-    "en": "Generates A5 compact travel booklets from real POI and climate data: how to get there, must-eat/must-do, day-by-day routes, scenario safety — never fabricates.",
-    "zh": "基于真实 POI 与气候数据生成 A5 旅行小册子：怎么去、必吃必玩、逐日动线、安全提醒，绝不编造。"
+    "en": "Generates travel guides from real POI and climate data in three builds: desktop web, A5 printable booklet, mobile HTML5 — transit, must-eat, day-by-day routes, safety. Never fabricates.",
+    "zh": "基于真实 POI 与气候数据生成旅行指南三件套：PC 网页、A5 可打印小册子、手机 HTML5，含交通比选、必吃必玩、逐日动线、安全提醒，绝不编造。"
   },
   "avatar": "avatars/expert.png",
   "categoryId": "12-IndustryConsultant",
   "defaultInitPrompt": {
-    "zh": "帮我规划一趟旅行吧！告诉我目的地、天数、人数和出行风格，我给你出一本能直接照着走的小册子。",
-    "en": "Let's plan a trip! Tell me your destination, days, group size and travel style, and I'll produce a pocket booklet you can follow directly."
+    "zh": "帮我规划一趟旅行吧！告诉我目的地、天数、人数和出行风格，我给你出一套能直接照着走的三件成品：电脑网页、A5 打印册、手机版。",
+    "en": "Let's plan a trip! Tell me your destination, days, group size and travel style, and I'll produce three ready-to-use builds: a desktop web page, an A5 printable booklet, and a mobile page."
   },
   "plugin": "worldstip-travel-expert",
   "tags": [
@@ -36,7 +36,7 @@
     { "en": "Travel Tips", "zh": "旅行贴士" }
   ],
   "quickPrompts": [
-    { "en": "Help me plan a trip! Destination, days, group size and style — give me a booklet I can follow.", "zh": "帮我规划一趟旅行吧！告诉我目的地、天数、人数和出行风格，我给你出一本能直接照着走的小册子。" },
+    { "en": "Let's plan a trip! Tell me your destination, days, group size and travel style, and I'll produce three ready-to-use builds: a desktop web page, an A5 printable booklet, and a mobile page.", "zh": "帮我规划一趟旅行吧！告诉我目的地、天数、人数和出行风格，我给你出一套能直接照着走的三件成品：电脑网页、A5 打印册、手机版。" },
     { "en": "What are the must-eat and must-do in Xi'an, by category?", "zh": "西安有哪些必吃必玩？给我按品类列出来，别指定具体店。" },
     { "en": "What's the best way to get from Beijing to Zhangjiajie?", "zh": "从北京去张家界怎么去最划算？给我交通比选。" }
   ]

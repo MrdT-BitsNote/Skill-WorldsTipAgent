@@ -1,4 +1,4 @@
-# DoD 清单 · v0.2.273 视觉增强版
+# DoD 清单 · v0.2.276 内容安全整改版
 
 > 每条判据都对应本机实跑入口；逐项结论见 `QC_REPORT.md` 第五节。
 
@@ -16,6 +16,11 @@
 | D10 | 外部上传闸门 0 缺陷（目录与 zip 双形态） | 外部质检器的上传档检查 |
 | D11 | 报告中的分数 / 编号 / 退出码全部来自实跑，未实测项显式标注 | `QC_REPORT.md` 第六节 |
 | D12 | 默认紧凑册含真实内嵌视觉元素（`<svg>` ≥ 1），且无 `<img>` 占位 / 外部资源 | `QC_REPORT.md` 视觉资产验收节 + 成品计数 |
+| D13 | 包内每个脚本都有调用方或可执行文档指令；每份数据都有读取方；文档不点名包内不存在的文件 | `python tools/orphan_scan.py --root <源码/包>` 判 PASS，`tools/selfcheck.py` [E] 维度复算 |
+| D14 | 四平台包的差异有台账、且台账与实测包一致；被裁能力有可检测的降级信号 | `python tools/platform_diff.py --check` PASS；缺增强渲染器的包跑 `--rich` 必须 ok=true + `degraded=true` + 非 0 字节 HTML |
+| D15 | 默认一次出三件终端成品（PC 网页 / A5 分页小册子 / 手机 HTML5），三件各含独有排版标记且互不串味、字节两两不同 | `tests/test_logic_fixes.py` L14 14 条断言；`--device pc\\|a5\\|mobile` 单选严格只产一件 |
+| D16 | 不可信输入（坏路径 / 坏 JSON / 空壳 plan）一律收敛为一行中文诊断 + exit 2，不裸露 traceback、不谎报成功 | `tests/test_logic_fixes.py` L15 16 条；含「合法 plan 仍 exit 0」反向对照与 `AITRIP_DEBUG=1` 调试开关 |
+| D17 | 平台简介只讲功能与用户价值：`description_zh`/`description_en`/`summary` 不含脚本文件名、CLI 开关、内部迭代代号；合规检查器本身有反向自证 | `python tools/selfcheck.py` [B] 三项判据；`tests/test_logic_fixes.py` L16 7 条用违规样本证明判据会报错 |
 
 ## 与旧版 DoD 的差异
 

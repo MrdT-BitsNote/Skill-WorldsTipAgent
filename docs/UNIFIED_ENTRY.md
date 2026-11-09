@@ -46,10 +46,23 @@ python scripts/worldstip.py "<原话>" --with-weather --json              # 显�
 版本号以 `VERSION.json` 为唯一真源，`doctor.py` 逐文件核对，杜绝版本分叉。
 交付前跑：`python scripts/doctor.py --json`（任一失败即 EXIT 1）。
 
-### ⑥ 双渲染引擎
+### ⑥ 双渲染引擎与终端分流
 
 默认 `render_compact.py`（紧凑卡册，快且小）；`--rich` 切 `render_booklet.py`
 （9 风格 / full-light / md / 离线地图 / 体检档）。两者都支持 `--feasibility`。
+
+紧凑渲染器支持 `--device {pc|a5|mobile|both}`（默认 `both`）：
+
+| 取值 | 产出 | 说明 |
+|---|---|---|
+| `both` | `<out>` + `<out>-A5.html` + `<out>-手机.html` | 一次出三件，按终端各取所需 |
+| `pc` | `<out>` | 桌面网页版（版心 780px、目录三列、悬停反馈） |
+| `a5` | `<out>` | A5 分页小册子（148mm、打印真分页，可另存 PDF） |
+| `mobile` | `<out>` | 手机 HTML5 版（全宽、安全区、触控区 ≥44px、回顶按钮） |
+
+单选三值之一时**只产一件**，文件名仍取 `--out`，不加后缀。
+`--rich` 的九风格渲染器是单页长文档、不分流：此时 manifest 记 `device_applied=false`
+并给出 `device_note`，**不会假装产出了三件套**。
 
 ### ⑦ 不触发边界
 

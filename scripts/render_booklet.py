@@ -2498,6 +2498,12 @@ def main() -> int:
     poi = json.load(open(args.poi, encoding="utf-8")) if args.poi else {}
     context = json.load(open(args.context, encoding="utf-8")) if args.context else None
     transit = json.load(open(args.transit, encoding="utf-8")) if args.transit else None
+    # 空壳 plan 不得被渲染成一张空册子还报成功（口径与 render_compact.py 一致）
+    if not (plan.get('plan') or plan.get('destinations')):
+        sys.stderr.write("[ERROR] plan.json 里没有可用行程数据："
+                         "`plan`（逐日）与 `destinations`（目的地）都为空\n")
+        sys.stderr.write("[HINT] 先用 build_itinerary.py 生成 plan.json\n")
+        return 2
     # v0.1.0：允许把 research/weather/context/poi 内嵌进 plan，单一文件即可驱动全册（更稳健）
     research = research or plan.get("research")
     weather = weather or plan.get("weather")
@@ -2605,6 +2611,38 @@ def render_markdown(plan, research, weather, poi, context, transit, out_path, ti
     print(f"✅ 已生成 Markdown: {out_path}")
 
 
+def _fatal(e: BaseException) -> int:
+    """不可信输入 → 一行中文诊断 + 退出码 2，绝不裸露 traceback。
+
+    与 render_compact.py 里的同名函数是刻意各留一份：两个渲染器会被不同
+    平台包分别裁剪（WorkBuddy / 千问包不含本文件），抽公共模块会让留下的
+    那个反向依赖已裁掉的文件。改口径时两处同步。
+    """
+    import os as _os
+    if _os.environ.get("AITRIP_DEBUG"):
+        raise e
+    if isinstance(e, FileNotFoundError):
+        msg = "输入文件不存在：%s" % (e.filename,)
+    elif isinstance(e, IsADirectoryError):
+        msg = "给的路径是目录不是文件：%s" % (e.filename,)
+    elif isinstance(e, PermissionError):
+        msg = "没有读写权限：%s" % (e.filename,)
+    elif isinstance(e, UnicodeDecodeError):
+        msg = "输入文件不是 UTF-8 文本，无法解析"
+    elif isinstance(e, json.JSONDecodeError):
+        msg = "输入不是合法 JSON（第 %d 行第 %d 列）" % (e.lineno, e.colno)
+    elif isinstance(e, OSError):
+        msg = "文件读写失败：%s" % (e.strerror,)
+    else:
+        msg = "输入数据与预期结构不符（%s），请检查 plan 字段" % type(e).__name__
+    sys.stderr.write("[ERROR] %s\n" % msg)
+    sys.stderr.write("[HINT] --plan/--transit/--research 需指向合法 JSON\n")
+    return 2
+
+
 if __name__ == "__main__":
     import sys
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, IndexError) as _e:
+        sys.exit(_fatal(_e))

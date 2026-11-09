@@ -1,37 +1,36 @@
 ---
 name: worldstip-travel-planner
-version: 0.2.273
-description: "WorldsTip 旅行规划：一句话生成国内 A5 行程小册子，统一入口自动编排交通比选、住宿分房、预算与逐日动线，支持紧凑/九风格双渲染；跨省同名地名先列候选再动笔，非出行请求明确拒答。触发词：旅行规划、行程规划、旅游攻略、周末去哪玩、爬山看日出、自驾、citywalk、摩旅、跑山美食、骑完去哪逛、商圈美食、房车。不触发：票务代订、酒店预订、实时营业、导航、与旅行骑游无关的请求。"
+version: 0.2.276
+description: "WorldsTip 旅行规划：一句话出三件成品——电脑网页/A5 可打印小册子/手机 HTML5，自动编排交通比选、住宿分房、预算与逐日动线；跨省同名地名先列候选再动笔，非出行请求明确拒答。触发词：旅行规划、行程规划、旅游攻略、周末去哪玩、爬山看日出、自驾、citywalk、摩旅、跑山美食、骑完去哪逛、商圈美食、房车。不触发：票务代订、酒店预订、实时营业、导航、与旅行骑游无关的请求。"
 agent_created: true
-display_name: "WorldsTip旅行指南小册子·合并版"
+display_name: "WorldsTip旅行指南小册子"
 display_name_en: WorldsTip Travel Guide Booklet
-description_zh: "WorldsTip旅行指南小册子（v0.2.273 人本路由版）：把一句出行想法变成可照着走的 A5 紧凑 HTML 小册子。统一入口 scripts/worldstip.py 一条命令完成意图闸门、地名抽取与消歧、行程编排、交通比选、渲染；默认紧凑卡册，--rich 切九风格增强渲染。跨省同名地名先列候选不硬判，非出行请求明确拒答。数据层保留摩旅路线与城市消费索引，人文史单独 sidecar 按需加载，包内离线数据可复现，查不到标灰灯、绝不编造。"
-description_en: "WorldsTip Travel Guide Booklet (v0.2.273 human-centric): turns one sentence into a ready-to-follow A5 compact HTML booklet. A single entry point runs the intent gate, place extraction and disambiguation, itinerary build, transit comparison and rendering; compact cards by default, --rich for nine visual styles. The itinerary engine now treats travelers as humans: inter-spot travel time is counted into the route, cross-district hops are capped by profile, and a brutal day is always followed by a recovery day. Cross-province homonyms surface candidates instead of guessing, off-topic requests are refused explicitly, and a sidecar loads place history on demand. Offline bundled data makes runs reproducible; missing facts are marked unverified, never fabricated."
+description_zh: "WorldsTip旅行指南小册子：把一句出行想法变成一本能照着走的旅行小册子，并按终端一次给三份成品——电脑网页版、可打印的 A5 小册子、手机 HTML5 版。自动完成地名抽取与消歧、逐日动线、交通比选、住宿分房与预算，摩旅自驾另给真实里程与线路形状。跨省同名地名先列候选不硬判，非出行请求明确拒答；包内离线数据可复现，查不到的地方标「需现场确认」而不编造。"
+description_en: "WorldsTip Travel Guide Booklet: turns one sentence into a ready-to-follow trip booklet and delivers three terminal-specific builds at once — a desktop web page, a print-ready A5 booklet, and a mobile HTML5 page. It handles place extraction and disambiguation, day-by-day routes, transit comparison, room split and budget; rides and drives also get a mileage axis and a to-scale shape of the real road. Cross-province homonyms surface candidates instead of guessing and off-topic requests are refused explicitly. Offline bundled data makes runs reproducible; missing facts are marked unverified, never fabricated."
 author: MrdT
 category: travel
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 slug: worldstip-travel-planner
-displayName: "WorldsTip旅行指南小册子·合并版"
-summary: "WorldsTip v0.2.273 人本路由版：一条命令生成国内 A5 行程小册子（统一入口 / 负向闸门 / 地名消歧 / 双渲染 / 离线自检）。"
+displayName: "WorldsTip旅行指南小册子"
+summary: "WorldsTip：一条命令生成国内行程，按终端出电脑网页 / A5 小册子 / 手机 HTML5 三件（统一入口 / 负向闸门 / 地名消歧 / 双渲染 / 真实里程与线路形状 / 离线自检）。"
 tags: ["旅行", "行程规划", "摩旅", "房车"]
 license: MIT
 ---
 
 # WorldsTip旅行指南小册子（国内旅行规划）
 
-**技能包名**：`worldstip-travel-planner`（平台小写连字符规范）　|　**分类**：旅行　|　**版本**：v0.2.273（人本路由）　|　**适用范围**：中国大陆国内旅行（含中国香港、中国澳门、中国台湾地区）
+**技能包名**：`worldstip-travel-planner`（平台小写连字符规范）　|　**分类**：旅行　|　**版本**：v0.2.276（内容安全整改）　|　**适用范围**：中国大陆国内旅行（含中国香港、中国澳门、中国台湾地区）
 
----
-
-## v0.2.273 人本路由版：一条命令出成品（先读这里）
+## 终端分流版：一条命令出三件成品（先读这里）
 由 A（发布版 v0.2.1）、B（本地版 v0.1.49）、S（v0.2.2 融合源仓库）三方合并，以 S 为基线，接回 B 的九风格渲染与人文史资产。**下文旧章节继续有效，冲突时以本节为准。**
 
+- **终端分流（本版新增）**：`--device {pc|a5|mobile|both}`，默认 `both` 一次产三件——内容一致、排版不同，是**三套各自真实生效的 CSS 层**而非同一份改名：`小册子.html` = PC 网页版（目录三列 / 悬停反馈 / 正文 15px / 版心沿用 780px 定稿，不擅自加宽）；`小册子-A5.html` = A5 分页小册子（`@page size:A5` / 148mm 版心 / 打印真分页 / 块级 `break-inside:avoid`，可另存 PDF）；`小册子-手机.html` = 手机 HTML5 版（`viewport-fit=cover` / 安全区留白 / 正文 16px 防缩放 / 触控区 ≥44px / 目录吸顶 / 回顶按钮）。单选 `pc`/`a5`/`mobile` 只产一件，文件名仍取 `--out`。
 - **统一入口** `scripts/worldstip.py`：一次进程完成意图闸门、地名抽取/消歧、行程、交通、渲染，附逐步记录退出码与耗时的清单；`--rich` 切九风格，`--feasibility strict` 开体检档。退出码 0/2/3/4 = 成功/参数不足/非出行被拦或地名待选/链路失败。
 - **负向闸门** `scripts/intent_guard.py`（拦截周报、代码、报表，不再回落 domestic）；**地名抽取与先查后问** `scripts/geo_extract.py`（国内地名自动识别、出发/目的地分离，跨省同名列候选不硬判，县镇锚点直接锁定）。
 - **人文史 sidecar** `references/places_history.json` + `scripts/history_query.py`：1743 条按需加载，不进默认上下文；**版本真源** `VERSION.json` + **离线自检** `scripts/doctor.py`；**双渲染** `render_compact.py` / `render_booklet.py`。
 - **不触发**：文档写作、周报月报、代码重构、报表、翻译润色、简历合同、诊疗、泛化的「帮我安排一下」。完整机制与命令已内置于本技能说明。
 
-**本地开发包版本号 = 0.2.273**（平台发布号由平台生成，双号体系不冲突）。
+**本地开发包版本号 = 0.2.276**（平台发布号由平台生成，双号体系不冲突）。
 
 **完整触发词（模型加载本技能后按此判定是否调用）**
 
@@ -49,7 +48,7 @@ license: MIT
 
 **不触发**：票务与门票代订、酒店预订、导航绘制、与旅行规划无关的请求。
 
-> **版本线（唯一权威）**：本技能**对外发布版本号 = 本地开发包版本号 = 0.2.273**（三方合并版：以 A 发布版 v0.2.1 的能力口径、B 本地版 v0.1.49 的渲染与人文资产、S 源仓库 v0.2.2 的规范骨架合并）。v0.1.x / v0.2.x 为历史版本序列；正文中的 `M2` / `M3` 是内部里程碑标签，**不是版本号**。**v0.2.22 合并要点**：① 统一入口 `scripts/worldstip.py` 一条命令出成品，附逐步可复核清单；② 负向意图闸门与跨省同名地名「先查后问」；③ 九风格增强渲染接回、人文史单独 sidecar 按需加载；④ 版本真源 `VERSION.json` 与离线自检 `scripts/doctor.py`；⑤ 回归统一到 统一回归入口（源码仓库内）（验证集不随分发包携带，源码仓库内可跑）。逐文件来源与裁决已内置于本技能说明。
+> **版本线（唯一权威）**：本技能**对外发布版本号 = 本地开发包版本号 = 0.2.276**（三方合并版：以 A 发布版 v0.2.1 的能力口径、B 本地版 v0.1.49 的渲染与人文资产、S 源仓库 v0.2.2 的规范骨架合并）。v0.1.x / v0.2.x 为历史版本序列；正文中的 `M2` / `M3` 是内部里程碑标签，**不是版本号**。**v0.2.22 合并要点**：① 统一入口 `scripts/worldstip.py` 一条命令出成品，附逐步可复核清单；② 负向意图闸门与跨省同名地名「先查后问」；③ 九风格增强渲染接回、人文史单独 sidecar 按需加载；④ 版本真源 `VERSION.json` 与离线自检 `scripts/doctor.py`；⑤ 回归统一到 `tests/run_all.py`（验证集不随分发包携带，源码仓库内可跑）。逐文件来源与裁决已内置于本技能说明。
 
 > **⚡ 执行入口**：收到需求先跑 `python scripts/route.py "用户原话" --json`，它会给出该跑的脚本链 / 该读的文档 / 该加载的数据（见「⚡ 执行入口」章节）。本文件其余部分为该路径的**纪律与细则**，不必逐字通读后再动手。
 
@@ -71,7 +70,7 @@ license: MIT
 | 自行车骑行 | 城市骑游/环湖/长途骑线 | 引擎 `cycling` 画像 + 天气预检 |
 | 徒步 | 景区步道/郊野线/爬山看日出 | 引擎 `hiking` 画像 + 天气预检 |
 
-**仍不涉及**：实时票价代订、代下单（这些需要交易权限与实时库存，零依赖原则下不碰）。
+**仍不涉及**：实时票价代订、代下单（这些需要交易权限与实时库存，零依赖原则下不碰）。**出境分支**（可选，国内行程不加载）：规则见 [`docs/OUTBOUND.md`](docs/OUTBOUND.md)，数据见 `references/visa_rules.json`、`references/currency_tz.json`、`references/local_customs.json`、`references/country_safety.json`，由 `scripts/outbound_constraints.py` / `scripts/outbound_safety.py` 消费。
 
 ## 智能分房（关系 × 性别 双维度判定）
 
@@ -140,7 +139,7 @@ license: MIT
 
 ### 1.6）可信度内核（M2，数据可信度的前置）
 
-**零依赖 ≠ 离线可信。** 要放弃的是「离线也给确定答案」这个隐含承诺。`references/stability.json` 把事实分三档，`scripts/credibility.py` 负责判定与渲染：
+**零依赖 ≠ 离线可信。** 要放弃的是「离线也给确定答案」这个隐含承诺。`references/stability.json` 把事实分三档（表里没有的字段，先读取该文件的 `domains` / `levels` 定档，再决定要不要联网核验），`scripts/credibility.py` 负责判定与渲染：
 
 | 档位 | 处理 |
 |---|---|
@@ -166,7 +165,7 @@ license: MIT
 旧版每趟都跑 10 维联网搜索，慢且易被限流。按下面顺序，**能用本地数据就别联网**：
 
 1. **先查本地库**：`references/destinations.json`（393 城坐标/气候区）、`food_guide.json`（25 城必吃）、`seasons_climate.json`（六气候区方案）、`transit_rules.json`（六方式系数）、`poi.json`（20 城景点 + 怎么玩 + 怎么去）——用 `scripts/search_dest.py` 关键字检索，毫秒级。
-2. **景点级候选（v0.1.41 · 需扩展数据包 `moto-places`）**：要给出「具体去哪个景点」时，先 `cd` 到技能根目录再跑 `python scripts/places_query.py --province 湖南 --type 山 --limit 8`。**严禁把景点库全文读入上下文**（该文件属扩展包 `moto-places`，主包不内置；安装后落在 references 目录下的景点库文件中）（原始 1.3MB，约 40 万 token），只取脚本回传的 8 条结果。脚本默认已排除质量问题条目（`fl` 非空：名称与文案疑似不符 / 行政区粒度不足 / 类别未识别），需 `--include-suspect` 才放行。
+2. **景点级候选（v0.1.41 · 需扩展数据包 `moto-places`）**：要给出「具体去哪个景点」时，先 `cd` 到技能根目录再跑 `python scripts/places_query.py --province 湖南 --type 山 --limit 8`。**严禁把景点库全文读入上下文**（该文件属扩展包 `moto-places`，主包不内置；安装后落在 references 目录下的景点库文件中）（原始 1.1MB，约 40 万 token），只取脚本回传的 8 条结果。脚本默认已排除质量问题条目（`fl` 非空：名称与文案疑似不符 / 行政区粒度不足 / 类别未识别），需 `--include-suspect` 才放行。
    - 退出码 `0` 有结果 → 直接用（带坐标 + 实景简介 + 来源线路）；`1` 无匹配 → 放宽条件或改走联网。
    - **名称纪律（v0.1.46）**：结果里的 `fn` 是**全称**，`n`/`alt` 只是路书常用名与别名。**对外输出景点名一律写 `fn`**（如「荔波县大七孔景区」「陆丰市碣石古城」），**禁止只写简称**（如「大七孔」「碣石古城」）——跨省同名景点（白云山 / 凤凰山 / 老君山等）靠简称无法区分，用户照着走会走错地方。同理，目的地名一律用 `destinations.json` 的 `fn`（「内蒙古自治区呼伦贝尔市」而非「呼伦贝尔」）。
    - **非景点隔离（v0.1.46）**：政府机关、政务服务中心、停车场、收费站等 163 条路书途经点已标 `kind=non_scenic`，默认不进候选；只有显式 `--include-nonscenic` 才返回（用于找补给/办事点），**不得把它们当景点写进行程**。
@@ -237,7 +236,7 @@ license: MIT
   - 用本地 `destinations.json` / `transit_rules.json` 判断，或联网确认；**拿不准就不写该方式**，宁可少列不要编。
 - 每个列出的方式给「耗时 + 费用 + 一句话结论（何时选）」；用户明确自驾/骑行/徒步时，才渲染对应方式族并给能源/补给/限行。
 
-> **出行模式分支纪律**：确定模式后、编排该模式专属板块前加载 [`docs/MODE_BRANCHES.md`](docs/MODE_BRANCHES.md)（约 2.6k token）。公共交通/自驾/房车/骑行/徒步/极限/演唱会有各自硬性纪律，不得混用。
+> **出行模式分支纪律**：确定模式后、编排该模式专属板块前加载 [`docs/MODE_BRANCHES.md`](docs/MODE_BRANCHES.md)（约 2.6k token）；摩旅细则见 [`docs/MOTO_MODE.md`](docs/MOTO_MODE.md)，行程类型分类见 [`docs/JOURNEY_TYPES.md`](docs/JOURNEY_TYPES.md)。公共交通/自驾/房车/骑行/徒步/极限/演唱会有各自硬性纪律，不得混用。
 
 ### ④ 多语言输出（对应语言问、对应语言答）
 - 用户用什么语言问，就用什么语言作答**并生成该语言的小册子**：英文问 → 英文卡片/英文小册子；日文问 → 日文。检测依据用户首条消息语种。
@@ -327,7 +326,7 @@ python scripts/route.py --to 张家界 --days 2 --people 1 --json
 | 意图 | 脚本链 |
 |---|---|
 | 国内常规 | `build_itinerary.py` → `plan_transit.py` → `render_compact.py` |
-| 摩旅 | `moto_check.py` → `places_query.py` → `build_itinerary.py --style moto` → `moto_enrich.py` → `render_compact.py` |
+| 摩旅 | `moto_check.py` → `places_query.py` → `build_itinerary.py --style moto` → `moto_enrich.py` → `render_compact.py`（内含 `route_viz.py`：出「路线形态」里程轴图 + 命中线路时叠加「线路形状」真轨迹图；坐标/线路缺失自动不出图，退回纯文字） |
 | 房车 / 自驾后勤 | `rv_check.py` → `build_itinerary.py --style roadtrip` → `render_compact.py` |
 | 路书 | `plan_route.py` → `build_itinerary.py` → `render_compact.py` |
 | 攻略检索 | `guide_list.py` → `guide_digest.py` → `render_compact.py --research research.json` |
@@ -349,7 +348,7 @@ python scripts/route.py --to 张家界 --days 2 --people 1 --json
 |---|---|
 | 目的地 / POI | `references/destinations.json` `references/poi.json` |
 | 交通 | `references/station_codes.json` `references/transit_rules.json` `references/vehicle_range.json` |
-| 摩旅 | `references/moto_rules.json` `references/moto_routes.json` `references/moto_coverage.json` `references/moto_access_notes.json` |
+| 摩旅 | `references/moto_rules.json` `references/moto_routes.json` `references/moto_coverage.json` `references/moto_access_notes.json` `references/moto_traces.json`（线路真实轨迹，仅命中线路时读） |
 | 房车 | `references/rv_logistics.json` |
 | 地理 / 消歧 | `references/geo_admin.json` `references/geo_ambiguous.json` |
 | 季节 / 天气 | `references/seasons_climate.json` `references/weather_contingency.json` |
@@ -361,9 +360,9 @@ python scripts/route.py --to 张家界 --days 2 --people 1 --json
 | 门禁 / 可行性 | `references/feasibility_check.json` `references/destination_links.json` |
 
 **数据读取三条硬纪律**：
-1. **禁止把任何 >200KB 的 references 全文读进上下文**。景点库（扩展包 `moto-places`，1.3MB，约 40 万 token）**必须**经 `scripts/places_query.py` 检索，只让结果进上下文。 |
-2. 只按上表按需读取，**不要一次性扫全部** 39 个文件；多数行程只需要 3-6 个。
-3. 要确认字段结构 / 覆盖范围时才读 `docs/RESOURCES.md`（19KB），不要默认读。
+1. **禁止把任何 >200KB 的 references 全文读进上下文**。景点库（扩展包 `moto-places`，1.1MB，约 30 万 token）**必须**经 `scripts/places_query.py` 检索，只让结果进上下文。 |
+2. 只按上表按需读取，**不要一次性扫全部** 42 份 JSON 文件；多数行程只需要 3-6 个。
+3. 要确认字段结构 / 覆盖范围时才读 `docs/RESOURCES.md`（19KB），不要默认读；四个发布包的差异（哪个包缺什么、缺了等于什么能力）见 [`docs/PLATFORMS.md`](docs/PLATFORMS.md)。
 
 ## 上游能力索引（v0.1.42 / v0.1.43 合并回灌）
 
@@ -416,16 +415,16 @@ python scripts/plan_transit.py --from 岳阳 --to 张家界 --json > transit.jso
 # 生成行程骨架（21 种画像，短途常用 rail/leisure/hiking/cycling/commando）
 python scripts/build_itinerary.py \
   --from 岳阳 --to 张家界 --days 2 --people 1 --composition "独自一人" \
-  --style hiking --hint "爬山 看日出" --season 秋 --json > plan.json
+  --style hiking --hint "爬山 看日出" --date 2026-11-14 --json > plan.json
 ```
 
 - 近程（≤150km）当天来回：优先 `rail/leisure/hiking`，不渲染住宿板块（无 stay）。
-- `--hint` 传用户原话自动推断画像与附加意图（爬山/看日出/错峰/出片/美食）。
-- `--composition` 影响房间数：三口之家 1 间家庭房，不是 3 间。
+- `--hint` 传用户原话自动推断画像与附加意图（爬山/看日出/错峰/出片/美食）；`--composition` 影响房间数：三口之家 1 间家庭房，不是 3 间。
+- `--date` 给出行日期即按月份自动定季节（未给 `--season` 时），并把气候区/当月气温/当季看点/风险写进 `plan.json` 的 `context`；已知季节才可只给 `--season`。
 
 ### 第 3 步：季节与气候方案
 
-数据源 `references/seasons_climate.json`：六类气候区（南方/北方/西南城区/高原/热带/西北）× 四季，每格含气温/穿衣/当季看点/气候风险。按目的地匹配气候区（先查 plateau/tropical/northwest/southwest 名单，再按大区归入）+ 出行月份定季节，把「当季看点」（人文活动+自然景观）写进小册子。
+数据源 `references/seasons_climate.json`：六类气候区（南方/北方/西南城区/高原/热带/西北）× 四季，每格含气温/穿衣/当季看点/气候风险。按目的地匹配气候区（先查 plateau/tropical/northwest/southwest 名单，再按大区归入）+ 出行月份定季节，把「当季看点」（人文活动+自然景观）写进小册子。**唯一实现在 `scripts/plan_context.py`（`--date` 季节感知 + 自驾动力），`build_itinerary.py --date` 已内嵌同一套逻辑，不要另写一份判断。**
 
 ### 第 4 步：户外天气预检（骑行/徒步/摩旅/自驾必做）
 
@@ -468,9 +467,7 @@ python scripts/check_weather.py --to 张家界 --style hiking --days 2 --json > 
 
 > **渲染与版式**：默认只跑 `scripts/render_compact.py`（A5 紧凑卡册，版式已固化在渲染器内，不需要额外指令）。仅当**要改版式**或**要确认某章节渲染规则**时才加载 [`docs/RENDER_SPEC.md`](docs/RENDER_SPEC.md)（约 2.9k token）。
 
-> 本节省略，详见 `docs/RESOURCES.md`——按需读取：需要确认某份数据文件的字段与覆盖范围时再加载。
-
-**v0.1.41 扩展数据（主包不内置）**：景点库（2514 个景点级地点，含坐标 + 实景简介）属**可选扩展数据包 `moto-places`**，安装后落在 references 目录，单独发布为主包之外的 `worldstip-travel-planner-ext-motoplaces-v*.zip`。两条硬纪律：① **必须经 `scripts/places_query.py` 检索，禁止全文读入上下文**（原始 1.3MB，约 40 万 token）；② 未安装时按「运行提速」第 2 条的退出码 `2` 降级契约处理（城市级建议 + 灰灯），不得静默降级。
+**v0.1.41 扩展数据（主包不内置）**：景点库（2514 个景点级地点，含坐标 + 实景简介）属**可选扩展数据包 `moto-places`**，安装后落在 references 目录，单独发布为主包之外的 `worldstip-travel-planner-ext-motoplaces-v*.zip`。两条硬纪律：① **必须经 `scripts/places_query.py` 检索，禁止全文读入上下文**（原始 1.1MB，约 40 万 token）；② 未安装时按「运行提速」第 2 条的退出码 `2` 降级契约处理（城市级建议 + 灰灯），不得静默降级。
 ## 质量准则
 
 - **先给结论**：推荐、节奏、预算先说清，再展开细节。
@@ -488,9 +485,11 @@ python scripts/check_weather.py --to 张家界 --style hiking --days 2 --json > 
 
 ## 退出自检门禁（未全过不许输出）
 
-1. [ ] 分数与缺陷编号是否来自技能质检器实跑（非估计）？数据绿灯是否绑定 `source` + `verified_on`（未核验即灰灯）？
-2. [ ] 每个 volatile 事实是否带 `source` + `verified_on` + `confidence` 三元组？摩旅/城市消费是否经 `references/data-quality.md` 清洗、未覆盖如实标 `found=false`？
-3. [ ] 裁决表是否不超过 6 行，且没有出现「保证通过 / 百分百准确」类承诺？
+1. [ ] 红灯行程已拦停？`--gate strict` 下只出拦停页，**不渲染行程正文**——先解决阻断再谈排程。
+2. [ ] 每个 volatile 事实都带 `source` + `verified_on` + `confidence`？缺任一降灰灯「待核实」，不得写进正文结论。
+3. [ ] 未定位的节点、未收录的目的地是否如实标灰（`found=false` / 「未收录」），而不是沉默略过或补一条编造的？
+4. [ ] 里程与线路图有据可查？逐日里程注明来源（真实距离 × 路网系数 / 画像经验值），线路形状只画已收录轨迹，未收录写 `coverage.matched`。
+5. [ ] 全文没有「保证过 / 百分百准确 / 一定不排队」类承诺，价格一律标参考区间并注明以官方实时为准？
 
 ## 免责声明
 

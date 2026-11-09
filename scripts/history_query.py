@@ -26,6 +26,11 @@ PATH = os.path.join(os.path.dirname(HERE), "references", "places_history.json")
 _CACHE = None
 
 
+def available():
+    """人文史数据是否随本次分发。轻量档按体积裁剪时不带它。"""
+    return os.path.isfile(PATH)
+
+
 def _load():
     global _CACHE
     if _CACHE is None:
@@ -34,7 +39,26 @@ def _load():
     return _CACHE
 
 
+_MISSING = {
+    "found": False,
+    "available": False,
+    "total_indexed": 0,
+    "matched": 0,
+    "items": [],
+    "policy": "",
+    "reason": "人文史数据未随本包分发（references/places_history.json 缺失）",
+}
+
+
 def query(name, contains=False, admin="", max_items=5, max_chars=600):
+    """按需查询人文史。
+
+    **数据缺失时返回 available=false 而不是抛异常**：轻量档为控体积
+    不携带 places_history.json，而 SKILL.md 仍指向本脚本 —— 旧实现对文件直接 open()，
+    用户一查历史就吃 traceback。降级必须显式（return 里的 reason），不许静默、也不许崩。
+    """
+    if not available():
+        return dict(_MISSING)
     d = _load()
     items = d.get("items", {})
     hits = []
@@ -67,6 +91,13 @@ def main():
     a = ap.parse_args()
     if not a.name:
         print("错误：请给出景点名或关键词", file=sys.stderr)
+        return 2
+    if not available():
+        sys.stderr.write("未随包提供人文史数据：references/places_history.json 缺失。\n"
+                         "  本包为控体积做了裁剪，人文史需另行安装；请如实告知用户"
+                         "「本次未提供人文史」，不要自行补写内容。\n")
+        if a.json:
+            print(json.dumps(dict(_MISSING), ensure_ascii=False, indent=2))
         return 2
     r = query(a.name, a.contains, a.admin, a.max_items, a.max_chars)
     if a.json:

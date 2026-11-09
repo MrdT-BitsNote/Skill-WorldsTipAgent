@@ -72,7 +72,10 @@ def main_checks():
 
     skill_path = ROOT + "/SKILL.md"
     skill = read(skill_path)
-    check("SKILL.md 恰为 500 行", len(skill.splitlines()) == 500,
+    # 平台限的是**上限** 500 行，不是「恰好 500」。v0.2.274 前此处写成 == 500，
+    # 与 tests/run_tests.py 的 `n <= 500`、selfcheck 的 `lines <= 500` 自相矛盾：
+    # 少一行本属合规，却被判失败，只能靠塞废行凑数。统一为上限口径。
+    check("SKILL.md 行数 <= 500", len(skill.splitlines()) <= 500,
           "%d 行" % len(skill.splitlines()))
     check("SKILL.md 纯 LF", b"\r" not in skill, "含 CR" if b"\r" in skill else "LF")
     check("SKILL.md 版本与真源一致", frontmatter_version(skill) == ver,

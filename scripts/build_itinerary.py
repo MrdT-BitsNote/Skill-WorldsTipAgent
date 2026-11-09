@@ -29,6 +29,7 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
 import refloader
+import plan_context
 
 DATA = Path(__file__).resolve().parent.parent / "references" / "destinations.json"
 RESTRICTIONS = Path(__file__).resolve().parent.parent / "references" / "restrictions.json"
@@ -571,6 +572,16 @@ ACTIVE_ADDON = {
     },
 }
 
+# 直线距离 → 实际可骑/可开里程的放大倍数（绕路、盘山、进出城）。
+# v0.2.274：摩旅/自驾/房车改成「先算真实距离再摊到每天」。
+# 旧实现直接取画像常量中值（摩旅 180-320 → 250km），两天行程各写 125km，
+# 结果「佛山→南岳衡山 直线 474km」的行程标成「两日骑行 125km/天」——
+# 既与常识矛盾，也让 moto_check 的续航门禁形同虚设（125km 永远不触发补油提醒）。
+ROAD_FACTOR = {"moto": 1.35, "roadtrip": 1.30, "rv": 1.25,
+               "cycling": 1.15, "hiking": 1.25}
+# 只有「车行类」才按起终点距离推在途里程；骑行/徒步是本地绕圈，与跨城直线距离无关
+DISTANCE_PROFILES = {"moto", "roadtrip", "rv"}
+
 
 def build_slots(profile: StyleProfile, spots: int) -> list[dict]:
     """把一天切成上午/下午/晚上三段, 分配景点数。
@@ -913,17 +924,39 @@ VEHICLE_PROFILES = ("roadtrip", "moto", "rv", "camping")
 
 
 def route_km(origin: dict | None, targets: list) -> float | None:
-    """出发地→首站 + 各站之间的球面直线距离合计(km)。坐标缺失返回 None。"""
+    """出发地→首站 + 各站之间的球面直线距离合计(km)。坐标缺失返回 None。
+
+    v0.2.274：destinations.json 里有一批条目 lat/lon 为空（如「南岳衡山」），
+    直接算会让整条距离链失效、退回画像常量。这里补一次景点级坐标回查
+    （moto_places，带同名歧义保护），查不到仍返回 None，绝不估坐标。
+    """
     try:
         import plan_route
     except Exception:
         return None
     pts = []
-    if origin and origin.get("lat") is not None and origin.get("lon") is not None:
-        pts.append((float(origin["lat"]), float(origin["lon"])))
+
+    def _coord(x):
+        if not x:
+            return None
+        lat, lon = x.get("lat"), x.get("lon")
+        if lat is not None and lon is not None:
+            return (float(lat), float(lon))
+        try:
+            import route_viz
+            g = route_viz.GeoResolver().resolve(x.get("name") or "")
+        except Exception:
+            g = None
+        return (float(g["lat"]), float(g["lng"])) if g else None
+
+    if origin:
+        c = _coord(origin)
+        if c:
+            pts.append(c)
     for t in targets or []:
-        if t.get("lat") is not None and t.get("lon") is not None:
-            pts.append((float(t["lat"]), float(t["lon"])))
+        c = _coord(t)
+        if c:
+            pts.append(c)
     if len(pts) < 2:
         return None
     total = 0.0
@@ -1221,6 +1254,9 @@ def build(args) -> dict:
             targets.append({"name": t, "region": "?", "summary": "", "url": "", "lat": None, "lon": None})
 
     days = args.days
+    # 出发地坐标 + 直线里程：预算与在途里程共用同一份，避免两处各算一遍算出两个数
+    _origin = find(args.origin, dests) if getattr(args, "origin", "") else None
+    _km = route_km(_origin, targets)
     # 演唱会画像: 演出日为全程锚点, 该日压轻量、插入时间线提示
     show_day_idx = concert_show_day(days) if profile.key == "concert" else -1
     plan = []
@@ -1292,13 +1328,23 @@ def build(args) -> dict:
         # 骑行/徒步/摩旅/自驾: 附加当日在途里程
         if profile.key in ACTIVE_PROFILES:
             lo, hi = ACTIVE_ADDON[profile.key]["range_km"]
-            first_last = (i == 0 or i == days - 1)
             mid = (lo + hi) / 2
-            km = round(mid * (0.5 if first_last else 1.0))
+            factor = ROAD_FACTOR.get(profile.key, 1.3)
+            if profile.key in DISTANCE_PROFILES and _km and _km > 0:
+                # 有真实距离：全程 = 直线 × 路网系数，按天数摊平。
+                # 首末日不再减半——摩旅首末日恰恰是出发与回程，减半会把两天 640km
+                # 摊成「2×125km」这种既不真实、也让续航门禁失效的数字。
+                km = round(_km * factor / max(days, 1))
+                note = (ACTIVE_ADDON[profile.key]["note"]
+                        + "；按 %.0fkm 直线 × 路网系数 %.2f 估算" % (_km, factor))
+            else:
+                first_last = (i == 0 or i == days - 1)
+                km = round(mid * (0.5 if first_last else 1.0))
+                note = ACTIVE_ADDON[profile.key]["note"] + "；无坐标，按画像经验值估算"
             day["active"] = {
                 "label": ACTIVE_ADDON[profile.key]["label"],
                 "km": km,
-                "note": ACTIVE_ADDON[profile.key]["note"],
+                "note": note,
             }
         # 日出意图: 首日清晨 slot 强调观日出机位
         if intents.get("sunrise") and i == 0 and slots:
@@ -1316,6 +1362,21 @@ def build(args) -> dict:
         plan.append(day)
 
     season = args.season
+    # v0.2.274: 出行日期 → 时令上下文（跨包唯一的「季节感知」入口，勿在别处另算）
+    # 传 --date 后：① 未指定 --season 时按月份自动补 ② 输出气候区/看点/风险进 plan["context"]
+    context = None
+    if getattr(args, "date", None):
+        _regions = {d["name"]: d.get("region", "") for d in dests}
+        _names = [t["name"] for t in targets] or [args.to[0]]
+        try:
+            context = plan_context.build(_names, _regions, args.date, "", 0.0, "")
+        except Exception as exc:  # 时令建议不能拖垮行程生成
+            context = {"date": args.date, "cities": {}, "warnings": [f"时令建议生成失败：{exc}"]}
+        if not season:
+            _q = next((v.get("quarter", "") for v in (context.get("cities") or {}).values()), "")
+            if _q:
+                season = _q
+                context.setdefault("season_autofilled", True)
 
     # 多意图偏好块: 引擎只选单一节奏画像, 但附加诉求(爬山/日出/错峰等)以偏好块保留
     prefs = []
@@ -1469,8 +1530,6 @@ def build(args) -> dict:
 
     stay = stay_plan(args.people, profile, args.composition, args.lodging)
     # 交通费按真实里程估算（旧实现恒定 800×人数，远近同价）
-    _origin = find(args.origin, dests) if getattr(args, "origin", "") else None
-    _km = route_km(_origin, targets)
     _budget = budget_for(profile, days, args.people, args.lodging, args.food,
                          stay=stay, km=_km)
     _budget["km"] = round(_km) if _km else None
@@ -1481,6 +1540,9 @@ def build(args) -> dict:
     _aud_tips = list(aud_tips) + list(party.get("safety_focus", [])) + list(party.get("pacing_focus", []))
     return {
         "origin": args.origin or "未指定",
+        # 用户原话：路线图认线路（moto_traces）时要用到「桃花源」这类原话里的地名，
+        # 目标地名一旦解析成城市名（常德）就丢了细节，所以原话必须随 plan 落盘。
+        "request": " ".join(getattr(args, "hint", None) or []),
         "destinations": [t["name"] for t in targets],
         "days": days,
         "people": args.people,
@@ -1506,6 +1568,7 @@ def build(args) -> dict:
         "budget": _budget,
         "gear": gear_for(profile, season),
         "season": season,
+        "context": context,
         "special": special_advice(profile),
         "rv": rv_block,
         "moto": moto_block,
@@ -1879,6 +1942,8 @@ def main() -> int:
     ap.add_argument("--lodging", default="舒适", choices=list(LODGING))
     ap.add_argument("--food", default="舒适", choices=list(FOOD))
     ap.add_argument("--season", default="", help="季节: 春/夏/秋/冬")
+    ap.add_argument("--date", default="",
+                    help="出行日期 YYYY-MM-DD；给了就按月份自动推断季节并生成时令建议")
     ap.add_argument("--budget", type=int, default=0, help="用户总预算(元), 用于与估算对比")
     ap.add_argument("--tag", nargs="*",
                     help="显式附加意图: hiking/sunrise/avoid_crowd/photo/foodie/culture")

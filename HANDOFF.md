@@ -1,7 +1,7 @@
 # HANDOFF · WorldsTip 旅行规划技能接手手册
 
 > **面向**：任何在任意机器接手本仓库继续修改的 agent 或开发者。
-> **主线分支**：`v0.2.273`　|　**内部版本真源**：`VERSION.json` → `0.2.273`　|　**更新**：2026-11-07
+> **主线分支**：`0.2.276`　|　**内部版本真源**：`VERSION.json` → `0.2.276`　|　**更新**：2026-11-09
 > **一句话定位**：本仓库同时是「技能源码」「四个平台上传包」「WorkBuddy 专家包源码」「发布归档」的唯一真源，改任何东西都从这里出发，不要直接改 zip。
 
 ---
@@ -14,8 +14,8 @@
 git clone -b v0.2.273 https://github.com/MrdT-BitsNote/Skill-WorldsTipAgent.git worldstip-travel-planner
 cd worldstip-travel-planner
 
-python scripts/doctor.py          # 离线自检 17 项，任一失败 EXIT 1
-python tests/run_all.py           # 统一回归：16/16 套件 + 32/32 新增用例
+python scripts/doctor.py          # 离线自检 17 项（--no-smoke 14 项），任一失败 EXIT 1
+python tests/run_all.py           # 统一回归：17/17 套件 + 32/32 新增用例
 python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平台包 / 版本对齐
 ```
 
@@ -69,7 +69,8 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 **版本号规则**（平台会硬性校验）：
 1. 内部版本统一由 `VERSION.json.version` 裁决，改版本必须同步 `SKILL.md`、`README.md`、`CHANGELOG.md`、`INSTALL.md`、`QC_REPORT.md`、`DoD.md`、`scripts/worldstip.py`、`tools/build_pack.py` 共 8 处，`doctor.py` 逐项比对。
 2. WorkBuddy 要求包内 `version` **严格大于**平台当前最新版本；被驳回后重传必须递增（`0.2.26 → 0.2.27 → 0.2.271 → 0.2.272 → 0.2.273`）。
-3. SkillHub 的 `_meta.json.version` 是**平台发布号**（`1.2.1`），与内部版本分离；用 `internalVersion` 字段对齐内部版本，两者不要混写。
+3. SkillHub 的 `_meta.json.version` **自 v0.2.275 起与内部版本统一**。此前是 `1.0.0 → 1.2.0 → 1.2.1` 的平台流水号，与内部 `0.2.x` 分离，靠 `internalVersion` 字段挂靠——同一份包在平台与文档里报出两个号，这是版本错位最隐蔽的一处。现改为 `build_release_packs.py` 直接取 `VER` 写入，不写死在源码里（此前第 26 行硬编码 `1.2.1`，改内部版本时无人同步，grep 也搜不到）。`internalVersion` 与 `version` 同值，仅作冗余校验。
+   - **风险与回退**：SkillHub 线上历史发布号止于 `1.2.1`。若平台按 SemVer 断言「必须递增」，`0.2.275`（主版本 0 < 1）会被判降级。**回退动作**：只把 `_meta.json.version` 改成 `1.3.0` 重打 SkillHub 包，内部版本与其他三包不动。
 4. 专家包 `plugin.json.version`（`1.0.0`）是**独立版本线**，只在专家包结构变化时递增；与技能版本通过 `expert/worldstip-travel-expert/README.md` 的对应表对齐。
 5. `SKILL.md` 恰好 500 行：增删内容要原地合并 blockquote / 删空行，不能靠追加行。
 
@@ -79,10 +80,10 @@ python tools/verify_backup.py     # 备份完整性：源码 / 专家 / 四平�
 
 | 平台 | 产物 | 硬约束 | 特殊处理 |
 | --- | --- | --- | --- |
-| **WorkBuddy** | `worldstip-travel-planner-v0.2.273-workbuddy.zip` | 解压后 ≤ **3 MiB**（3,145,728 B）；md 里点名的文件必须真实存在；`display_name` 在同类型资产中唯一；包内 `name` 必须与资产 name 一致；`version` 递增 | 裁掉 `fixtures/tools/tests/assets`、未被 `SKILL.md` 引用的 docs、`places_history.json`、`render_booklet.py` 等；`display_name` 改为「融合版」；`SKILL.md`/README 里的引用整句改写为自洽描述；`LICENSE` 真实入包；**构建后强制跑审核器视角硬闸门** |
-| **SkillHub** | `…-skillhub.zip` | 包根 `SKILL.md`；追加 `_meta.json` | 完整包（127 文件），平台发布号 `1.2.0`；上传地址 `https://skillhub.cn/skills/indiv-mrdt/worldstip` |
-| **DuMate（百度）** | `…-dumate.zip` | 复用标准 `SKILL.md` 包 | 与 SkillHub 同源，仅追加 `PLATFORM.md` 导入说明 |
-| **千问 AI** | `…-qianwen.zip` | ZIP ≤ **10 MiB**；根级 `SKILL.md`；frontmatter 必填 `name` + `description`；**安全绿网**内容扫描 | 在 WorkBuddy 裁剪集上再剔开发文档与出境数据文件、域名改机构名、去品牌词与限制性条款；约 75 文件 |
+| **WorkBuddy** | `worldstip-travel-planner-v0.2.276-workbuddy.zip` | 解压后 ≤ **3 MiB**（3,145,728 B）；md 里点名的文件必须真实存在；`display_name` 在同类型资产中唯一；包内 `name` 必须与资产 name 一致；`version` 递增 | 裁掉 `fixtures/tools/tests/assets`、未被 `SKILL.md` 引用的 docs、`places_history.json`、`render_booklet.py` 等；`display_name` 改为「融合版」；`SKILL.md`/README 里的引用整句改写为自洽描述；`LICENSE`（**无扩展名原名**）真实入包——本平台接受原名，不要跟 SkillHub 一样改成 `.md`；**构建后强制跑审核器视角硬闸门** |
+| **SkillHub** | `…-skillhub.zip` | 包根 `SKILL.md`；追加 `_meta.json`；**文件类型白名单不收无扩展名文件**（实测报错：`不允许的文件类型: LICENSE`） | 完整包（132 文件）；发布号与内部版本统一，由 `_meta.json.version` 直接取 `VER`；`LICENSE` 改名为 `LICENSE.md` 并同步改写包内引用（`ANTI_DISTILL.md` ×2、`README.md` 目录树）；上传地址 `https://skillhub.cn/skills/indiv-mrdt/worldstip` |
+| **DuMate（百度）** | `…-dumate.zip` | 复用标准 `SKILL.md` 包；与 SkillHub 同一套类型白名单 | 与 SkillHub 同源，追加 `PLATFORM.md` 导入说明；`LICENSE` 同样改名 `LICENSE.md` |
+| **千问 AI** | `…-qianwen.zip` | ZIP ≤ **10 MiB**；根级 `SKILL.md`；frontmatter 必填 `name` + `description`（单行 ≤200 字）；**安全绿网**内容扫描 | 在 WorkBuddy 裁剪集上再剔开发文档与出境数据文件、域名改机构名、去品牌词与限制性条款；`LICENSE` 亦改名 `LICENSE.md`（同 SkillHub 的类型白名单风险，构建期由 `QW_RENAME` 处理，源码不动）；构建自检 **13 项**（含「无无扩展名文件」）；85 文件 / 0.93 MiB |
 | **专家包** | `worldstip-travel-expert.zip` | zip 内保留外层目录 `worldstip-travel-expert/`（与技能包相反） | `.codebuddy-plugin/plugin.json` + `agents/*.md` + 512×512 PNG 头像 + 许可 |
 
 ```bash
@@ -99,15 +100,24 @@ python tools/verify_backup.py --json                # 机器可读结论
 
 所有构建器共用 `build_pack.collect()` 的同一份文件清单，固定时间戳 `(2026,11,7,0,0,0)`、稳定排序、文本统一 LF，**同输入产出字节可复现**；`--verify` 逐条目比对包内字节与源码。构建完把 `dist/` 的 zip 复制进 `releases/`（用 `git add -f`），`verify_backup.py` 会校验两处字节一致。
 
-**当前实测基线**（v0.2.273 最终交付包，2026-11-08 复核）：WorkBuddy 92 文件 / 解压 2,968,985 B（上限余量 176,743 B）/ zip 989,387 B，引用核对 166 条零缺失；千问 75 文件 / zip 910,598 B；SkillHub 125 文件 / 1,509,581 B；DuMate 125 文件 / 1,509,813 B；专家 zip 8 文件 / 240,764 B。四平台包审核器视角扫描命中 0 条。此前记录的 2,969,027 B / 989,403 B 等为最后一次重建前的中间值，已作废。
+**当前实测基线**（v0.2.276 最终交付包，2026-11-09 发布号并轨轮复核，`dist/` 实测；体积用 MiB 两位小数、余量用百分比，精确字节以实测为准）：WorkBuddy 95 文件 / 解压 2.91 MiB（3 MiB 上限余量约 3%）/ zip 0.98 MiB；千问 85 文件 / 2.79 MiB / zip 0.93 MiB（零外链 0 / 零 http 0）；SkillHub 132 文件 / 4.25 MiB / 1.53 MiB；DuMate 132 文件 / 4.25 MiB / 1.53 MiB；专家 zip 8 文件 / 0.24 MiB（版本三处 1.0.0 + 内嵌技能 0.2.275，`--verify` 硬校验 + COMPLIANCE PASS）。验收全绿：`selfcheck` 源码 57/57、源码加四包 106/106；`verify_backup` 84 项 0 失败；`run_all` 17/17 套件 + 32/32 用例；`test_logic_fixes` 134/134；四平台包审核器视角命中 0 条；四包解压后 `doctor.py` 4/4 PASS（各 17/17，全跑口径）；`orphan_scan` 源码 + 四包 5/5 PASS；`platform_diff --check` PASS。**输出形态**：默认 `--device both` 一次出三件（`小册子.html` PC 网页 / `小册子-A5.html` A5 可打印 / `小册子-手机.html` HTML5 移动版）。v0.2.274 的旧体积与旧项数已作废。
+
+---
+
+**v0.2.276 待办（本地已就绪，尚未对外）**
+
+1. 五个包**未上传任何平台**（SkillHub / WorkBuddy / DuMate / 千问 Hub / 专家包）。
+2. `agent.worldstip.com` 未部署。
+3. GitHub `MrdT-BitsNote/agent-site` 与 `Skill-WorldsTipAgent` 仍是 v0.2.273，未重推。
+4. `og-cover.png` 仍标 v0.1.16，未重画。
 
 ---
 
 ## 4. 回归与自检命令（改完必跑）
 
 ```bash
-python scripts/doctor.py --json                    # 17 项：版本真源 / 结构 / 字段 / .py 语法 / .json 可解析 / 文档引用 / 三分支冒烟
-python tests/run_all.py                            # 16/16 套件 + 32/32 新增用例；任一失败 EXIT 1
+python scripts/doctor.py --json                    # 17 项（--no-smoke 14 项）：版本真源 / 结构 / 字段 / .py 语法 / .json 可解析 / 文档引用 / 三分支冒烟
+python tests/run_all.py                            # 17/17 套件 + 32/32 新增用例；任一失败 EXIT 1
 python scripts/test_render_compact.py              # 26 用例：拍摄题材不误判（武陵源非建筑、东湖绿道、酒店商圈跳过）
 python tools/verify_backup.py                      # 备份 + 包结构 + 版本对齐
 ```
@@ -162,7 +172,7 @@ python tools/verify_backup.py                      # 备份 + 包结构 + 版本
 | `poi.json` | 20 城 / **104 条 POI**，每条含 `play`（玩法）与 `arrival`（怎么去） |
 | `food_guide.json` | 26 个城市/区域键（含 `guiyangyangshuo` 合并键），只给品类 + 参考价 |
 | `geo_admin.json` | 34 省级（含中国香港 / 中国澳门 / 中国台湾）/ 361 市 / 3001 县 |
-| `station_codes.json` | 3405 个车站代码 |
+| `station_codes.json` | 3404 个车站代码 |
 | `places_history.json` | 1743 条人文史（sidecar，按需加载；WorkBuddy / 千问包不随包分发） |
 
 拍§6「本次行程出片清单」由 `scripts/render_compact.py` 的纯函数 `_poi_photo_theme()` 按 POI 的 `name/tag/desc` 判题材；已修的建筑关键词误判（`陵` 会命中「武陵源」→ 改为 `陵墓/皇陵/十三陵/中山陵/孝陵/王陵/陵园`，`城` 过宽 → 改具体词），酒店 / 商圈 / 城市绿道跳过。

@@ -35,7 +35,7 @@ homepage: https://worldstip.com
 
 ## 工作流
 
-1. **路由**：`python scripts/route.py "用户原话" --json` 判定意图（city / routes / cascade / rank / stats）。
+1. **路由**：`python scripts/motofun_route.py "用户原话" --json` 判定意图（city / routes / cascade / rank / stats）。
 2. **查询**：按意图调 `scripts/motofun.py` 对应动作，全部输出 JSON，退出码即判定。
 3. **清洗**：餐饮 / 酒店按 `type` 首段过滤，小吃「仅登记不推荐」剔除，维度双形态统一走 `dim_pois()`。
 4. **降级**：城市名归一化 + 分级降级，任何降级在 `match_level` / `note` 显式标注，不静默当精确匹配。
@@ -62,9 +62,9 @@ homepage: https://worldstip.com
 收到需求先跑路由，按返回的动作链执行：
 
 ```bash
-python scripts/route.py "用户原话" --json
-python scripts/route.py "骑太浮山，中午在常德吃点好的" --fill   # 从原话抽地名填入动作链
-python scripts/route.py "全国美食榜" --json                    # rank 意图
+python scripts/motofun_route.py "用户原话" --json
+python scripts/motofun_route.py "骑太浮山，中午在常德吃点好的" --fill   # 从原话抽地名填入动作链
+python scripts/motofun_route.py "全国美食榜" --json                    # rank 意图
 ```
 
 `--fill` 默认关闭；开启后输出 `places` 并把 `<城市>` 替换成实际地名，其余行为不变。动作链里的 `<关键词>` / `<省拼音>` 仍需从原话抽取——路由只做意图判定，不猜路线名。
@@ -115,7 +115,7 @@ python scripts/motofun.py route --text "骑太浮山，中午在常德吃点好�
 - `@references/data-quality.md` —— 脏数据实测统计、城市匹配率、降级规则、全维度体检结论与已知缺口。
 - `@references/insights.md` —— 已沉淀的可复用规则（每轮自检后反写）。
 - `growth_log.md` —— 逐轮执行记录与踩坑；新会话开工前先读它和 insights。
-- `scripts/motofun.py` —— 查询引擎；`scripts/route.py` —— 意图路由入口；`scripts/pack.py` —— 可复现打包。
+- `scripts/motofun.py` —— 查询引擎；`scripts/motofun_route.py` —— 意图路由入口（融合后由 moto 版 `route.py` 改名，避免与 travel 的 `scripts/route.py` 同名冲突）；`scripts/pack.py` —— 可复现打包（仅源码仓库内，不随本技能分发）。
 - `test/run_all.py` —— 边界用例一键验证；`离线样例目录/` —— 手写规范夹具（复刻真实双形态结构，非真实数据）。
 - `QC_REPORT.md` —— 质检报告与 DoD 核对；`CHANGELOG.md` —— 版本变更。
 

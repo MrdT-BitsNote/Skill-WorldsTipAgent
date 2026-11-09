@@ -17,6 +17,7 @@
 """
 from __future__ import annotations
 
+import glob
 import io
 import json
 import os
@@ -359,7 +360,10 @@ def _t_render_booklet():
     secs = set(re.findall(r"§\s*(\d+)", content))
     assert len(secs) >= 8, f"成品板块数应 ≥8，实为 {len(secs)}"
     assert 'src=""' not in content, "成品不得含空白图片占位"
-    for p in (plan, html):
+    # 终端分流后，一次渲染会额外产出 `_tmp_booklet-A5.html` / `_tmp_booklet-手机.html`。
+    # 只删主文件会把两个兄弟文件留在 tests/ 里，被 doctor 判「临时产物夹带」——
+    # 这正是本套件自身造成的污染，必须由本套件自己收干净。
+    for p in [plan] + glob.glob(os.path.join(HERE, "_tmp_booklet*")):
         if os.path.exists(p):
             os.remove(p)
 

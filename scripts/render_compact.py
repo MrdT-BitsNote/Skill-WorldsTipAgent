@@ -22,6 +22,12 @@ except ImportError:
     _transit_links = None
     _transit_links_html = None
 
+# 路线图（行程级里程轴 / 线路级真轨迹）：缺坐标或缺线路则不出图，绝不画假形状
+try:
+    from route_viz import render_route_html as _route_html
+except ImportError:
+    _route_html = None
+
 try:
     from guide_digest import CATEGORY_ZH as _GUIDE_CAT_ZH, VOLATILE_CATS as _GUIDE_VOLATILE
 except ImportError:
@@ -368,12 +374,95 @@ def _single_mode_transit_html(plan: dict, transit: dict, mode: str) -> str:
     h.append('</section>')
     return ''.join(h)
 
+# === 终端形态（v0.2.274）===
+# 三种产物不是换文件名，而是三套真实生效的排版层：
+#   pc      桌面宽屏阅读版（宽版心 + 三列目录 + 悬停态）
+#   a5      A5 分页小册子（@page A5 + 148mm 版心 + 分页保护，可另存 PDF）
+#   mobile  手机 HTML5 版（移动优先 + 安全区 + 44px 触控区 + 底部锚点条）
+# 覆盖层追加在原 CSS 之后，只增不改，避免动到既有版式。
+VIEWPORT_PC = 'width=device-width, initial-scale=1.0'
+VIEWPORT_MOBILE = 'width=device-width, initial-scale=1.0, viewport-fit=cover'
+
+DEVICE_CSS = {
+    # 桌面：版心沿用 780px 定稿（排版规范明令严禁加宽），差异体现在桌面交互与字号
+    'pc': '''
+@media screen{
+  body{font-size:15px}
+  .toc ul{grid-template-columns:repeat(3,1fr)}
+  .hero{padding:30px 0 16px}
+  .hero h1{font-size:34px}
+  .sec{padding:16px 0 14px}
+  .lead{font-size:15.5px}
+  a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .toc a:hover{background:#EFEAD8}
+  .day:hover,.tbl tr:hover{background:#FFFCF3}
+}
+''',
+    # A5：屏幕模拟纸张，打印真分页；关键块禁止跨页切断
+    'a5': '''
+@page{size:A5;margin:8mm}
+@media screen{
+  body{background:#E9E4D8}
+  .wrap{max-width:148mm;padding:8mm 9mm;background:#FFF;
+        box-shadow:0 1px 3px rgba(0,0,0,.14);margin:16px auto}
+  .sec.bright{margin:0 -9mm;padding:12px 9mm}
+  body{font-size:13px}
+}
+@media print{
+  body{background:#FFF;font-size:9.5pt;line-height:1.45}
+  .wrap{max-width:148mm;padding:0;margin:0;box-shadow:none}
+  .sec.bright{margin:0;padding:8pt 0}
+  a{color:inherit;border-bottom:0}
+  .toc{break-after:page}
+  .toc a:hover,.day:hover{background:transparent}
+  .sec>h2,.sec>h3{break-after:avoid}
+  .day,.pack-card,.callout,.tline,.gate,.kv{break-inside:avoid}
+  .tbl tr{break-inside:avoid}
+  .cover-art{max-height:38mm}
+  footer{break-before:avoid}
+}
+''',
+    # 手机：单列优先、字号防缩放、触控区够大、目录吸顶、底部回顶
+    'mobile': '''
+@media screen{
+  body{font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom)}
+  .wrap{max-width:100%;padding:0 14px 88px}
+  h2{font-size:20px}
+  h3{font-size:17px}
+  p,li{font-size:15.5px}
+  .hero{padding:22px 0 14px}
+  .hero h1{font-size:27px}
+  .lead{font-size:16.5px}
+  .toc{position:sticky;top:0;z-index:20;background:var(--bg);
+       box-shadow:0 1px 0 var(--line)}
+  .toc ul{grid-template-columns:1fr 1fr}
+  .toc a{display:flex;align-items:center;min-height:44px;padding:0 4px}
+  .sec.bright{margin:0 -14px;padding:14px 14px}
+  .row{grid-template-columns:1fr}
+  .pack-grid{grid-template-columns:1fr}
+  .day{grid-template-columns:34px 1fr;gap:8px}
+  .slot,.tline{grid-template-columns:44px 1fr}
+  .tbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .kv{grid-template-columns:1fr}
+  .kv .k{white-space:normal}
+  a{border-bottom:1px solid var(--line2);padding:2px 0}
+  .to-top{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+          width:46px;height:46px;border-radius:23px;background:var(--accent);color:#FFF;
+          display:flex;align-items:center;justify-content:center;font-size:19px;
+          box-shadow:0 3px 10px rgba(0,0,0,.22);z-index:30;border:0}
+}
+'''
+}
+
+# 手机版才注入的回顶按钮（纯锚点，无脚本）
+TO_TOP_HTML = '<a class="to-top" href="#top" aria-label="回到顶部">↑</a>'
+
 # === HTML 模板 ===
 HTML_TPL = '''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="{VIEWPORT}">
 <title>{title}</title>
 <style>
 :root{{--bg:#F7F4EE;--card:#FFF;--ink:#0F0F0F;--sub:#5A5A5A;--line:#D9D2C2;--line2:#B7AE99;--accent:#0F4C3A;--warn:#A85A00;--ok:#1B7C3F;--red:#B91C1C;--mono:ui-monospace,Menlo,Consolas,monospace;--font:-apple-system,BlinkMacSystemFont,\"PingFang SC\",\"Helvetica Neue\",\"Microsoft YaHei\",sans-serif}}
@@ -469,9 +558,10 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 .g-list{{margin:0;padding-left:16px}}
 .g-list li{{font-size:12.5px;line-height:1.55;margin:3px 0;list-style:disc}}
 .g-src{{font-size:11px;color:var(--sub)}}
+{DEVICE_CSS}
 </style>
 </head>
-<body>
+<body id="top">
 <div class="wrap">
 {HERO}
 {FEAS_BANNER}
@@ -494,6 +584,7 @@ footer{{padding:18px 0 30px;font-size:11.5px;color:var(--sub);text-align:center;
 本报告由 WorldsTip 旅行指南小册子技能生成 · 票价与开放时间以官方当日为准 · 户外活动请量力而行
 </div>
 </footer>
+{TO_TOP}
 </body>
 </html>'''
 
@@ -611,7 +702,10 @@ def _feasibility_block(plan: dict, mode: str):
 
 
 def render(plan: dict, title: str, transit: dict = None, research: dict = None,
-           feasibility: str = 'advisory') -> str:
+           feasibility: str = 'advisory', device: str = 'pc') -> str:
+    """device: pc | a5 | mobile —— 决定注入哪套终端排版层（v0.2.274）。"""
+    if device not in DEVICE_CSS:
+        device = 'pc'
     transit = _normalize_transit(transit) if transit else None
     origin = pick(plan, 'origin', 'from', default='出发地')
     dest = '、'.join(plan.get('destinations', []) or ['目的地'])
@@ -774,6 +868,14 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None,
     # === 逐日动线 ===
     day_html = ['<section class="sec" id="sec4">', section_no(4), '<h2>逐日动线<span class="en">Day by Day</span></h2>']
     day_html.append('<p class="sub-en">时间锚点 + 节点说明 + 关键提示</p>')
+    # 路线形态图：真实经纬度算直线里程，沿横轴按真实比例排节点；坐标不全自动降级不出图
+    if _route_html:
+        try:
+            _rv = _route_html(plan)
+            if _rv:
+                day_html.append(_rv)
+        except Exception:
+            pass
     for d in day_plan:
         dno = d.get('day', '?')
         lbl = d.get('label', '')
@@ -839,7 +941,14 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None,
 
     # === 季节 ===
     season_html = ['<section class="sec bright" id="sec5">', section_no(5), '<h2>季节与气候<span class="en">Season & Climate</span></h2>']
-    season_html.append(f'<p><b>{esc(season)}</b> 季 · 季节结论绑定出行日期 · 出行前 3 天务必复核实时天气预报</p>')
+    # v0.2.274: 有出行日期时用真实时令上下文（气候区 + 当月气温 + 看点 + 风险），
+    # 取代「请查实时天气预报」这类空话；来源是 references/seasons_climate.json。
+    _ctx = plan.get('context') or {}
+    _cities = _ctx.get('cities') or {}
+    _first = next(iter(_cities.values()), {}) if _cities else {}
+    _mtag = f'（{_first.get("season")}档）' if _first.get('season') else ''
+    season_html.append(f'<p><b>{esc(season)}</b> 季{esc(_mtag)} · '
+                       f'季节结论绑定出行日期 · 出行前 3 天务必复核实时天气预报</p>')
     season_text_map = {
         '春': '春（3-5 月）· 草原泛青、杜鹃初绽、江南烟雨；华南已入雨季',
         '夏': '夏（6-8 月）· 草原与海岛旺季、避暑与摄影窗口；台风/雷暴多发',
@@ -847,6 +956,25 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None,
         '冬': '冬（12-2 月）· 雪景与雾凇、温泉旺季；部分景区歇业、路况复杂',
     }
     season_html.append(f'<p>{esc(season_text_map.get(season, "请查实时天气预报"))}</p>')
+    if _cities:
+        _shown = 0
+        for _cname, _cv in _cities.items():
+            if _shown >= 2:
+                break
+            _shown += 1
+            _head = (f'<p><b>{esc(_cname)}</b> · {esc(_cv.get("region_label", ""))} · '
+                     f'{esc(_cv.get("season", ""))}（{esc(_cv.get("climate", ""))}）</p>')
+            season_html.append(_head)
+            _tips = [t for t in (_cv.get('tips') or []) if t][:3]
+            if _tips:
+                season_html.append('<p><b>当月装备</b>：' + esc(' · '.join(_tips)) + '</p>')
+            if _cv.get('highlight'):
+                season_html.append('<p><b>本季看点</b>：' + esc(_cv['highlight']) + '</p>')
+            if _cv.get('risk'):
+                season_html.append(f'<p><b>本季风险</b>：{esc(_cv["risk"])}</p>')
+        if _shown:
+            season_html.append(f'<p class="sub-en">时令依据 {esc(_ctx.get("date", ""))} · '
+                               f'气候区分档见 references/seasons_climate.json</p>')
     if tone:
         season_html.append(f'<p><b>本季关注</b>：{" · ".join(esc(t) for t in tone)}</p>')
     season_html.append('</section>')
@@ -1094,6 +1222,9 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None,
         toc = '<div class="toc"><h4>CONTENTS</h4><ul>' + ''.join(f'<li><a href="#sec{n}">§{n} {esc(t)}</a></li>' for n, t in toc_items) + '</ul></div>'
 
     return HTML_TPL.format(
+        VIEWPORT=VIEWPORT_MOBILE if device == 'mobile' else VIEWPORT_PC,
+        DEVICE_CSS=DEVICE_CSS[device],
+        TO_TOP=TO_TOP_HTML if device == 'mobile' else '',
         title=esc(title),
         HERO=''.join(hero),
         FEAS_BANNER=feas_banner,
@@ -1113,6 +1244,26 @@ def render(plan: dict, title: str, transit: dict = None, research: dict = None,
     )
 
 # === main ===
+DEVICE_SUFFIX = {'a5': '-A5', 'mobile': '-手机'}
+DEVICE_LABEL = {'pc': 'PC 网页版', 'a5': 'A5 小册子（可打印/另存 PDF）', 'mobile': '手机 HTML5 版'}
+
+
+def _device_targets(out: str, device: str):
+    """把 --out 与 --device 展开成 [(device, path)]。
+
+    device=both 时一次产三件：--out 本身即 PC 版（旧调用方路径不变），
+    另两件加后缀；单选时严格只产一件，不偷偷多写文件。
+    """
+    base = Path(out)
+    if device != 'both':
+        return [(device, base)]
+    targets = []
+    for dev in ('pc', 'a5', 'mobile'):
+        p = base if dev == 'pc' else base.with_name(f"{base.stem}{DEVICE_SUFFIX[dev]}{base.suffix}")
+        targets.append((dev, p))
+    return targets
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--plan', required=True)
@@ -1120,21 +1271,68 @@ def main():
     ap.add_argument('--research', default=None, help='research.json（ugc 攻略研读沉淀，渲染进 §10 攻略核验子块）')
     ap.add_argument('--feasibility', choices=['none', 'advisory', 'strict'], default='advisory',
                     help='可执行性体检：advisory 默认提示 / strict P0 红条强制 / none 关闭（v0.1.43 起并入默认渲染器）')
+    ap.add_argument('--device', choices=['pc', 'a5', 'mobile', 'both'], default='both',
+                    help='终端形态：pc 桌面网页 / a5 A5 分页小册子 / mobile 手机 HTML5 / both 三件齐出（默认）')
     ap.add_argument('--out', required=True)
     ap.add_argument('--title', required=True)
     args = ap.parse_args()
     plan = json.load(open(args.plan, encoding='utf-8'))
     transit = json.load(open(args.transit, encoding='utf-8')) if args.transit else None
     research = json.load(open(args.research, encoding='utf-8')) if args.research else None
-    html = render(plan, args.title, transit, research, feasibility=args.feasibility)
-    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text(html, encoding='utf-8')
+    # 空壳 plan（合法 JSON 但没有行程数据）不该渲染成一张空册子还报「已生成」——
+    # 那等于谎报成功，调用方会拿着一张 14 板块的空模板当成品发出去。
+    if not (plan.get('plan') or plan.get('destinations')):
+        sys.stderr.write("[ERROR] plan.json 里没有可用行程数据："
+                         "`plan`（逐日）与 `destinations`（目的地）都为空\n")
+        sys.stderr.write("[HINT] 先用 build_itinerary.py 生成 plan.json，"
+                         "或检查 --plan 是否指到了别的文件\n")
+        sys.exit(2)
     sections = ['hero', 'toc', '路线总览', '怎么去', '必吃·必玩', '逐日动线', '季节', '拍摄', '住宿', '预算', '清单', '安全', '冷知识']
     if args.feasibility != 'none':
         sections.append('可执行性体检')
     if research and (research.get('ugc') or []):
         sections.append('攻略核验')
-    print(f'✅ 已生成: {args.out}  (板块 {len(sections)} 个, {len(html.encode())//1024} KB)')
+    for dev, path in _device_targets(args.out, args.device):
+        html = render(plan, args.title, transit, research,
+                      feasibility=args.feasibility, device=dev)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(html, encoding='utf-8')
+        print(f'✅ 已生成[{DEVICE_LABEL[dev]}]: {path}  '
+              f'(板块 {len(sections)} 个, {len(html.encode())//1024} KB)')
+
+
+def _fatal(e: BaseException) -> int:
+    """不可信输入（路径不存在 / 坏 JSON / 结构不符）→ 一行中文诊断 + 退出码 2。
+
+    绝不裸露 traceback：调用方多是模型或 CI，看到 Python 栈只会把
+    本机绝对路径和栈帧一起贴出来，既不安全也不可读。
+    需要现场调试时置 AITRIP_DEBUG=1，异常原样抛出。
+    """
+    import os as _os
+    if _os.environ.get("AITRIP_DEBUG"):
+        raise e
+    if isinstance(e, FileNotFoundError):
+        msg = "输入文件不存在：%s" % (e.filename,)
+    elif isinstance(e, IsADirectoryError):
+        msg = "给的路径是目录不是文件：%s" % (e.filename,)
+    elif isinstance(e, PermissionError):
+        msg = "没有读写权限：%s" % (e.filename,)
+    elif isinstance(e, UnicodeDecodeError):
+        msg = "输入文件不是 UTF-8 文本，无法解析"
+    elif isinstance(e, json.JSONDecodeError):
+        msg = "输入不是合法 JSON（第 %d 行第 %d 列）" % (e.lineno, e.colno)
+    elif isinstance(e, OSError):
+        msg = "文件读写失败：%s" % (e.strerror,)
+    else:
+        msg = "输入数据与预期结构不符（%s），请检查 plan 字段" % type(e).__name__
+    sys.stderr.write("[ERROR] %s\n" % msg)
+    sys.stderr.write("[HINT] --plan/--transit/--research 需指向合法 JSON；"
+                     "最小用法：--plan plan.json --title 标题 --out 输出.html\n")
+    return 2
+
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, IndexError) as _e:
+        sys.exit(_fatal(_e))

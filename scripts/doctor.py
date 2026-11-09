@@ -46,7 +46,7 @@ TEMP_MARK = ("worldstip-out", "__pycache__", ".pytest_cache",
              "_tmp_", ".bak", ".zip")
 # 与 tools/build_pack.SKIP_DIRS 保持一致：本地版本库、归档位与独立专家包
 # 都不进技能交付包，因此不参与技能包的目录深度 / 临时产物检查。
-# expert/ 是 WorkBuddy 专家包源码（自带 .codebuddy-plugin/ 与 agents/ 子目录），
+# expert/ 是专家包源码（自带平台插件元数据目录与 agents/ 子目录），
 # 其结构由 tools/verify_backup.py 单独校验，不适用技能包的两级约束。
 SKIP_WALK = {".git", "releases", "worldstip-out", "__pycache__",
              ".pytest_cache", ".mypy_cache", "expert"}
@@ -66,12 +66,18 @@ def _read(rel):
 
 
 def check_version():
+    """版本真源核对。
+
+    **分发包不携带维护文件**（CHANGELOG / INSTALL / QC_REPORT / DoD / tools 等），
+    所以「文件不存在」不等于版本错，判 SKIP；只有「文件在、版本号不对」才是真 FAIL。
+    旧实现把缺文件算作失败，导致安装包里跑 doctor 自己报 5 项 FAIL —— 自检器冤枉自己。
+    """
     v = json.loads(_read("VERSION.json"))["version"]
-    bad = []
+    bad, skipped = [], []
     for rel in VERSION_FILES:
         p = os.path.join(ROOT, rel.replace("/", os.sep))
         if not os.path.isfile(p):
-            bad.append(rel + "(缺文件)")
+            skipped.append(rel)
             continue
         s = open(p, encoding="utf-8").read()
         # 当前版本必须以 v0.2.22 / 0.2.22 / "0.2.22" 形式出现；CHANGELOG 只需含标题行
@@ -81,7 +87,10 @@ def check_version():
             ok = (v in s)
         if not ok:
             bad.append(rel)
-    ck("版本真源：%s 全文件对齐" % v, not bad, ", ".join(bad))
+    detail = ", ".join(bad)
+    if skipped:
+        detail += "（未随包 %d 项，判 SKIP：%s）" % (len(skipped), ", ".join(skipped[:3]))
+    ck("版本真源：%s 全文件对齐" % v, not bad, detail)
 
 
 def check_structure():
@@ -175,6 +184,11 @@ def check_refs():
             continue
         for rel in pat.findall(open(p, encoding="utf-8").read()):
             if "*" in rel:
+                continue
+            # tests/ 属源码仓库专属（验证集不随分发包携带）。源码树里跑时它存在，
+            # 安装包里跑时它必然不存在 —— 那不是悬空引用，是「去哪跑回归」的必要指引。
+            if rel.split("/")[0] in ("test", "tests") and not os.path.isdir(
+                    os.path.join(ROOT, "tests")):
                 continue
             if not os.path.isfile(os.path.join(ROOT, rel.replace("/", os.sep))):
                 missing.append(doc + "->" + rel)
